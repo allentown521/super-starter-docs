@@ -1,0 +1,55 @@
+---
+title: Protect API endpoints
+description: Learn how to protect your API endpoints in your SuperStarter application.
+---
+
+## Check if the user is authenticated
+
+To protect your API endpoints, you can use the `honoAuthMiddlewareWrap` in your router or on a specific endpoint.
+
+```ts hello/index.ts
+import { honoAuthMiddlewareWrap } from "@repo/auth/middleware";
+import { Hono } from "hono";
+
+const app = new Hono();
+
+const hello = app.basePath("/hello").get(
+  "/",
+  honoAuthMiddlewareWrap,
+  // ...
+  (c) => {
+    const { name } = c.req.query();
+    return c.json({ message: `Hello ${name || "World"}!` });
+  }
+);
+
+export default hello;
+```
+
+The middlware will throw an error if the user is not authenticated.
+
+The `honoAuthMiddlewareWrap` will also provide the `auth` infromation to the endpoint. If the handler is reached, both objects are available in the `auth`.
+
+```ts hello/index.ts
+import { getAuth, honoAuthMiddlewareWrap } from '@repo/auth/middleware';
+import { Hono } from "hono";
+
+const app = new Hono();
+
+const hello = app.basePath('/hello').get('/', honoAuthMiddlewareWrap, (c) => {
+    const auth = getAuth(c);
+
+  if (!auth?.userId) {
+    return c.json({
+      message: 'You are not logged in.',
+    });
+  }
+
+  return c.json({
+    message: 'You are logged in!',
+    userId: auth.userId,
+  });
+});
+
+export default hello;
+```

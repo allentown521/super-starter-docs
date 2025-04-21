@@ -1,0 +1,51 @@
+---
+title: MailerSend
+descriptions: Learn how to use MailerSend for sending emails.
+---
+
+To use MailerSend with SuperStarter
+
+<Steps>
+  <Step title="Create a MailerSend account">
+
+    [Create a MailerSend account](https://accounts.mailersend.com/) and grab your API key.
+
+  </Step>
+  <Step title="Add environment variables">
+
+    Add the `MAILERSEND_TOKEN` environment variables to your .env.local file and your deployment environment:
+
+    Then, make sure to activate MailerSend:
+
+    ```ts /packages/email/index.ts
+    export * from './providers/mailersend';
+    ```
+
+  </Step>
+  <Step title="Sending Emails">
+
+    ```tsx apps/web/app/contact/actions/contact.tsx
+    import { mailerSendClient } from '@repo/email';
+    import { ContactTemplate } from '@repo/email/emails/contact';
+    import { render } from '@react-email/components';
+
+    const emailHtml = await render(<ContactTemplate name={name} email={email} message={message} />);
+
+    const sentFrom = new Sender("you@yourdomain.com", "Your name");
+    const recipients = [
+    new Recipient("your@client.com", "Your Client")
+    ];
+
+    const emailParams = new EmailParams()
+    .setFrom(sentFrom)
+    .setTo(recipients)
+    .setSubject("This is a Subject")
+    .setHtml(emailHtml)
+
+    await mailerSendClient.email.send(emailParams);
+    ```
+
+  </Step>
+</Steps>
+
+

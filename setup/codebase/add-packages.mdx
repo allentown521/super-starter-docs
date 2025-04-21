@@ -1,0 +1,26 @@
+---
+title: Adding packages
+description: Learn how to add packages to your SuperStarter workspace.
+---
+<Warning>
+Advanced topic
+
+This is an advanced topic - you should only follow these instructions if you are sure you want to add a new package to your SuperStarter application instead of adding a folder to your application in apps/web or modify existing packages under packages. You don't need to do this to add a new page or component to your application.
+</Warning>
+
+## Generate a new package
+Enter the command below in the root directory to create a new package:
+
+```sh
+npx turbo gen init
+```
+
+## Use the package in your application
+
+You can now use the package in your application by importing it using the package name:
+
+```tsx apps/web/app/page.tsx
+import { example } from "@repo/example";
+ 
+console.log(example());
+```

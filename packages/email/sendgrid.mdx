@@ -1,0 +1,45 @@
+---
+title: SendGrid
+descriptions: Learn how to use SendGrid for sending emails.
+---
+
+To use SendGrid with SuperStarter
+
+<Steps>
+  <Step title="Create a SendGrid account">
+
+    [Create a SendGrid account](https://login.twilio.com/u/signup) and grab your API key.
+
+  </Step>
+  <Step title="Add environment variables">
+
+    Add the `SENDGIRD_TOKEN` environment variables to your .env.local file and your deployment environment:
+
+    Then, make sure to activate SendGrid:
+
+    ```ts /packages/email/index.ts
+    export * from './providers/sendgrid';
+    ```
+
+  </Step>
+  <Step title="Sending Emails">
+
+    ```tsx apps/web/app/contact/actions/contact.tsx
+    import { sendgridClient } from '@repo/email';
+    import { ContactTemplate } from '@repo/email/emails/contact';
+    import { render } from "@react-email/components";
+
+    const emailHtml = await render(<ContactTemplate name={name} email={email} message={message} />);
+
+    await sendgridClient.send({
+        from: 'sender@acme.com',
+        to: 'recipient@acme.com',
+        subject: 'The email subject',
+        react: emailHtml,
+    });
+    ```
+
+  </Step>
+</Steps>
+
+

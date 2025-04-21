@@ -1,0 +1,39 @@
+---
+title: Development
+description: Get started with the code and develop your SaaS.
+---
+
+<Steps>
+  <Step title="Create a new database">
+    By default, SuperStarter uses [Neon](https://neon.tech) as its database provider and [Prisma](https://prisma.io) as its ORM.
+
+    Make sure to have created a new database and have the connection string ready. For example when using PostgreSQL, the connection string will look something like this:
+    ```
+    postgresql://<username>:<password>@<host>:<port>/<database>
+    ```
+  </Step>
+  <Step title="Set up the environment variables">
+    You can read more about environment variables [here](/setup/configuration/environment). set at least the `DATABASE_URL`
+  </Step>
+  <Step title="Configure the database">
+    You will need to scaffold the database using the schema defined in `packages/database/prisma/schema.prisma`:
+
+    ```sh Terminal
+    pnpm migrate
+    ```
+
+    For more details on the default Prisma configuration (using Neon), refer to the [Database Configuration Guide](https://docs.superstarter.focusapps.app.com/packages/database#default-configuration).
+  </Step>
+    <Step title="Start your development server">
+    Now your app should be ready to go. To start the local development server, navigate into your project root folder and run the following command.
+    ```sh Terminal
+    pnpm dev
+    ```
+    Open the localhost URLs with the relevant ports listed above to see the app, e.g. 🎉
+
+    - [http://localhost:3000/](http://localhost:3000/) — The main app.
+    - [http://localhost:3001/](http://localhost:3001/) — The website.
+    - [http://localhost:3002/](http://localhost:3002/) — The API.
+    - [http://localhost:3004/](http://localhost:6006/) — The Storybook.
+  </Step>
+</Steps>

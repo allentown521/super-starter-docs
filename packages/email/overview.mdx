@@ -1,0 +1,76 @@
+---
+title: Overview
+descriptions: Learn how to send emails in your application.
+---
+
+We integrates [React Email](https://react.email/) - a collection of high-quality, unstyled components for creating beautiful emails using React and TypeScript.
+
+<Note>
+Why React Email
+
+It gives you the ability to style your mails with Tailwind CSS just like in your application. Of course the config from your app is reused for your mails. It also gives you the ability to use components in your mails, so you can build a generic template and use it in all your mails.
+</Note>
+
+## Providers
+
+In the `@repo/email` package in your repository you can find the `providers` folder.
+
+There are multiple providers available:
+
+<CardGroup cols={2}>
+  <Card title="Resend" icon="link" href="/packages/email/resend"  />
+  <Card title="Plunk" icon="link" href="/packages/email/plunk"  />
+    <Card title="SendGrid" icon="link" href="/packages/email/sendgrid"  />
+    <Card title="Mailersend" icon="link" href="/packages/email/mailersend"  />
+    <Card title="Postmark" icon="link" href="/packages/email/postmark"  />
+    <Card title="Nodemailer" icon="link" href="/packages/email/nodemailer"  />
+</CardGroup>
+
+## Set `from` mail address
+
+Next up, set the from mail address `EMAIL_FROM` environment variable. This is the mail address that will be used as the sender of all mails. Please make sure that the mail address and domain are verified in your mail provider.
+
+## Email Templates
+
+The templates, located in the `@repo/email` package. You can find them in the `packages/email/emails` directory.
+
+### Create a mail template
+
+To create a new mail template, simply create a new .tsx in the `emails` folder. This is a simple example of a mail template:
+
+```tsx emails/my-email.tsx
+import { Button, Html } from "@react-email/components";
+import * as React from "react";
+
+export default function Email() {
+  return (
+    <Html>
+      <Button
+        href="https://example.com"
+        style={{ background: "#000", color: "#fff", padding: "12px 20px" }}
+      >
+        Click me
+      </Button>
+    </Html>
+  );
+}
+```
+
+### Previewing Emails
+
+<Frame>
+  <img src="/images/email.png" alt="A preview of email" />
+</Frame>
+
+<Tip>The `email` application runs on port 3003.</Tip>
+
+
+To preview the emails templates, simply run the `email` package:
+
+```sh Terminal
+pnpm --filter email dev
+```
+
+## Sending Emails
+
+Sending an email is easy, and we'll show you how to do it in the next section.

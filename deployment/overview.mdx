@@ -1,0 +1,30 @@
+---
+title: Overview
+description: Learn how to deploy your SuperStarter application.
+---
+
+In general you can deploy the application to any hosting provider that supports Node.js. In this documentation we cover multiple deployment targets from serverless platforms like Vercel to self-hosted solutions with Docker.
+
+Since Next.js is a framework built by Vercel, you will get the best developer experience when deploying to Vercel.
+
+## Project setting
+
+To deploy SuperStarter on any hosting provider, you need to create 3 new projects for the `app`, `api` and `web` apps. After selecting your repository, change the Root Directory option to the app of choice e.g. `apps/app`. This should automatically detect the Next.js setup and as such, the build command and output directory.
+
+Then, add all your environment variables to the project.
+
+Finally, just hit "Deploy" and Vercel will take care of the rest!
+
+<Note>
+Here we assume that you already know the differences between these applications and which ones you will deploy
+</Note>
+
+## Environment variables
+
+We recommend making use of the Team Environment Variables feature of the hosting provider before deploying. Variables used by libraries need to exist in all packages and duplicating them can be a headache. Learn more about how [environment variables](/env) work in SuperStarter.
+
+<Note>
+First deployment may fail
+
+The first time this may fail if you don't place all the environment variables correctly. It's fine. Make the first deployment fail, then correct the environment variables. Redeploy.
+</Note>

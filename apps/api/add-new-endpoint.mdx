@@ -1,0 +1,40 @@
+---
+title: Adding new endpoint
+description: How to add new endpoint to the API.
+---
+
+All API endpoints and their resolvers are defined in the `apps/api/` package. Here you will find a routes folder that contains the different feature modules of the API. Each module has its own folder and exports all its resolvers. 
+
+## Create new module
+
+To create a new module, simply create a new folder in the `apps/api/app/server/api/routes` directory. For example, if you want to create a new module called `hello`, you would create a new folder called `hello` in the `apps/api/app/server/api/routes` directory.
+
+```ts apps/api/app/server/api/routes/hello/index.ts
+// apps/api/app/routes/auth.ts
+import { Hono } from 'hono';
+
+const app = new Hono();
+
+const hello = app.basePath('/hello').get('/', (c) => {
+  const { name } = c.req.query();
+  return c.json({ message: `Hello ${name || 'World'}!` });
+});
+
+// export type AppType = typeof hello;
+// export const GET = handle(app);
+// export const POST = handle(app);
+export default hello;
+```
+
+## Register router
+
+We create a separate Hono route in the `apps/api/app/server/api/index.ts` file and aggregate all sub-routers into one main router. To make the module and its endpoints available in the API you need to register a router for this module in the index.ts file:
+
+```ts apps/api/app/server/api/index.ts
+import hello from './routes/hello';
+
+
+const routes = app.route('/', books);
+```
+
+That's it! You've just created a new API endpoint - it's now available at /api/hello 🎉

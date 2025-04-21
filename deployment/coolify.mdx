@@ -1,0 +1,35 @@
+---
+title: Deploying to Coolify
+description: Learn how to deploy SuperStarter to Coolify.
+---
+
+
+In this guide we will show you how to easily deploy your SuperStarter SaaS with [Coolify](https://coolify.io/).
+
+
+## 1. Setup Coolify
+Before you can deploy your SuperStarter application with Coolify, you need to have a server and a Coolify account.
+
+Follow the [Coolify setup guide](https://coolify.io/docs/getting-started) to get started.
+
+
+## 2.Select your repository 
+If not already done, you will be asked to connect your Git provider account. After that, you can select the repository you want to deploy.
+
+
+## 3. Configure the build 
+Configure the build and start commands to ensure that your project is built and started correctly.
+
+Make sure to set them to the following values:
+
+- Install Command - `pnpm install`
+- Build command - `corepack enable; pnpm install --frozen-lockfile; pnpm build --filter web build`
+- Start command - `pnpm --filter web start`
+
+## 4. Define the environment variables
+Now define the environment variables for your application. You can copy them from your .env.local file
+
+## 5. Deploy the site
+Now click on the Deploy site button and wait for the deployment to finish. After that, you should be able to visit your freshly deployed SaaS.
+
+

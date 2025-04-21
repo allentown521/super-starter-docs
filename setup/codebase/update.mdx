@@ -1,0 +1,63 @@
+---
+title: Update the codebase
+description: Learn how to update the codebase from the SuperStarter repo to the latest updates and features.
+---
+
+<Warning>
+Before you update your code base, make sure your git repository is clean and that you have no uncommitted changes.
+</Warning>
+
+## Use the CLI
+
+This can be difficult to do manually, so we've created a script to help you, this is the recommended way to update your project.
+
+```sh Terminal
+npx super-starter@latest update
+```
+
+This will run our update script, which will guide you through the process of updating your project.
+
+```
+┌  Let's update your SuperStarter project!
+│
+│
+◆  Select a version to update to:
+│  ● v2.2.15
+│  ○ v2.2.14
+│  ○ v2.2.13
+│  ○ v2.2.12
+│  ○ v2.2.11
+└
+```
+
+This will clone the latest version of SuperStarter into a temporary directory, apply the updates, and then copy the files over to your project. From here, you can commit the changes and push them to your repository.
+
+## Use Git
+
+Add the upstream remote pointing to the original repository to pull updates:
+
+```sh Terminal
+git remote add origin https://github.com/allentown521/SuperStarter/
+```
+
+If you have done this in the setup before, you can skip this step.
+
+Update your repository from the SuperStarter repository:
+
+```sh Terminal
+- Pull changes
+git pull upstream main
+
+- Merge changes
+git merge upstream/main
+```
+<Note>
+Conflicts in pnpm-lock.yaml?
+
+If you find conflicts in the `pnpm-lock.yaml` file, accept either of the two changes (avoid manual edits), then run:
+```sh Terminal
+pnpm i
+```
+Your lock file will now reflect both your changes and the updates from the upstream repository.
+</Note>
+<Tip>Because SuperStarter is a boilerplate and not a library, you'll likely need to manually merge the changes you've made with the changes from the update.</Tip>

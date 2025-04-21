@@ -1,0 +1,77 @@
+---
+title: FAQ
+description: Frequently asked questions about SuperStarter.
+---
+
+## I don't know some technology! Should I buy SuperStarter?
+
+You should be prepared for a learning curve or consider learning it first. However, SuperStarter will still work for you if you're willing to learn.
+
+Even without knowing some technologies, you can still use the rest of the features.
+
+## Why did you pick X as the default tool instead of Y?
+
+The default SuperStarter tooling was chosen by [myself](https://x.com/allentown521) after having used them in numerous production applications. It doesn't mean they're the best tools, it means they're the ones that helped me launch quickly. Tools and tastes change over time and it's inevitable that the defaults will change at some point.
+
+That being said, if you really believe tool Y is a much better choice than tool X, feel free to start up a conversation with me on X and we can hash it out!
+
+## I want to use a different provider for X
+
+Sure! SuperStarter is designed to be modular, so configuring new provider (e.g. for emails, billing or any other service) is straightforward. You just need to make sure your configuration is compatible with common interface to be able to plug it into the codebase.
+
+how do I do that? check out the [migrations](/migrations) for more information.
+
+## Will you add more packages in the future?
+
+Yes, we will keep updating SuperStarter with new packages and features. This kit is designed to be modular, allowing for new features and packages to be added without interfering with your existing code. You can always [update your project](/setup/installation/update) to the latest version.
+
+## Does it set up the production instance for me?
+
+No, SuperStarter does not set up the production instance for you. This includes setting up databases, Stripe, or any other services you need. SuperStarter does not have access to your Stripe or Resend accounts, so setup on your end is required. SuperStarter provides the codebase and documentation to help you set up your SaaS project.
+
+## How do I get support if I encounter issues?
+
+For support, you can:
+
+- Visit our [GitHub repository](https://github.com/allentown521/SuperStarter/) for support and feature requests.
+
+- Contact us via support email (superstarter@focusapps.app)
+
+## How do I deploy my application?
+
+Please check the [production checklist](/deployment/checklist) for more information.
+
+##How do I update my project when a new version of the boilerplate is released?
+
+Please read the [documentation](/setup/installation/update) for updating your SuperStarter code.
+
+## Can I use the React package X with this kit?
+
+Yes, you can use any React package with this kit. The kit is based on React, so you are generally only constrained by the underlying technologies and not by the kit itself. Since you own and can edit all the code, you can adapt the kit to your needs. However, if there are limitations with the underlying technology, you might need to work around them.
+
+## How do I add a new package to the project?
+
+in the root directory and run
+
+```sh
+npx turbo gen init
+```
+
+## Why is there a `suppressHydrationWarning` on every `html` tag?
+
+This is the recommendation by `next-themes` to supress the warning stemming from determining theme on the client side.
+
+## Why are there unused dependencies like `import-in-the-middle`?
+
+> Without these packages, Turbopack throws warnings highlighting cases where packages are being used but are not installed so it can fail when running in production.
+> 
+> This was already an issue when we were using Webpack, it just never warned us that it was missing. This can be fixed by installing the external packages into the project itself.
+
+
+## Why are certain folders ignored by the linting configuration?
+
+There are three types of files that are ignored by the linting configuration:
+
+1. **shadcn/ui components, libraries, and hooks** - shadcn/ui has its own linting configuration that is less strict than the one used in this project. As such, we ignore these files to avoid modifying them. This makes it easier to update shadcn/ui in the future.
+2. **Collaboration package configuration** - This is a package that is used to configure the collaboration package. The types are stubs and fail some of the linting rules, but it's not important unless you're using them.
+3. **Internal documentation files** - These are the documentation files for this project. They're deleted when you initialize the project, so they're not important to lint.

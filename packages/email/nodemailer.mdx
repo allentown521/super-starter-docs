@@ -1,0 +1,47 @@
+---
+title: Nodemailer
+descriptions: Learn how to use Nodemailer for sending emails.
+---
+
+To use Nodemailer with SuperStarter, make sure you have an SMTP server available, that you can send mails from.
+
+<Steps>
+  <Step title="Create a Nodemailer account">
+
+    [Create a Nodemailer account](https://resend.com/) and grab your API key.
+
+  </Step>
+  <Step title="Add environment variables">
+
+    Add the `NODEMAILER_HOST` , `NODEMAILER_USER` , `NODEMAILER_USER` and `NODEMAILER_PASS` environment variables to your .env.local file and your deployment environment:
+
+    Then, make sure to activate Nodemailer:
+
+    ```ts /packages/email/index.ts
+    export * from './providers/nodemailer';
+    ```
+
+  </Step>
+  <Step title="Sending Emails">
+
+    ```tsx apps/web/app/contact/actions/contact.tsx
+    import { nodemailerTransporter } from '@repo/email';
+    import { ContactTemplate } from '@repo/email/emails/contact';
+    import { render } from "@react-email/components";
+
+    const emailHtml = await render(<ContactTemplate name={name} email={email} message={message} />);
+
+    const options = {
+    from: 'you@example.com',
+    to: 'user@gmail.com',
+    subject: 'hello world',
+    html: emailHtml,
+    };
+
+    await nodemailerTransporter.sendMail(options);
+    ```
+
+  </Step>
+</Steps>
+
+

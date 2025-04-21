@@ -1,0 +1,43 @@
+---
+title: Deploying to Netlify
+description: Learn how to deploy SuperStarter to Netlify.
+---
+
+
+In this guide we will show you how to easily deploy your SuperStarter SaaS with Netlify.
+
+Before we start, make sure you have a Netlify account. If you don't have one yet, you can create one for free at [netlify.com](https://www.netlify.com/).
+
+## 1. Create a new project
+After creating an account, you should see a prompt on the dashboard to create a new site from a Git repository. Click on the **Import from Git** button.
+
+<Frame>
+  <img src="/images/deployment/netlify-start-project.webp" alt="" />
+</Frame>
+
+## 2.Select your repository 
+If not already done, you will be asked to connect your Git provider account. After that, you can select the repository you want to deploy.
+
+
+## 3. Configure the build 
+After selecting the repository, you will be promted to configure the build settings. Usually Netlify will detect the correct settings automatically. If not, you can configure them manually like in the screenshot below:
+
+<Frame>
+  <img src="/images/deployment/netlify-deployment-configuration.webp" alt="" />
+</Frame>
+
+Make sure to copy and paste all the envs from your local .env.local file to the Netlify build settings in the **Environment Variables** section.
+
+## 4. Deploy the site
+Now click on the Deploy site button and wait for the deployment to finish. After that, you should be able to visit your freshly deployed SaaS.
+
+<Tip>
+After your site has been deployed, go to `Site configuration` -> `Build & deploy` -> `Functions region` and select the region closest region to where your database is hosted. This will reduce the loading time of your api functions and improve the overall performance of your SaaS.
+
+Make sure to redeploy your site after changing the region by clicking the Trigger deploy button on the `Deploys` page of your project.
+  <img src="/images/deployment/netlify-functions-region.webp" alt="" />
+</Tip>
+
+## Environment variables
+
+If you're deploying on Netlify, we recommend making use of the [Shared Environment Variables](https://docs.netlify.com/configure-builds/environment-variables/#shared-environment-variables) feature. 

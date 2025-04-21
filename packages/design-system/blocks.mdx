@@ -1,0 +1,49 @@
+---
+title: Blocks
+description: Learn how to use blocks in your application.
+---
+
+## What are Blocks?
+`Blocks` refers to a reusable component or module in a design system. They are built on CSS variables and styles provided by [shadcn/ui](https://ui.shadcn.com/) to quickly create a consistent and beautiful UI in your application.
+
+
+## What is the difference between Blocks and components?
+
+`Blocks` is a collection of higher-order components，including:
+
+`header` , `footer` , `hero` , `features` , `subscribe`, `waitlist`, `faq` , `pricing` , `testimonials` , `cta` , `usage`, `login`, `brand` and `contact`
+
+Components are components of Blocks, they are the smallest units of Blocks, used to build Blocks.
+
+## How to use Blocks?
+
+The data of `Blocks` is configured through [`config.ts`](/setup/configuration/app-config), and you only need to introduce Blocks where you need it, such as our Landing Page:
+
+```tsx hero.tsx
+const Home = async ({ params }: HomeProps) => {
+  const { locale } = await params;
+  const dictionary = await getDictionary(locale);
+
+  return (
+    <>
+      <Hero data={heroData(dictionary)} />
+      <Brand data={brandData(dictionary)} />
+      <ShowCase data={showCaseData(dictionary)} />
+      <FeatureRows data={featureData(dictionary)} />
+      <Stats data={statsData(dictionary)} />
+      <Testimonials data={testimonialData(dictionary)} />
+      <PriceForm data={priceData(dictionary)} />
+      <FAQ data={faqData(dictionary)} />
+      <WaitlistForm data={waitlistData(dictionary)} />
+      <SubscribeForm data={subscribeData(dictionary)} />
+      <CTA data={ctaData(dictionary)} />
+    </>
+  );
+};
+
+export default Home;
+```
+
+<Tip>
+  `Blocks` can help you build applications quickly. We are constantly building new `Blocks`, you can modify them according to your needs, or create your own `Blocks`.
+</Tip>

@@ -1,0 +1,68 @@
+---
+title: Managing dependencies
+description: Learn how to manage dependencies in your project.
+---
+
+## Install dependencies
+
+To install a package you need to decide whether you want to install it to the root of the monorepo or to a specific workspace. Installing it to the root makes it available to all packages, while installing it to a specific workspace makes it available only to that workspace.
+
+- To install a package globally, run:
+
+```sh Terminal
+pnpm add -w <package-name>
+```
+
+- To install a package to a specific workspace, run:
+
+```sh Terminal
+pnpm add --filter <workspace-name> <package-name>
+```
+
+Or go to the folder where you want to install the package and run:
+
+```sh Terminal
+pnpm add <package-name>
+```
+
+## Remove dependencies
+
+Removing a package is the same as installing but with the `remove` command.
+
+- To install a package globally, run:
+
+```sh Terminal
+pnpm remove -w <package-name>
+```
+
+- To install a package to a specific workspace, run:
+
+```sh Terminal
+pnpm remove --filter <workspace-name> <package-name>
+```
+
+## Upgrading dependencies
+
+You can upgrade all the dependencies in all your `package.json` files and installs the new versions with the `bump-deps` command:
+
+```sh Terminal
+pnpm bump-deps
+```
+
+This will update all the dependencies in your `package.json` files and install the new versions.
+
+<Tip>You should run a `pnpm build` after running `bump-deps` to ensure the project builds correctly. You should also run `pnpm dev` and ensure the project runs correctly in runtime.</Tip>
+
+## Upgrading shadcn/ui components
+
+You can upgrade all the shadcn/ui components in the [Design System](/packages/design-system/components) package with the `bump-ui` command:
+
+```sh Terminal
+pnpm bump-ui
+```
+
+This will update all the shadcn/ui components, as well as the relevant dependencies in the Design System's `package.json` file.
+
+<Warning>This will override all customization you've made to the components. To avoid this happening, we recommend proxying the components into a new folder, such as `@repo/design-system/components`.</Warning>
+
+<Warning>The `shadcn` CLI will likely make some unwanted changes to your shared Tailwind config file and global CSS. Make sure you review changes before committing them.</Warning>

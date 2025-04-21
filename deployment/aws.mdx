@@ -1,0 +1,53 @@
+---
+title: Deploying to AWS Amplify
+description: Learn how to deploy SuperStarter to AWS Amplify.
+---
+
+
+In this guide we will show you how to easily deploy your SuperStarter SaaS with [AWS Amplify](https://aws.amazon.com/amplify/).
+
+Before we start, make sure you have a AWS Amplify account. If you don't have one yet, you can create one for free at [AWS Amplify](https://aws.amazon.com/amplify/).
+
+## 1. Create a new project
+After creating an account, you should see a prompt on the dashboard to create a new site from a Git repository. Click on the **Import from Git** button.
+
+
+## 2.Select your repository 
+If not already done, you will be asked to connect your Git provider account. After that, you can select the repository you want to deploy.
+
+## 3.Create configuration file
+
+To deploy your SuperStarter app to AWS Amplify, you need to create a config file. This file will contain the necessary information to connect your repository to AWS Amplify and deploy your application.
+
+Let's create a new file called amplify.yml in the root of your project:
+```yml amplify.yml
+version: 1
+applications:
+  - frontend:
+      buildPath: "/"
+      phases:
+        preBuild:
+          commands:
+            - npm install -g pnpm
+            - pnpm install
+        build:
+          commands:
+            - pnpm --filter web build
+      artifacts:
+        baseDirectory: apps/web/.next
+        files:
+          - "**/*"
+      cache:
+        paths:
+          - node_modules/**/*
+          - apps/web/.next/cache/**/*
+    appRoot: apps/web
+```
+
+## 4. Define the environment variables
+Now define the environment variables for your application. You can copy them from your .env.local file
+
+## 5. Deploy the site
+Now click on the Deploy site button and wait for the deployment to finish. After that, you should be able to visit your freshly deployed SaaS.
+
+

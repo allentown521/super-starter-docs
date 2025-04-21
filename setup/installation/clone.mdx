@@ -1,0 +1,84 @@
+---
+title: Clone repository
+description: Get the code to your local machine and start developing.
+---
+
+## Use the CLI
+
+Run the `super-starter` init command to help you get started with SuperStarter as quickly as possible. This is the way we recommend:
+
+```sh Terminal
+npx super-starter@latest init
+```
+
+You will be prompted for the project name and package manager.
+
+```sh Terminal
+$ npx super-starter@latest init
+
+┌  Let's start a SuperStarter project!
+│
+◇  What is your project named?
+│  my-app
+│
+◇  Which package manager would you like to use?
+│  pnpm
+│
+◇  Project initialized successfully!
+```
+
+This will create a new directory with your project name and clone the repo into it. It will run a setup script to install dependencies and copy `.env` files. You can read more about environment variables [here](/setup/configuration/environment).
+
+## Git clone
+
+Clone the repository using the following command:
+
+```sh Terminal
+git clone git@github.com:allentown521/SuperStarter/
+```
+<Note>
+If your SSH key isn't set up, use HTTPS instead:
+
+```sh Terminal
+git clone https://github.com/allentown521/SuperStarter/
+```
+ </Note>
+
+ <Warning>
+ Use HTTPS for all commands if not using SSH
+
+ If you are not using SSH, ensure you switch to HTTPS for all Git commands, not just the clone command.
+</Warning>
+
+## Git remote
+
+After cloning the repository, remove the original origin remote:
+
+```sh Terminal  
+git remote remove origin
+```
+
+Add the upstream remote pointing to the original repository to pull updates:
+
+```sh Terminal
+git remote add origin https://github.com/allentown521/SuperStarter/
+```
+
+Once you have your own repository set up, add your repository as the origin:
+
+```sh Terminal
+git remote add origin <your-repo-url>
+```
+
+## Commit and push
+After making changes to your project, you can commit and push them to your repository:
+
+```sh Terminal
+git commit -m "Your commit message"
+git push origin main
+```
+
+and push them to your remote repository with:
+```sh Terminal
+git push origin main
+```

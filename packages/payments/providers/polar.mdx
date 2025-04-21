@@ -1,0 +1,47 @@
+---
+title: Polar
+description: Learn how to set up Polar with SuperStarter.
+---
+
+## Get the api key
+
+After you have created your account for Polar, you will need to get the API key. You can do this by going to the [API page](https://polar.sh/) in the dashboard. Here you will find the Secret key and the Publishable key. You will need the Secret key for the integration to work.
+
+Add environment variables
+
+To use the Polar integration, you need to define the following environment variables to your .env.local as well as your production environment:
+
+```env .env.local
+POLAR_ACCESS_TOKEN=""
+POLAR_WEBHOOK_SECRET=""
+POLAR_ENV="" // Use 'sandbox' if you're using the sandbox environment - else use 'production' or omit the parameter
+```
+
+## In-App Purchases
+
+Delete the comment in:
+```ts /packages/payments/index.ts
+export * from './providers/polar';
+```
+
+### Creating a Checkout Session
+
+We need to create a checkout session to charge your users , and you only need modify some code. It consists of two parts:
+
+- Client
+
+It sends a request to create a session to the `/api/polar/checkout` endpoint.
+
+```tsx apps/web/[locale]/components/payment/price-form.tsx
+      const response = await fetch('/api/polar/checkout', { // change to `/api/polar/checkout`
+        method: 'POST',
+        body: JSON.stringify({
+          priceId: item.priceId,
+          interval: item.interval,
+        }),
+      });
+```
+
+- Server
+
+Delete the comment in `apps/web/api/polar/checkout/route.ts`

@@ -1,0 +1,117 @@
+---
+title: S3 compatible
+description: How to change the default storage provider to S3 compatible.
+---
+
+Currently, all S3 compatible storage providers are supported, including [AWS S3](https://aws.amazon.com/s3/), [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces), [Cloudflare R2](https://www.cloudflare.com/products/r2/), [Supabase Storage](https://supabase.com/storage), and others. Here's how to switch the default storage provider to AWS S3 compatible.
+
+You can learn more about S3 service configuration in the [official AWS documentation](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html) or your specific storage provider's documentation.
+
+## Permissions
+Before you start managing files, make sure you have configured storage.
+
+Most S3-compatible storage providers allow you to configure bucket permissions and access policies. It's crucial to properly set these up to secure your files and control who can access them.
+
+Here are some key security recommendations:
+
+- Keep your bucket private by default
+- Use IAM roles and policies to manage access
+- Enable server-side encryption for sensitive data
+- Configure CORS settings appropriately for client-side uploads
+- Regularly audit bucket permissions and access logs
+- Making your bucket public is strongly discouraged as it can expose sensitive data and lead to unauthorized access and unexpected costs from bandwidth usage.
+
+For detailed guidance on configuring bucket policies and permissions, refer to your storage provider's documentation:
+
+- [AWS S3 Security Documentation](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html)
+- [DigitalOcean Spaces Security](https://docs.digitalocean.com/products/spaces/how-to/manage-access/)
+- [Cloudflare R2 Security](https://developers.cloudflare.com/r2/api/s3/tokens/)
+- [Supabase Storage Security](https://supabase.com/docs/guides/storage/security/access-control)
+
+## 1. Update the environment variables
+
+Next, add these environment variables to your `.env.local` file:
+
+```js apps/app/.env
+
+// Add this:
+AWS_ACCESS_KEY_ID=""
+AWS_SECRET_ACCESS_KEY=""
+AWS_BUCKET_NAME=""
+AWS_REGION=""
+AWS_ENDPOINT=""
+```
+
+
+## 2. Update the existing storage files
+
+Update the `index.ts` and `client.ts` to use the new `uploadthing` packages:
+
+```ts packages/storage/index.ts
+export * from './providers/s3';
+```
+
+## 3. Prepare upload endpoint
+
+As explained on the [overview](/packages/storage/overview) page, SuperStarter uses the presigned URLs to upload files to your storage provider. So what we need to do first is to implement the `api/signed-upload-url` API route to be able to upload files to the `documents` bucket.
+
+```ts apps/app/app/api/signed-upload-url/route.ts
+export const uploadsRouter = new Hono().basePath("/uploads").post(
+	"/signed-upload-url",
+    // using the authMiddleware will make sure the user is authenticated
+	authMiddlewareWrap,
+	validator(
+		"query",
+		z.object({
+			bucket: z.string().min(1),
+			path: z.string().min(1),
+		}),
+	),
+ // ...
+	async (c) => {
+		const { bucket, path } = c.req.valid("query");
+ 
+  // ...
+ 
+	  const signedUrl = await getSignedUploadUrl(path, { bucket });
+		return c.json({ signedUrl });
+ 
+		throw new HTTPException(403);
+	},
+);
+```
+
+## 4. Upload files from the UI
+
+Then, you can use it to upload files to the generated presigned URL from your frontend code:
+
+```tsx upload.tsx
+const upload = useMutation({
+    mutationFn: async (data: { file?: File }) => {
+      const extension = data.file?.type.split("/").pop();
+      const path = `files/${crypto.randomUUID()}.${extension}`;
+ 
+      const { url: uploadUrl } = await handle(api.upload.signedUploadUrl.$get)({
+        query: { path },
+      });
+ 
+      const response = await fetch(uploadUrl, {
+        method: "PUT",
+        body: data.file,
+        headers: {
+          "Content-Type": data.file?.type ?? "",
+        },
+      });
+ 
+      if (!response.ok) {
+        throw new Error("Failed to upload file!");
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message});
+    },
+    onSuccess: async ({ publicUrl, oldImage }, _b, context) => {
+      toast.success("File uploaded!");
+    },
+  });
+```

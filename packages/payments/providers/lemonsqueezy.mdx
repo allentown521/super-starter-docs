@@ -1,0 +1,52 @@
+---
+title: Lemonsqueezy
+description: Learn how to set up Lemonsqueezy with SuperStarter.
+---
+
+[Lemon Squeezy](https://www.lemonsqueezy.com/) is an all-in-one platform for running your SaaS business. It handles payments, subscriptions, global tax compliance, fraud prevention, multi-currency, and more. Here’s how to switch the default payment processor from Stripe to Lemon Squeezy.
+
+## Get the api key
+
+After you have created your account for Lemonsqueezy, you will need to get the API key. You can do this by going to the [API page](https://app.lemonsqueezy.com/settings/api) in the dashboard. Here you will find the Secret key and the Publishable key. You will need the Secret key for the integration to work.
+
+Add environment variables
+
+To use the Lemonsqueezy integration, you need to define the following environment variables to your .env.local as well as your production environment:
+
+```env .env.local
+LEMON_SQUEEZY_API_KEY=
+LEMON_SQUEEZY_WEBHOOK_SECRET=
+```
+
+## In-App Purchases
+
+Delete the comment in:
+```ts /packages/payments/index.ts
+export * from './providers/lemonsqueezy';
+```
+
+### Creating a Checkout Session
+
+We need to create a checkout session to charge your users , and you only need modify some code. It consists of two parts:
+
+- Client
+
+It sends a request to create a session to the `/api/lemonsqueezy/checkout` endpoint.
+
+```tsx apps/web/[locale]/components/payment/price-form.tsx
+      const response = await fetch('/api/lemonsqueezy/checkout', { // change to `/api/lemonsqueezy/checkout`
+        method: 'POST',
+        body: JSON.stringify({
+          priceId: item.priceId,
+          interval: item.interval,
+        }),
+      });
+```
+
+- Server
+
+Delete the comment in `apps/web/api/lemonsqueezy/checkout/route.ts`
+
+<Tip>
+Lemonsqueezy allows using the product's [Purchase Link](https://docs.lemonsqueezy.com/guides/developer-guide/taking-payments#creating-checkouts-from-the-lemon-squeezy-dashboard) without creating a checkout session through the API.
+</Tip>

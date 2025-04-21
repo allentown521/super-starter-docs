@@ -1,102 +1,446 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "mint",
-  "name": "Mint Starter Kit",
+  "theme": "maple",
+  "name": "SuperStarter docs",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#4CAF50",
+    "light": "#4CAF50",
+    "dark": "#4CAF50"
   },
-  "favicon": "/favicon.svg",
+  "favicon": "/images/icon.png",
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "Getting Started",
         "groups": [
           {
-            "group": "Get Started",
+            "group": " ",
             "pages": [
-              "introduction",
-              "quickstart",
-              "development"
+              "overview",
+              "teckstack",
+              "faq"
             ]
           },
           {
-            "group": "Essentials",
+            "group": " ",
             "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
+              {
+                "group": "Installation",
+                "pages": [
+                  "setup/installation/prerequisites",
+                  "setup/installation/clone",
+                  "setup/installation/development"
+                ]
+              },
+              {
+                "group": "Codebase",
+                "pages": [
+                  "setup/codebase/project-structure",
+                  "setup/codebase/update",
+                  "setup/codebase/manage-dependencies",
+                  "setup/codebase/add-packages",
+                  "setup/codebase/add-apps"
+                ]
+              },
+              {
+                "group": "Configuration",
+                "pages": [
+                  "setup/configuration/environment",
+                  "setup/configuration/app-config"
+                ]
+              },
+              {
+                "group": "Deployment",
+                "pages": [
+                  "deployment/checklist",
+                  "deployment/overview",
+                  "deployment/vercel",
+                  "deployment/netlify",
+                  "deployment/render",
+                  "deployment/flyio",
+                  "deployment/coolify",
+                  "deployment/railway",
+                  "deployment/aws",
+                  "deployment/docker",
+                  "deployment/standalone-api"
+                ]
+              }
             ]
           }
         ]
       },
       {
-        "tab": "API Reference",
+        "tab": "Apps",
         "groups": [
           {
-            "group": "API Documentation",
+            "group": "  ",
             "pages": [
-              "api-reference/introduction"
+              "apps/web",
+              "apps/app",
+              {
+                "group": "API",
+                "pages": [
+                  "apps/api/overview",
+                  "apps/api/add-new-endpoint",
+                  "apps/api/protect-endpoint",
+                  "apps/api/use-in-client",
+                  "apps/api/use-locale"
+                ]
+              },
+              "apps/storybook"
+
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Packages",
+        "groups": [
+          {
+            "group": " ",
+            "pages": [
+              "packages/ai",
+              {
+                "group": "Analytics",
+                "pages": [
+                  "packages/analytics/web",
+                  "packages/analytics/product"
+                ]
+              },
+              "packages/authentication",
+              "packages/cms",
+              "packages/collaboration",
+              "packages/cron",
+              "packages/database",
+              {
+                "group": "Design System",
+                "pages": [
+                  "packages/design-system/blocks",
+                  "packages/design-system/colors",
+                  "packages/design-system/components",
+                  "packages/design-system/dark-mode",
+                  "packages/design-system/provider",
+                  "packages/design-system/typography"
+                ]
+              },
+              {
+                "group": "Email",
+                "pages": [
+                  "packages/email/overview",
+                  "packages/email/resend",
+                  "packages/email/plunk",
+                  "packages/email/postmark",
+                  "packages/email/sendgrid",
+                  "packages/email/nodemailer",
+                  "packages/email/mailersend"
+                ]
+              },
+              "packages/flags",
+              "packages/formatting",
+              "packages/internationalization",
+              {
+                "group": "Observability",
+                "pages": [
+                  "packages/observability/error-capture",
+                  "packages/observability/debugging",
+                  "packages/observability/logging",
+                  "packages/observability/uptime"
+                ]
+              },
+              {
+                "group": "Next.js Config",
+                "pages": [
+                  "packages/next-config/overview",
+                  "packages/next-config/bundle-analysis"
+                ]
+              },
+              "packages/live-chat",
+              "packages/notifications",
+              {
+                "group": "Payments",
+                "pages": [
+                  "packages/payments/overview",
+                  "packages/payments/config",
+                  {
+                    "group": "Payment Providers",
+                    "pages": [
+                      "packages/payments/providers/stripe",
+                      "packages/payments/providers/lemonsqueezy",
+                      "packages/payments/providers/paddle",
+                      "packages/payments/providers/polar",
+                      "packages/payments/providers/chargebee",
+                      "packages/payments/providers/creem"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "Security",
+                "pages": [
+                  "packages/security/application",
+                  "packages/security/rate-limiting",
+                  "packages/security/dependencies",
+                  "packages/security/headers",
+                  "packages/security/ip-geolocation"
+                ]
+              },
+              {
+                "group": "SEO",
+                "pages": [
+                  "packages/seo/metadata",
+                  "packages/seo/sitemap",
+                  "packages/seo/robots",
+                  "packages/seo/json-ld"
+                ]
+              },
+              {
+                "group": "Storage",
+                "pages": [
+                  "packages/storage/overview",
+                  "packages/storage/vercel",
+                  "packages/storage/uploadthing",
+                  "packages/storage/s3"
+                ]
+              },
+              "packages/testing",
+              "packages/toolbar",
+              "packages/webhooks"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Migrations",
+        "groups": [
+          {
+            "group": "Authentication",
+            "pages": [
+              "migrations/authentication/authjs",
+              "migrations/authentication/better-auth"
             ]
           },
           {
-            "group": "Endpoint Examples",
+            "group": "CMS",
             "pages": [
-              "api-reference/endpoint/get",
-              "api-reference/endpoint/create",
-              "api-reference/endpoint/delete",
-              "api-reference/endpoint/webhook"
+              "migrations/cms/content-collections"
+            ]
+          },
+          {
+            "group": "Database",
+            "pages": [
+              "migrations/database/drizzle",
+              "migrations/database/planetscale",
+              "migrations/database/prisma-postgres",
+              "migrations/database/supabase",
+              "migrations/database/edgedb",
+              "migrations/database/turso"
+            ]
+          },
+          {
+            "group": "Feature flags",
+            "pages": [
+              "migrations/flags/hypertune"
+            ]
+          },
+          {
+            "group": "Formatting",
+            "pages": [
+              "migrations/formatting/eslint"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Recipes",
+        "groups": [
+          {
+            "group": "  ",
+            "pages": [
+              "recipes/ai-chatbot"
             ]
           }
         ]
       }
-    ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    ]
+  },
+  "styling": {
+    "codeblocks": "system"
   },
   "logo": {
-    "light": "/logo/light.svg",
-    "dark": "/logo/dark.svg"
+    "light": "/images/icon.png",
+    "dark": "/images/icon.png"
+  },
+  "background": {
+    "decoration": "windows"
   },
   "navbar": {
-    "links": [
-      {
-        "label": "Support",
-        "href": "mailto:hi@mintlify.com"
-      }
-    ],
     "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "type": "github",
+      "href": "https://github.com/allentown521/SuperStarter"
     }
+  },
+  "search": {
+    "prompt": "Search or ask..."
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/allentown521",
+      "github": "https://github.com/allentown521/SuperStarter",
+      "linkedin": "https://www.linkedin.com/company/focus-apps-llc-us/"
     }
-  }
+  },
+  "redirects": [
+    {
+      "source": "/features/:slug*",
+      "destination": "/packages/:slug*"
+    },
+    {
+      "source": "/ai",
+      "destination": "/packages/ai"
+    },
+    {
+      "source": "/analytics/:slug*",
+      "destination": "/packages/analytics/:slug*"
+    },
+    {
+      "source": "/authentication",
+      "destination": "/packages/authentication"
+    },
+    {
+      "source": "/authentication/authjs",
+      "destination": "/migrations/authentication/authjs"
+    },
+    {
+      "source": "/authentication/better-auth",
+      "destination": "/migrations/authentication/better-auth"
+    },
+    {
+      "source": "/bi/:slug*",
+      "destination": "/addons/metabase"
+    },
+    {
+      "source": "/bundle-analysis",
+      "destination": "/packages/next-config/bundle-analysis"
+    },
+    {
+      "source": "/collaboration",
+      "destination": "/packages/collaboration"
+    },
+    {
+      "source": "/cms",
+      "destination": "/packages/cms"
+    },
+    {
+      "source": "/cms/content-collections",
+      "destination": "/migrations/cms/content-collections"
+    },
+    {
+      "source": "/cron",
+      "destination": "/packages/cron"
+    },
+    {
+      "source": "/database",
+      "destination": "/packages/database"
+    },
+    {
+      "source": "/database/drizzle",
+      "destination": "/migrations/database/drizzle"
+    },
+    {
+      "source": "/database/planetscale",
+      "destination": "/migrations/database/planetscale"
+    },
+    {
+      "source": "/database/prisma-postgres",
+      "destination": "/migrations/database/prisma-postgres"
+    },
+    {
+      "source": "/database/supabase",
+      "destination": "/migrations/database/supabase"
+    },
+    {
+      "source": "/database/turso",
+      "destination": "/migrations/database/turso"
+    },
+    {
+      "source": "/design-system/:slug*",
+      "destination": "/packages/design-system/:slug*"
+    },
+    {
+      "source": "/documentation",
+      "destination": "/apps/docs"
+    },
+    {
+      "source": "/structure/apps",
+      "destination": "/apps"
+    },
+    {
+      "source": "/structure/packages",
+      "destination": "/packages"
+    },
+    {
+      "source": "/documentation/fumadocs",
+      "destination": "/migrations/documentation/fumadocs"
+    },
+    {
+      "source": "/email/clerk",
+      "destination": "/packages/authentication"
+    },
+    {
+      "source": "/email/resend",
+      "destination": "/packages/email"
+    },
+    {
+      "source": "/packages/env",
+      "destination": "/setup/env"
+    },
+    {
+      "source": "/flags",
+      "destination": "/packages/flags"
+    },
+    {
+      "source": "/formatting",
+      "destination": "/packages/formatting"
+    },
+    {
+      "source": "/formatting/eslint",
+      "destination": "/migrations/formatting/eslint"
+    },
+    {
+      "source": "/observability/:slug*",
+      "destination": "/packages/observability/:slug*"
+    },
+    {
+      "source": "/payments",
+      "destination": "/packages/payments"
+    },
+    {
+      "source": "/security/:slug*",
+      "destination": "/packages/security/:slug*"
+    },
+    {
+      "source": "/storage",
+      "destination": "/packages/storage"
+    },
+    {
+      "source": "/storybook",
+      "destination": "/apps/storybook"
+    },
+    {
+      "source": "/webhooks",
+      "destination": "/packages/webhooks"
+    },
+    {
+      "source": "/seo",
+      "destination": "/packages/seo"
+    },
+    {
+      "source": "/testing",
+      "destination": "/packages/testing"
+    },
+    {
+      "source": "/recommended-libraries/:slug*",
+      "destination": "/addons/:slug*"
+    }
+  ]
 }

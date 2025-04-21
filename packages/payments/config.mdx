@@ -1,0 +1,57 @@
+---
+title: Configuration
+descriptions: Configure billing for your application.
+---
+
+<Frame>
+  <img src="/images/paywall.png" />
+</Frame>
+
+The billing configuration schema replicates your billing provider's schema, so that:
+
+- we can display the data in the UI (pricing table, billing section, etc.)
+- create the correct checkout session
+- make some features work correctly - such as feature-based access
+
+It is common to all billing providers and placed in `apps/web/config.ts`. We can see the schema in the `packages/design-system/types/pricing.d.ts` package. Let me show you some important parts:
+
+## Billing model
+
+```ts
+export type PaymentType = 'one-time' | 'month' | 'year';
+```
+This is the billing model of your product. It can be one of the following:
+
+- `one-time`: The product is one-time purchase.
+- `month`: The product is subscription-based and renews monthly.
+- `year`: The product is subscription-based and renews yearly.
+
+## Prices
+
+```ts
+export interface PricingItem {
+  title: string;
+  price: number;
+  priceId: string;
+  description?: string;
+  featuresTitle?: string;
+  actionTitle?: string;
+  features?: Feature[];
+  interval: PaymentType;
+  isPopular?: boolean;
+  badge?: BadgeProps;
+  group?: string;
+  credits?: number;
+  originalAmount?: number;
+  validMonths?: number;
+  amount?: number;
+  onMmount?: number;
+  attribute?: Record<string, unknown>; // your custom data
+}
+```
+
+`priceId` is the ID of the price in your billing provider. It is used to create the checkout session and to display the correct price in the UI.
+
+<Tip>
+`priceId` from the provider (e.g. Stripe) or `variantId` (e.g. Lemon Squeezy) , some providers use `productId` instead of `priceId`. Any way you can use `priceId` to store it.
+</Tip>

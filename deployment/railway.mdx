@@ -1,0 +1,33 @@
+---
+title: Deploying to Railway
+description: Learn how to deploy SuperStarter to Railway.
+---
+
+
+In this guide we will show you how to easily deploy your SuperStarter SaaS with [Railway](https://railway.app/).
+
+Before we start, make sure you have a Railway account. If you don't have one yet, you can create one for free at [Railway](https://railway.app/signup).
+
+## 1. Create a new project
+After creating an account, you should see a prompt on the dashboard to create a new site from a Git repository. Click on the **Import from Git** button.
+
+
+## 2.Select your repository 
+If not already done, you will be asked to connect your Git provider account. After that, you can select the repository you want to deploy.
+
+
+## 3. Configure the build 
+Configure the build and start commands to ensure that your project is built and started correctly.
+
+Make sure to set them to the following values:
+
+- Build command - `pnpm --filter web build`
+- Start command - `pnpm --filter web start`
+
+## 4. Define the environment variables
+Now define the environment variables for your application. You can copy them from your .env.local file
+
+## 5. Deploy the site
+Now click on the Deploy site button and wait for the deployment to finish. After that, you should be able to visit your freshly deployed SaaS.
+
+

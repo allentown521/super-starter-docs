@@ -1,0 +1,34 @@
+---
+title: Tech Stack
+description: The Tech Stack of SuperStarter.
+---
+
+### Turborepo
+
+[TurboRepo](https://turbo.build/repo) is a monorepo tool that helps you manage your project's dependencies and scripts. We chose a monorepo setup to make it easier to manage to structure the different features and enable code sharing between the different packages. It also allows you to easily add further apps (like a mobile app or a different frontend) to the project and reuse the existing codebase.
+
+## Next.js
+
+[Next.js](https://nextjs.org/) is a one of the most popular React frameworks. We use it for the frontend of SuperStarter and also utilize it's route handlers to serve the API for the application.
+
+## Prisma
+
+[Prisma](https://www.prisma.io/) is an ORM (Object-Relational Mapping) tool that helps you access your database in a type-safe way. We use Prisma to define our database schema and to generate the necessary TypeScript types for our application. It also helps us to write queries in a type-safe way and to easily migrate our database schema.
+
+We use [PostgreSQL](https://www.postgresql.org/) as our default database, but you can easily switch to MySQL, SQLite or any other supported database by updating a few configuration lines.
+
+## Hono
+
+[Hono](https://hono.dev/) is a minimal web server framework that helps you to build the API. It enables you to easily define routes and handle requests and responses. It runs on the edge, serverless functions or as a traditional "long-running" server, so you can use it in any environment and with any provider. It also comes with an RPC client that allows you to easily call your own functions from the frontend in a type-safe way.
+
+## Tailwind CSS & Radix UI
+
+[Tailwind CSS](https://tailwindcss.com/) is a utility-first CSS framework that helps you build custom designs without writing any CSS. We also use [Radix UI](https://www.radix-ui.com/) for our headless components library and [shadcn/ui](https://ui.shadcn.com/) for our design system, which enables you to generate pre-designed components with a single command.
+
+## Clerk
+
+[Clerk](https://clerk.com/) is a user management service that helps you to easily add authentication to your application. It provides a user management dashboard, a user management API and a user management SDK for your frontend. We use it to manage our users and to authenticate them.
+
+## Fumadocs
+
+[Fumadocs](https://fumadocs.com/) is a markdown-based CMS that helps you manage your content in a structured way within your codebase. We use it to manage the content of the blog, the documentation and other content pages (like the legal pages) with MDX.

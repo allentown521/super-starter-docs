@@ -1,0 +1,82 @@
+---
+title: CMS
+description: How the CMS is configured in SuperStarter.
+---
+
+[Fumadocs](https://fumadocs.com/) is a markdown-based CMS that helps you manage your content in a structured way within your codebase. We use it to manage the content of the `blog`, `documentation` and other `content pages` (like the `legal pages`) with MDX.
+
+## How to write content?
+
+All content is in the `apps/web/content` directory, and the content is divided into three sub directories: `blog`, `docs` and `legal`.
+
+You only need to create new MDX files in the corresponding directory, and Fumadocs will automatically scan these files and generate the corresponding pages.
+
+<Tip>
+If you don't want to know too much technical details, you can skip the following section directly. 
+
+You only need to refer to the example mdx file in the directory to write new content, it is very simple
+</Tip>
+
+## How to monetize Adsense?
+
+If you want to add google ads to your document, follow these steps:
+
+1. Add your google ad ID to the environment variable `NEXT_PUBLIC_GOOGLE_ADS_PUB_ID`
+2. Add the `<Adsense />` tag to the location where the article wants the ad to appear
+
+```mdx fuma.mdx
+---
+title: Fuma doc
+authors: [allentown]
+tags: ["Fuma doc"]
+date: 2024-12-27
+---
+
+## About Fumadocs
+
+![banner](/images/blog/fuma.png)
+
+<Adsense />
+
+```
+
+
+## What is a Content Source?
+
+The input/source of your content, it can be a CMS, or local data layers like **Content Collections** and **Fumadocs MDX** (the official content source).
+
+Fumadocs is designed carefully to allow a custom content source, there's also examples for [Sanity](https://github.com/fuma-nama/fumadocs-sanity) if you are interested.
+
+<Note>`lib/source.ts` is where you organize code for content sources.</Note>
+
+## Layout Styles
+
+You can open `app/layout.config.tsx`, it contains the shared options for layouts.
+Fumadocs offer a default **Docs Layout** for documentation pages, and **Home Layout** for other pages.
+
+You can customise the layouts in `layout.tsx`.
+
+## Search
+
+`app/api/search/route.ts` contains the Route Handler for search, it is powered by [Orama](https://orama.com) by default.
+
+## Navigation Links
+
+Navigation links are passed to layouts, you can also customise them in your Layout config.
+
+```tsx app/layout.config.tsx
+import { BookIcon } from 'lucide-react';
+import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+ 
+export const baseOptions: BaseLayoutProps = {
+  links: [
+    {
+      icon: <BookIcon />,
+      text: 'Blog',
+      url: '/blog',
+    },
+  ],
+};
+```
+
+Visit [Fumadocs](https://fumadocs.vercel.app/docs/ui) for details and additional features.

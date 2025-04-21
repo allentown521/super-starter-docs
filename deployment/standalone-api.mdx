@@ -1,0 +1,95 @@
+---
+title: Deploying Standalone API
+description: Learn how to deploy your SuperStarter API separately from the frontend as a dedicated service.
+---
+
+
+This guide will show you how to deploy your SuperStarter API as a dedicated service. This can be useful if you want to run your API and frontend on different platforms or if you want youc API to be a "long-running" service instead of a serverless deployment. You probably want to use this if you have tasks in your backend that have a long execution duration (that would exceed the timeout limit of a serverless deployment for example).
+
+This guide explains how to deploy your SuperStarter API as a standalone service. As Hono has multiple deployment options (e.g. [Deno](https://deno.com/), [Bun](https://bun.sh/), this guide will focus primarily on the [Node.js](https://nodejs.org/) deployment.
+
+## Create a dedicated app for your API
+
+The good news is that our `api` directory is independent. If your current api directory is `/apps/web/api`, you can copy its code to `/apps/api`
+
+If you are using the standard next.js api route, you need to refer to [hono](/apps/api) to migrate to hono. You can find an example in the `/apps/api` directory.
+
+Next, add the following files into the apps/api directory:
+
+```ts apps/api/index.ts
+import { serve } from '@hono/node-server';
+import { log } from '@repo/observability/log';
+import app from './server/api';
+
+const port = Number.parseInt(process.env.PORT || '3002');
+
+// deploy as a standalone Node.js server
+serve(
+  {
+    fetch: app.fetch,
+    port,
+  },
+  () => {
+    log.info(`Server is running on port ${port}`);
+  }
+);
+```
+
+## Add rewrite rule to web app
+The API will be running on a different URL than the app. To not have to handle cross-origin requests, we are going to proxy the API requests through the web app. To do this, you need to add a rewrite rule to your web app:
+
+```ts /packages/next-config/index.ts
+	async rewrites() {
+		return [
+			{
+				source: "/api/:path((?!search$).*)",
+				destination: `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3002"}/api/:path*`,
+			},
+		];
+	},
+```
+
+<Note>
+We are redirecting all requests to the /api path to the API service, except for the /api/search path. This is because the docs search is a serverless function inside our web app and we don't want to proxy it through the API service.
+
+Now you should be able to run the API service locally, by running the known pnpm dev command inside your monorepo. It will start both apps in development mode.
+
+To keep the repository clean, you can also remove the /apps/web/app/api/[[...rest]] folder, as it is no longer needed.
+</Note>
+
+## Deploy API service
+
+You can basically deploy your API as any other Node.js project. We will quickly go through the two most popular options: Node.js and Docker.
+
+### Deploy as Node.js server
+PaaS providers like Vercel, Heroku, or Netlify allow you to deploy your Node.js app with a few clicks. You can follow our dedicated guides for the most popular providers. Every process is similar, and will contains a few crucial steps:
+
+1. Connecting your repository to the PaaS provider
+2. Setting up build settings (e.g. build command, output directory)
+3. Setting up environment variables
+4. Deploying the project
+
+```
+# Build the API service
+pnpm --filter api start
+ 
+# Start the API service
+pnpm --filter api build
+```
+
+### Deploy as Docker container
+
+Deploying your API as a Docker container is a good option if you want to have more control over the deployment process. You can follow our [docker dedicated guide](/deployment/docker) to learn how to deploy your API as a Docker container.
+
+For the API application, the Dockerfile will be located in the `apps/api` directory
+
+To make Prisma work in the Docker container, you need to set the engine type to binary in the schema.prisma file:
+
+```prisma schema.prisma
+generator client {
+  provider = "prisma-client-js"
+  engineType = "binary"
+}
+```
+
+That's it! You can now grow your API layer as a standalone service, separated from other apps in your project, and deploy it anywhere you want.

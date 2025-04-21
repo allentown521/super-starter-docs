@@ -1,0 +1,14 @@
+---
+title: Robots
+description: How we generate the robots.txt for the website.
+---
+
+SuperStarter automatically generates the obots.txt for the website using Next.js's built-in [robots generation](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/robots#generate-a-robots-file) functionality (`robots.ts`). 
+
+The sitemap is automatically regenerated during each build.
+
+<Note>
+There is only one thing you need to pay attention to, whether you need to set the `VERCEL_PROJECT_PRODUCTION_URL` environment variable, which will affect the domain in the robots.txt. If your website is deployed on vercel, this variable will be automatically set to the domain name deployed by the project, and you can also manually set it to specify your domain name.
+
+For `web` application, it could be set like `your-domain.com`, The value does not include the protocol scheme https://.
+</Note>

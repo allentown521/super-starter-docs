@@ -1,0 +1,52 @@
+---
+title: Using API client 
+description: Learn how to fetch data from your API in your SuperStarter application.
+---
+
+To query this endpoint from your application in a type-safe way, you can use the `apiClient` in your Next.js application.
+
+## routes in `apps/api`
+
+```tsx
+import { apiClient as hc } from 'apps/api/server/api/index';
+
+  const res = await hc.api.hello.$get({
+    query: { name: '' },
+  });
+```
+
+## routes in `apps/web`
+
+check [Hono doc](https://hono.dev/docs/concepts/stacks#sharing-the-types) for more details
+
+### export types of router
+
+```tsx hello/index.ts
+const route = app.get(
+  '/hello',
+  zValidator(
+    'query',
+    z.object({
+      name: z.string(),
+    })
+  ),
+  (c) => {
+    const { name } = c.req.valid('query')
+    return c.json({
+      message: `Hello! ${name}`,
+    })
+  }
+)
+
+export type AppType = typeof route
+export default handle(app)
+```
+
+### use client
+
+```tsx
+import { hc } from 'hono/client';
+  const res = await hc.api.hello.$get({
+    query: { name: '' },
+  });
+```

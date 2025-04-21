@@ -1,0 +1,54 @@
+---
+title: Overview
+descriptions: Learn how to use payments in your application.
+---
+
+SuperStarter comes with a generic payments module that enables you to charge your users 
+
+## Providers
+
+In the `@repo/payments` package in your repository you can find the `providers` folder.
+
+There are multiple providers available:
+
+<CardGroup cols={2}>
+  <Card title="Stripe" icon="link" href="/packages/payments/providers/stripe"  />
+  <Card title="Lemon Squeezy" icon="link" href="/packages/payments/providers/lemonsqueezy"  />
+    <Card title="Paddle" icon="link" href="/packages/payments/providers/paddle"  />
+    <Card title="Polar" icon="link" href="/packages/payments/providers/polar"  />
+    <Card title="Chargebee" icon="link" href="/packages/payments/providers/chargebee"  />
+    <Card title="Creem" icon="link" href="/packages/payments/providers/creem"  />
+</CardGroup>
+
+## Local development
+
+The way to test the webhook during local development
+
+<Tip>
+This way is universal to all providers. Stripe provides its own CLI to better handle local development. We will introduce it in detail in the Stripe chapter.
+</Tip>
+
+### Tunnel
+
+If you want to test the webhook locally, you can use [`ngrok`](https://ngrok.com/) to create a tunnel to your local machine. Ngrok will then give you a URL that you can use to test the webhook locally.
+
+To do so, install ngrok and run it with the following command (while your SuperStarter web development server is running):
+
+```bash
+ngrok http 3002
+```
+<Note>
+We forward webhooks to port 3002 of `apps/api` by default. If your web development server is not port 3002, please modify the port in the ngrok command.
+</Note>
+
+<Frame>
+  <img src="/images/ngrok.png" />
+</Frame>
+
+This will give you a URL (see the Forwarding output) that you can use to create a webhook in Stripe. Just use that url and add `/api/webhooks/{providerName}` to it. Replace `{providerName}` with the name of the provider you are using. For example, if you are using Stripe, you would use `stripe` as the provider name.
+
+## Production development
+
+When going to production, you will need to set the webhook URL and the events you want to listen to in payment provider.
+
+If the webhook path is `/api/webhooks/stripe` and your app is hosted at https://myapp.com then you need to enter `https://myapp.com/api/webhooks/stripe` as the URL.

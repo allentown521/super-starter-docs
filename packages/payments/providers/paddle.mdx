@@ -1,0 +1,85 @@
+---
+title: Paddle
+description: Learn how to set up Creem with SuperStarter.
+---
+
+[Paddle Billing](https://www.paddle.com/) is a merchant of record for selling digital products and subscriptions. It takes care of payments, global tax compliance, fraud prevention, localization, and subscriptions. Here’s how to switch the default payment processor from Stripe to Paddle Billing.
+
+## Get the api key
+
+After you have created your account for Creem, you will need to get the API key. You can do this by going to the [API page](https://www.paddle.com/) in the dashboard. Here you will find the Secret key and the Publishable key. You will need the Secret key for the integration to work.
+
+Add environment variables
+
+To use the Creem integration, you need to define the following environment variables to your .env.local as well as your production environment:
+
+```env .env.local
+PADDLE_SECRET_KEY=
+PADDLE_WEBHOOK_SECRET=
+PADDLE_ENV="" // Use 'sandbox' if you're using the sandbox environment - else use 'production' or omit the parameter
+```
+
+## In-App Purchases
+
+Delete the comment in:
+```ts /packages/payments/index.ts
+export * from './providers/paddle';
+```
+
+### Creating a Checkout Session
+
+We need to create a checkout session to charge your users , and you only need modify some code. It consists of two parts:
+
+- Client
+
+It sends a request to create a session to the `/api/paddle/checkout` endpoint.
+
+```tsx apps/web/[locale]/components/payment/price-form.tsx
+      const response = await fetch('/api/paddle/checkout', { // change to `/api/paddle/checkout`
+        method: 'POST',
+        body: JSON.stringify({
+          priceId: item.priceId,
+          interval: item.interval,
+        }),
+      });
+```
+
+- Server
+
+Delete the comment in `apps/web/api/paddle/checkout/route.ts`
+
+<Tip>
+If you want create a checkout session in client side, you can use the following code:
+
+```tsx apps/web/[locale]/components/payment/price-form.tsx
+'use client';
+
+import { usePaddle } from '@repo/payments/checkout';
+
+const Pricing = () => {
+  const paddle = usePaddle();
+
+  function openCheckout(priceId: string) {
+    paddle?.Checkout.open({
+      items: [
+        {
+          priceId,
+          quantity: 1,
+        },
+      ],
+    });
+  }
+
+  return (
+    <Button
+      className="mt-8 gap-4"
+      onClick={() => openCheckout('pri_01jkzb4x1hc91s8w38cr3m86yy')}
+    >
+      Subscribe now <MoveRight className="h-4 w-4" />
+    </Button>
+  );
+};
+
+export default Pricing;
+```
+</Tip>
