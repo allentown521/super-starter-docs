@@ -270,7 +270,7 @@
   "navbar": {
     "primary": {
       "type": "github",
-      "href": "https://github.com/allentown521/SuperStarter"
+      "href": "https://github.com/focusapps/SuperStarter"
     }
   },
   "search": {
@@ -279,7 +279,7 @@
   "footer": {
     "socials": {
       "x": "https://x.com/allentown521",
-      "github": "https://github.com/allentown521/SuperStarter",
+      "github": "https://github.com/focusapps/SuperStarter",
       "linkedin": "https://www.linkedin.com/company/focus-apps-llc-us/"
     }
   },
