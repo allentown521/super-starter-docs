@@ -220,12 +220,6 @@
             ]
           },
           {
-            "group": "CMS",
-            "pages": [
-              "migrations/cms/content-collections"
-            ]
-          },
-          {
             "group": "Database",
             "pages": [
               "migrations/database/drizzle",
