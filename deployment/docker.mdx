@@ -1,5 +1,5 @@
 ---
-title: Deploying to Docker
+title: Docker
 description: Learn how to deploy SuperStarter as a Docker container.
 ---
 
@@ -10,13 +10,10 @@ In this guide we are going to show you how to deploy your SuperStarter applicati
 Deploying your SaaS as a Docker container allows you to have complete control over your server environment. It ensures better privacy, contributes to cost savings if managed correctly, and offers you the flexibility to customize your server setup to suit your specific needs. It can also give your application a performance boost compared to hosting on a serverless platform like Vercel, as it removes cold starts.
 
 ## Setup Next.js app for docker deployment
-To get started we first need to configure our Next.js app to be built as a standalone app, so we can later run the application in a docker container. To do so, add the following `next.config.mjs` file to your project:
+To get started we first need to configure our Next.js app to be built as a standalone app, so we can later run the application in a docker container. To do so, add the following `next.config.ts` file to your project:
 
-```js next.config.mjs
-module.exports = {
-  //...
-  output: 'standalone',
-}
+```js next.config.ts
+nextConfig.output = 'standalone';
 ```
 
 ## Setup docker configuration for the Next.js app
@@ -60,7 +57,7 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 USER nextjs
  
-COPY --from=installer /apps/web/next.config.mjs .
+COPY --from=installer /apps/web/next.config.ts .
 COPY --from=installer /apps/web/package.json .
  
 COPY --from=installer --chown=nextjs:nodejs /apps/web/.next/standalone ./

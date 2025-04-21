@@ -1,6 +1,6 @@
 ---
 title: Configuration
-descriptions: Configure billing for your application.
+description: Configure billing for your application.
 ---
 
 <Frame>
@@ -53,5 +53,5 @@ export interface PricingItem {
 `priceId` is the ID of the price in your billing provider. It is used to create the checkout session and to display the correct price in the UI.
 
 <Tip>
-`priceId` from the provider (e.g. Stripe) or `variantId` (e.g. Lemon Squeezy) , some providers use `productId` instead of `priceId`. Any way you can use `priceId` to store it.
+`priceId` from the provider (e.g. Stripe) or `variantId` (e.g. Lemon Squeezy) , some providers use `productId` instead of `priceId`. Just use `priceId` to store it.
 </Tip>

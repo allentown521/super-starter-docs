@@ -5,18 +5,10 @@ description: How to switch to Content Collections.
 
 It's possible to switch to [Content Collections](https://www.content-collections.dev/) to generate type-safe data collections from MDX files. This approach provides a structured way to manage blog posts while maintaining full type safety throughout your application.
 
-## 1. Swap out the required dependencies
-
-Remove the existing dependencies...
+## 1. Install the required dependencies
 
 ```sh Terminal
-pnpm remove basehub --filter @repo/cms
-```
-
-... and install the new dependencies...
-
-```sh Terminal
-pnpm add @content-collections/mdx fumadocs-core --filter @repo/cms
+pnpm add @content-collections/mdx  --filter @repo/cms
 pnpm add -D @content-collections/cli @content-collections/core @content-collections/next --filter @repo/cms
 ```
 
