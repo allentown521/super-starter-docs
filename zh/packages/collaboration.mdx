@@ -1,0 +1,156 @@
+---
+title: 协作
+description: SuperStarter 默认支持多人协作。
+---
+
+SuperStarter 维护了一个 `collaboration` 包，旨在为您的应用程序提供实时协作功能。默认情况下，我们使用 [Liveblocks](https://liveblocks.io) 作为我们的协作引擎。为了展示这个包的功能，我们在 `app` 应用程序中构建了一个简单的协作体验，包括头像堆叠和实时光标。
+
+<Tip>通过设置 `LIVEBLOCKS_SECRET` 环境变量来启用协作功能。</Tip>
+
+## 工作原理
+
+Liveblocks 基于房间（rooms）的概念，这是人们进行协作的数字空间。要设置这个功能，您需要[验证您的用户](https://liveblocks.io/docs/authentication/access-token/nextjs)，并[添加正确的提供者](https://liveblocks.io/docs/get-started/nextjs)，不过 SuperStarter 已经集成了这些功能，这意味着您可以立即开始构建您的协作应用程序。
+
+我们还为 Liveblocks 提供者配置了两个关键属性：`resolveUsers` 和 `resolveMentionSuggestions`，它们分别用于解析用户和提及建议。
+
+## 使用方法
+
+Liveblocks 提供了许多钩子，使得在您的应用程序中添加实时在线状态和文档存储变得容易。例如，[`useOthers`]() 返回当前连接的用户，这对于构建头像堆叠和多人光标很有帮助。
+
+```tsx toolbar-avatars.tsx
+import { useOthers, useSelf } from "@liveblocks/react/suspense";
+
+export function ToolbarAvatars() {
+  const others = useOthers();
+  const me = useSelf();
+
+  return (
+    <div>
+      {/* Your avatar */}
+      <Avatar src={me.info.avatar} name={me.info.name} />
+
+      {/* Everyone else's avatars */}
+      {others.map(({ connectionId, info }) => (
+        <Avatar key={connectionId} src={info.avatar} name={info.name} />
+      ))}
+    </div>
+  );
+}
+```
+
+### 多人文档
+
+您可以进一步扩展您的协作应用程序，使用 [`useStorage`](https://liveblocks.io/docs/api-reference/liveblocks-react#useStorage) 和 [`useMutation`](https://liveblocks.io/docs/api-reference/liveblocks-react#useMutation) 设置多人文档状态。这非常适合创建自定义体验，比如多人绘图面板、电子表格，或者只是一个任何人都可以编辑的简单共享输入框。
+
+```tsx collaborative-input.tsx
+import { useStorage, useMutation } from "@liveblocks/react/suspense";
+
+function CollaborativeInput() {
+  // Get the input's value
+  const inputValue = useStorage((root) => root.inputValue);
+  
+  // Set the input's value
+  const setValue = useMutation(({ storage }), newValue) => {
+    storage.set("inputValue", newValue);
+  }, []);
+  
+  return <input value={inputValue} onChange={(e) => setValue(e.target.value)} />;
+}
+```
+
+### 评论功能
+
+Liveblocks 还提供了现成的可定制组件用于添加协作功能，例如 [`Thread`](https://liveblocks.io/docs/api-reference/liveblocks-react-ui#Thread) 和 [`Composer`](https://liveblocks.io/docs/api-reference/liveblocks-react-ui#Composer)。
+
+```tsx comments.tsx
+import { useThreads } from "@liveblocks/react/suspense";
+import { Thread, Composer } from "@liveblocks/react-ui";
+
+function Comments() {
+  // Get each thread of comments and render them
+  const { threads } = useThreads();
+
+  return (
+    <div>
+      {threads.map((thread) => (
+        <Thread key={thread.id} thread={thread} />
+      ))}
+      <Composer />
+    </div>
+  );
+}
+```
+
+### 协作编辑
+
+要添加具有完整协作编辑和浮动评论功能的富文本编辑器，您可以通过几行代码设置 [Tiptap](https://liveblocks.io/docs/get-started/nextjs-tiptap) 或 [Lexical](https://liveblocks.io/docs/get-started/nextjs-lexical) 编辑器。
+
+```tsx collaborative-editor.tsx
+import { useLiveblocksExtension, FloatingComposer, FloatingThreads } from "@liveblocks/react-tiptap";
+import { useThreads, useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+
+export function Editor() {
+  const { threads } = useThreads();
+  const liveblocks = useLiveblocksExtension();
+
+  // Set up your multiplayer text editor
+  const editor = useEditor({
+    extensions: [
+      liveblocks,
+      StarterKit.configure({ history: false }),
+    ],
+    immediatelyRender: false,
+  });
+
+  return (
+    <div>
+      <EditorContent editor={editor} />
+      <FloatingThreads
+        editor={editor}
+        threads={threads}
+      />
+      <FloatingComposer editor={editor} />
+    </div>
+  );
+}
+```
+
+### 通知
+
+Liveblocks 还提供了[通知组件](https://liveblocks.io/docs/api-reference/liveblocks-react-ui#InboxNotificationList)，这意味着您可以向在评论中被标记、在文本编辑器中被提及的用户发送应用内通知，或用于任何自定义目的。
+
+```tsx notifications.tsx
+import { useInboxNotifications } from "@liveblocks/react/suspense";
+import {
+  InboxNotification,
+  InboxNotificationList,
+} from "@liveblocks/react-ui";
+
+export function CollaborativeApp() {
+  // Get each notification for the current user
+  const { inboxNotifications } = useInboxNotifications();
+
+  return (
+    <InboxNotificationList>
+      {inboxNotifications.map((inboxNotification) => (
+        <InboxNotification
+          key={inboxNotification.id}
+          inboxNotification={inboxNotification}
+        />
+      ))}
+    </InboxNotificationList>
+  );
+}
+```
+
+### 基础设施
+
+Liveblocks 不仅提供这些功能，还包括：
+- [浏览器开发工具](https://liveblocks.io/devtools) 帮助您构建应用程序。
+- [REST APIs](https://liveblocks.io/docs/api-reference/rest-api-endpoints) 用于服务器端更改。
+- [Node.js SDK](https://liveblocks.io/docs/api-reference/liveblocks-node) 用于使用带有 TypeScript 的 REST APIs。
+- [Webhooks](https://liveblocks.io/docs/platform/webhooks) 用于触发用户驱动的事件。
+- [仪表板](https://liveblocks.io/docs/platform/projects) 帮助发现错误和分析。
+
+通过查看 Liveblocks 的[文档](https://liveblocks.io/docs)、[示例](https://liveblocks.io/examples)和[交互式教程](https://liveblocks.io/docs/tutorial/react/getting-started/welcome)了解更多信息。

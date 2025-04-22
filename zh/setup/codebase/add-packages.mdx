@@ -1,0 +1,26 @@
+---
+title: 添加包
+description: 学习如何向你的SuperStarter工作区添加包。
+---
+<Warning>
+高级主题
+
+这是一个高级主题 - 只有在确定要在你的SuperStarter应用中添加新包而不是在apps/web中添加文件夹或修改packages下的现有包时，才应遵循这些说明。你不需要这样做来添加新页面或组件。
+</Warning>
+
+## 生成新包
+在根目录中输入以下命令来创建一个新包：
+
+```sh Terminal
+npx turbo gen init
+```
+
+## 在应用中使用包
+
+现在你可以通过使用包名导入来在你的应用中使用该包：
+
+```tsx apps/web/app/page.tsx
+import { example } from "@repo/example";
+ 
+console.log(example());
+```

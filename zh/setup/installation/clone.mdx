@@ -1,0 +1,85 @@
+---
+title: 克隆仓库
+description: 将代码获取到本地机器并开始开发。
+---
+
+## 使用CLI
+
+运行 `super-starter` init 命令，帮助您尽快开始使用 SuperStarter。这是我们推荐的方式：
+
+```sh Terminal
+npx super-starter@latest init
+```
+
+系统会提示您输入项目名称和包管理器。
+
+```sh Terminal
+$ npx super-starter@latest init
+
+┌  Let's start a SuperStarter project!
+│
+◇  What is your project named?
+│  my-app
+│
+◇  Which package manager would you like to use?
+│  pnpm
+│
+◇  Project initialized successfully!
+```
+
+这将创建一个以您项目名称命名的新目录，并将仓库克隆到其中。它将运行一个设置脚本来安装依赖项并复制 `.env` 文件。您可以在此处了解更多关于环境变量的信息：[here](/zh/setup/configuration/environment)。
+
+## Git 克隆
+
+使用以下命令克隆仓库：
+
+```sh Terminal
+git clone git@github.com:focusapps/SuperStarter/
+```
+<Note>
+如果您的SSH密钥未设置，请改用HTTPS：
+
+```sh Terminal
+git clone https://github.com/focusapps/SuperStarter/
+```
+ </Note>
+
+ <Warning>
+ 如果不使用SSH，请对所有命令使用HTTPS
+
+ 如果您不使用SSH，请确保对所有Git命令都切换到HTTPS，而不仅仅是克隆命令。
+</Warning>
+
+## Git 远程
+
+克隆仓库后，移除原始的origin远程：
+
+```sh Terminal  
+git remote rm origin
+```
+
+添加上游远程指向原始仓库以拉取更新：
+
+```sh Terminal
+git remote add upstream https://github.com/focusapps/SuperStarter/
+```
+
+设置好自己的仓库后，将自己的仓库添加为origin：
+
+```sh Terminal
+git remote add origin <your-repo-url>
+```
+
+## 提交与推送
+在对项目进行更改后，您可以将其提交并推送到您的仓库：
+
+```sh Terminal
+git commit -m "Your commit message"
+git push origin main
+```
+
+并将其推送到远程仓库：
+```sh Terminal
+git push origin main
+```
+> 查看 [Git远程文档](https://git-scm.com/docs/git-remote) 了解更多信息。

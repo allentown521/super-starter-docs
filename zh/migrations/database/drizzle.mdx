@@ -1,0 +1,111 @@
+---
+title: 切换到 Drizzle
+description: 如何将 ORM 更换为 Drizzle。
+---
+
+Drizzle 是一个快速流行起来的优秀、类型安全的 ORM。如果你想切换到 Drizzle，有两个选择：
+
+1. 保留 Prisma 并在 Prisma 客户端中添加 Drizzle API。Drizzle 有一个[很棒的指南](https://orm.drizzle.team/docs/prisma)介绍如何做到这一点。
+2. 完全切换到 Drizzle。
+
+这里，我们假设你有一个正常工作的 Neon 数据库，并介绍第二种选择。
+
+## 1. 替换 `@repo/database` 中的依赖项
+
+卸载现有的依赖...
+
+```sh Terminal
+pnpm remove @prisma/adapter-neon @prisma/client prisma --filter @repo/database
+```
+
+...并安装新的依赖：
+
+```sh Terminal
+pnpm add drizzle-orm --filter @repo/database
+pnpm add -D drizzle-kit --filter @repo/database
+```
+
+## 2. 更新数据库连接代码
+
+删除 `@repo/database/index.ts` 中的所有内容，并替换为以下代码：
+
+```ts packages/database/index.ts
+import 'server-only';
+
+import { drizzle } from 'drizzle-orm/neon-http';
+import { neon } from '@neondatabase/serverless';
+import { env } from '@repo/env';
+
+const client = neon(env.DATABASE_URL);
+
+export const database = drizzle({ client });
+```
+
+## 3. 创建 `drizzle.config.ts` 文件
+
+接下来我们将创建一个 Drizzle 配置文件，供 Drizzle Kit 使用，包含有关数据库连接、迁移文件夹和模式文件的所有信息。在 `packages/database` 目录中创建一个 `drizzle.config.ts` 文件，内容如下：
+
+```ts packages/database/drizzle.config.ts
+import { defineConfig } from 'drizzle-kit';
+import { env } from '@repo/env';
+
+export default defineConfig({
+  schema: './schema.ts',
+  out: './',
+  dialect: 'postgresql',
+  dbCredentials: {
+    url: env.DATABASE_URL,
+  },
+});
+```
+
+## 4. 生成模式文件
+
+Drizzle 使用模式文件来定义数据库表。我们可以从现有数据库生成模式文件，而不是从头创建。在 `packages/database` 文件夹中，运行以下命令生成模式文件：
+
+```sh
+npx drizzle-kit pull
+```
+
+这将从数据库中提取模式，创建一个包含表定义和其他一些文件的 `schema.ts` 文件。
+
+## 5. 更新查询
+
+现在你可以更新查询以使用 Drizzle ORM。
+
+例如，以下是如何更新 `app/(authenticated)/page.tsx` 中的 `page` 查询：
+
+```ts apps/app/app/(authenticated)/page.tsx {2, 7}
+import { database } from '@repo/database';
+import { page } from '@repo/database/schema';
+
+// ...
+
+const App = async () => {
+  const pages = await database.select().from(page);
+
+  // ...
+};
+
+export default App;
+```
+
+## 6. 移除 Prisma Studio
+
+你也可以删除现在不再使用的 Prisma Studio 应用，位于 `apps/studio`：
+
+```sh Terminal
+rm -fr apps/studio
+```
+
+## 7. 更新根目录 `package.json` 中的迁移脚本
+
+将根目录 `package.json` 中的迁移脚本从 Prisma 更改为 Drizzle。更新 `migrate` 脚本以使用 Drizzle 命令：
+
+```json
+"scripts": {
+  "db:migrate": "cd packages/database && npx drizzle-kit migrate"
+  "db:generate": "cd packages/database && npx drizzle-kit generate"
+  "db:pull": "cd packages/database && npx drizzle-kit pull"
+}
+```

@@ -1,0 +1,33 @@
+---
+title: Coolify
+description: 学习如何将SuperStarter部署到Coolify。
+---
+
+
+在本指南中，我们将向您展示如何轻松地将您的SuperStarter SaaS部署到[Coolify](https://coolify.io/)。
+
+
+## 1. 设置Coolify
+在您可以使用Coolify部署SuperStarter应用程序之前，您需要拥有一台服务器和一个Coolify账户。
+
+按照[Coolify设置指南](https://coolify.io/docs/get-started/introduction)开始操作。
+
+
+## 2. 选择您的仓库
+如果尚未完成，系统会提示您连接您的Git提供商账户。之后，您可以选择要部署的仓库。
+
+
+## 3. 配置构建
+配置构建和启动命令，以确保您的项目正确构建和启动。
+
+请确保将它们设置为以下值：
+
+- 安装命令 - `pnpm install`
+- 构建命令 - `corepack enable; pnpm install --frozen-lockfile; pnpm build --filter web build`
+- 启动命令 - `pnpm --filter web start`
+
+## 4. 定义环境变量
+现在为您的应用程序定义环境变量。您可以从您的.env.local文件中复制它们。
+
+## 5. 部署站点
+现在点击部署站点按钮并等待部署完成。之后，您应该能够访问您新部署的SaaS。

@@ -3,7 +3,7 @@ title: Sitemap
 description: How we generate the sitemap for the website.
 ---
 
-SuperStarter automatically generates the sitemap for the website using Next.js's built-in [sitemap generation](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap#generating-a-sitemap-using-code-js-ts) functionality (`sitemap.ts`). The generation process scans different directories in the project and creates sitemap entries for various types of content:
+SuperStarter automatically generates the `sitemap` for the website using Next.js's built-in [sitemap generation](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap#generating-a-sitemap-using-code-js-ts) functionality (`sitemap.ts`). The generation process scans different directories in the project and creates sitemap entries for various types of content:
 
 ## Page Collection
 
@@ -53,7 +53,7 @@ Each sitemap entry includes:
 - A full URL (combining the base URL with the route)
 - A `lastModified` timestamp (set to the current date)
 
-The sitemap is **automatically regenerated** during each build, ensuring it stays up to date with your content.
+<Tip>The sitemap is **automatically regenerated** during each build, ensuring it stays up to date with your content.</Tip>
 
 <Note>
 There is one thing you need to pay attention to, whether you need to set the `VERCEL_PROJECT_PRODUCTION_URL` environment variable, which will affect the domain of all URL in the sitemap. If your website is deployed on vercel, this variable will be automatically set to the domain name deployed by the project, and you can also manually set it to specify your domain name.

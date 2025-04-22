@@ -1,0 +1,121 @@
+---
+title: 国际化
+description: 如何为您的应用程序添加多语言支持。
+---
+
+
+SuperStarter 包含一个强大的国际化包，使您能够以最少的配置为应用程序添加多语言支持。该包通过基于字典的方法处理语言检测、路由和内容管理。
+
+## 工作原理
+
+国际化系统建立在 [Next.js 国际化](https://nextjs.org/docs/app/building-your-application/routing/internationalization) 的路由系统和 [Languine](https://languine.ai/) 的翻译系统之上。
+
+默认情况下，它为 `web` 包配置了以下功能：
+
+1. 通过浏览器头检测用户首选语言
+2. 将用户路由到特定语言的路径（例如，`/en/about`, `/fr/about`）
+3. 从特定语言的字典中提供内容
+
+该包处理语言检测和匹配，确保用户在可用时看到其首选语言的内容。
+
+## 设置
+
+### 设置 Languine 环境变量
+要启用自动翻译，只需在 `internationalization` 包中创建一个 `.env` 文件并设置 `LANGUINE_PROJECT_ID` 环境变量。
+
+```env .env
+LANGUINE_PROJECT_ID="your-project-id"
+```
+
+### 登录 Languine
+```bash Terminal
+npx languine@latest auth login
+```
+
+<Tip>
+  [Languine](https://languine.ai/) 提供 500 个免费翻译密钥。如果您需要更多，需要升级到付费计划。
+
+  如果您不想使用 Languine，可以手动翻译您的内容。在这种情况下，您不需要设置 `LANGUINE_PROJECT_ID` 环境变量。
+</Tip>
+
+
+## 配置
+
+国际化包通过 `languine.json` 文件进行配置，该文件定义了：
+
+- 源语言（例如，`en`）
+- 目标语言（例如，`["es", "de"]`）
+- 字典文件位置
+
+## 字典结构
+
+字典是 TypeScript 文件，为每种支持的语言导出强类型内容。类型系统确保翻译的一致性：
+
+```ts zh/packages/internationalization/dictionaries/[locale].ts
+import type { Dictionary } from '@repo/internationalization';
+
+const dictionary: Dictionary = {};
+
+export default dictionary;
+```
+
+无需为非源语言创建字典，因为 [Languine](https://languine.ai/) 会自动为您生成翻译。
+
+## 使用方法
+
+### 翻译
+
+要翻译您的应用程序，您可以运行以下命令：
+
+```bash Terminal
+pnpm translate
+```
+
+这将翻译您应用程序中的所有内容并将翻译保存到 `dictionaries` 文件夹中。
+
+### 前端
+
+要使用国际化包，您需要：
+
+1. 维护源语言的字典
+2. 将字典导入您的应用程序
+3. 使用字典来渲染内容
+
+您可以在 `web` 包中找到字典的示例：
+
+```tsx zh/apps/web/app/page.tsx
+import { getDictionary } from '@repo/internationalization';
+
+type HomeProps = {
+  params: Promise<{
+    locale: string;
+  }>;
+};
+
+const Home = async ({ params }: HomeProps) => {
+  const { locale } = await params;
+  const dictionary = await getDictionary(locale);
+
+  // ...
+};
+```
+
+您可以通过更改 URL 中的 `locale` 参数来更改应用程序的语言。例如，`https://example.com/en/about` 将以英语呈现 `about` 页面。
+
+我们已经为 `web` 包配置了语言切换器，因此您无需担心。
+
+<Frame>
+  <img src="/images/language-switcher.png" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
+### 中间件
+
+国际化包还包括一个中间件组件，可自动检测用户的语言并将其路由到相应的语言特定页面。
+
+这已经为 `web` 包配置好了，因此您无需担心。
+
+```tsx zh/apps/web/middleware.ts
+import { internationalizationMiddleware } from '@repo/internationalization';
+
+export default internationalizationMiddleware;
+```

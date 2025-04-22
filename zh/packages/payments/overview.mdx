@@ -1,0 +1,54 @@
+---
+title: 概览
+description: 学习如何在你的应用中使用支付功能。
+---
+
+SuperStarter 提供了一个通用的支付模块，使你可以向用户收费
+
+## 支付提供商
+
+在你的仓库中的 `@repo/payments` 包中，你可以找到 `providers` 文件夹。
+
+有多个提供商可供选择：
+
+<CardGroup cols={2}>
+  <Card title="Stripe" icon="link" href="/zh/packages/payments/providers/stripe"  />
+  <Card title="Lemon Squeezy" icon="link" href="/zh/packages/payments/providers/lemonsqueezy"  />
+    <Card title="Paddle" icon="link" href="/zh/packages/payments/providers/paddle"  />
+    <Card title="Polar" icon="link" href="/zh/packages/payments/providers/polar"  />
+    <Card title="Chargebee" icon="link" href="/zh/packages/payments/providers/chargebee"  />
+    <Card title="Creem" icon="link" href="/zh/packages/payments/providers/creem"  />
+</CardGroup>
+
+## 本地开发
+
+在本地开发期间测试 webhook 的方法
+
+<Tip>
+这种方法适用于所有提供商。Stripe 提供了自己的 CLI 来更好地处理本地开发。我们将在 Stripe 章节中详细介绍。
+</Tip>
+
+### 隧道
+
+如果你想在本地测试 webhook，可以使用 [`ngrok`](https://ngrok.com/) 创建一个到本地机器的隧道。Ngrok 会给你一个 URL，你可以用它来在本地测试 webhook。
+
+为此，请安装 ngrok 并运行以下命令（当你的 SuperStarter web 开发服务器正在运行时）：
+
+```bash
+ngrok http 3002
+```
+<Note>
+我们默认将 webhook 转发到 `apps/api` 的 3002 端口。如果你的 web 开发服务器不是 3002 端口，请在 ngrok 命令中修改端口号。
+</Note>
+
+<Frame>
+  <img src="/images/ngrok.png" />
+</Frame>
+
+这将给你一个 URL（见 Forwarding 输出），你可以用它来在 Stripe 中创建 webhook。只需使用该 url 并添加 `/api/webhooks/{providerName}`。将 `{providerName}` 替换为你正在使用的提供商名称。例如，如果你使用 Stripe，则使用 `stripe` 作为提供商名称。
+
+## 生产环境
+
+当进入生产环境时，你需要在支付提供商中设置 webhook URL 和要监听的事件。
+
+如果 webhook 路径是 `/api/webhooks/stripe` 并且你的应用托管在 `https://myapp.com`，那么你需要输入 `https://myapp.com/api/webhooks/stripe` 作为 URL。

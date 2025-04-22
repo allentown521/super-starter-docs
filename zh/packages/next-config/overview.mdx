@@ -1,0 +1,30 @@
+---
+title: 概述
+description: next-config 包的详细信息。
+---
+
+`next-config` 包是一个用于 Next.js 的配置包。它用于配置 Next.js 应用程序，位于 `packages/next-config` 目录中。
+
+## 图片
+
+该包配置了 Next.js 图片优化以支持 AVIF 和 WebP 格式。它还设置了远程模式，允许安全地从 Clerk 加载图片（例如个人资料图片）。
+
+## Prisma
+
+对于服务器端构建，该包包含了 Prisma 插件，它帮助在 Next.js 单体仓库设置中正确处理 Prisma。
+
+## 重写
+
+该包配置了 URL 重写以处理 PostHog 分析集成：
+
+- `/ingest/static/:path*` 路由到 PostHog 的静态资源
+- `/ingest/:path*` 路由到 PostHog 的主数据接收端点
+- `/ingest/decide` 路由到 PostHog 的功能标志端点
+
+它还启用了 `skipTrailingSlashRedirect` 以正确支持带有尾部斜杠的 PostHog API 请求。
+
+## OpenTelemetry
+
+该包包含了一个修复 OpenTelemetry 检测警告的配置，通过配置 webpack 忽略来自 `@opentelemetry/instrumentation` 包的警告。
+
+该配置可以选择用 `withAnalyzer()` 包裹以启用包分析功能。

@@ -1,0 +1,49 @@
+---
+title: Blocks
+description: 了解如何在应用程序中使用 blocks。
+---
+
+## 什么是 Blocks？
+`Blocks` 是指设计系统中的可重用组件或模块。它们基于 [shadcn/ui](https://ui.shadcn.com/) 提供的 CSS 变量和样式构建，可以快速在您的应用程序中创建一致且美观的 UI。
+
+
+## Blocks 和组件有什么区别？
+
+`Blocks` 是一个高阶组件的集合，包括：
+
+`header`、`footer`、`hero`、`features`、`subscribe`、`waitlist`、`faq`、`pricing`、`testimonials`、`cta`、`usage`、`login`、`brand` 和 `contact`
+
+组件是 Blocks 的组成部分，它们是 Blocks 的最小单位，用于构建 Blocks。
+
+## 如何使用 Blocks？
+
+`Blocks` 的数据通过 [`config.ts`](/zh/setup/configuration/app-config) 进行配置，您只需要在需要的地方引入 Blocks，比如我们的登录页面：
+
+```tsx hero.tsx
+const Home = async ({ params }: HomeProps) => {
+  const { locale } = await params;
+  const dictionary = await getDictionary(locale);
+
+  return (
+    <>
+      <Hero data={heroData(dictionary)} />
+      <Brand data={brandData(dictionary)} />
+      <ShowCase data={showCaseData(dictionary)} />
+      <FeatureRows data={featureData(dictionary)} />
+      <Stats data={statsData(dictionary)} />
+      <Testimonials data={testimonialData(dictionary)} />
+      <PriceForm data={priceData(dictionary)} />
+      <FAQ data={faqData(dictionary)} />
+      <WaitlistForm data={waitlistData(dictionary)} />
+      <SubscribeForm data={subscribeData(dictionary)} />
+      <CTA data={ctaData(dictionary)} />
+    </>
+  );
+};
+
+export default Home;
+```
+
+<Tip>
+  `Blocks` 可以帮助您快速构建应用程序。我们正在不断构建新的 `Blocks`，您可以根据需要修改它们，或者创建自己的 `Blocks`。
+</Tip>

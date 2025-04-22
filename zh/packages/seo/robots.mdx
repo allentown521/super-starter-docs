@@ -1,0 +1,14 @@
+---
+title: Robots
+description: 我们如何为网站生成robots.txt文件。
+---
+
+SuperStarter 使用 Next.js 内置的 [robots 生成功能](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/robots#generate-a-robots-file)（`robots.ts`）自动为网站生成 `robots.txt` 文件。
+
+<Tip>`robots.txt` 文件会在每次构建时自动重新生成。</Tip>
+
+<Note>
+您只需要注意一件事，是否需要设置 `VERCEL_PROJECT_PRODUCTION_URL` 环境变量，这会影响 robots.txt 中的域名。如果您的网站部署在 vercel 上，该变量会自动设置为项目部署的域名，您也可以手动设置以指定您的域名。
+
+对于 `web` 应用，可以设置为 `your-domain.com` 这样的值，该值不包含 https:// 协议方案。
+</Note>

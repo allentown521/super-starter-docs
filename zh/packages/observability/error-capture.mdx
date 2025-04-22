@@ -1,0 +1,38 @@
+---
+title: 错误捕获
+description: 我们在SuperStarter中配置错误捕获的方式。
+---
+
+SuperStarter 使用 [Sentry](https://sentry.io/) 进行错误跟踪和性能监控。它通过提供详细的错误报告、堆栈跟踪和性能指标，帮助识别、调试和解决问题，涵盖服务器和客户端环境。当发生错误时，Sentry 会捕获完整上下文，包括用户的浏览器信息、导致错误的事件序列以及相关的应用程序状态。
+
+## 配置
+
+Sentry 在三个关键位置进行配置和管理：
+
+Next.js 项目中的 `instrumentation.ts` 文件初始化 Sentry 用于 Node.js 和 Edge 运行时环境，配置 DSN（数据源名称）以将错误数据路由到您的 Sentry 项目。
+
+`sentry.client.config.ts` 文件为客户端环境配置 Sentry。这包括错误和会话的采样率，以及要使用的集成。
+
+`next.config.ts` 文件通过 `withSentryConfig` 导入共享的 Sentry 特定设置。这启用了诸如源地图上传以获得更好的堆栈跟踪和自动检测 Vercel Cron Monitors 等功能。该配置还通过 tree-shaking 日志语句和在生产构建中隐藏源地图来优化包大小。
+
+<Tip>
+相关的环境变量是 `SENTRY_ORG`、`SENTRY_PROJECT` 和 `NEXT_PUBLIC_SENTRY_DSN`。
+</Tip>
+
+## 手动使用
+
+如果您想捕获特定异常而不是让它冒泡到 Sentry，可以使用 `captureException` 函数：
+
+```tsx page.tsx
+import { captureException } from '@sentry/nextjs';
+
+captureException(new Error('我的错误信息'));
+```
+
+## 隧道
+
+`@repo/next-config` 中 Sentry 配置的 `sentryConfig.tunnelRoute` 选项通过 Next.js 重写将浏览器请求路由到 Sentry，以绕过广告拦截器。这可能会增加您的服务器负载以及托管费用。
+
+<Warning>
+  检查配置的路由是否与您的 Next.js 中间件匹配，否则客户端错误报告将失败。
+</Warning>

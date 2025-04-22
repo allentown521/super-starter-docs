@@ -1,0 +1,145 @@
+---
+title: 切换到 EdgeDB
+description: 如何将数据库提供商切换为 EdgeDB。
+---
+
+[EdgeDB](https://edgedb.com) 是一个开源的 Postgres 数据层，旨在解决主要的 SQL 人体工程学和关系模式建模限制，同时提高类型安全性和性能。
+
+`SuperStarter` 使用 Neon 作为数据库提供商，并使用 Prisma 作为 ORM，以及 Clerk 进行身份验证。本指南将提供将数据库提供商从 Neon 切换到 EdgeDB 所需的步骤。
+
+<Note>
+ 对于身份验证，将提供另一个指南来切换到 EdgeDB Auth，包括访问策略、社交身份验证提供商等。
+</Note>
+
+以下是如何为你的 `SuperStarter` 项目从 Neon 切换到 [EdgeDB](https://edgedb.com)。
+
+## 1. 创建新的 EdgeDB 数据库
+
+在 [EdgeDB Cloud](https://cloud.edgedb.com/) 创建一个账户。完成后，创建一个新实例（你可以使用 EdgeDB 的免费层）。我们稍后将通过 EdgeDB CLI 连接到它。
+
+## 2. 替换 `@repo/database` 中的依赖项
+
+卸载现有的依赖项...
+
+```sh Terminal
+pnpm remove @prisma/adapter-neon @prisma/client prisma --filter @repo/database
+```
+
+... 并安装新的依赖项：
+
+```sh Terminal
+pnpm add edgedb @edgedb/generate
+```
+
+## 3. 在 `@repo/database` 包中设置 EdgeDB
+
+在 `@repo/database` 目录中运行：
+
+```sh Terminal
+npx edgedb project init --server-instance <org_name>/<instance_name> --non-interactive
+```
+
+<Note>
+将 `<org_name>` 和 `<instance_name>` 替换为你之前在 EdgeDB Cloud 中创建的组织和实例。
+</Note>
+
+`init` 命令会创建一个名为 `dbschema` 的子目录，其中包含与 EdgeDB 相关的所有内容：
+
+```sh
+dbschema
+├── default.esdl
+└── migrations
+```
+
+此命令还将你的环境链接到 EdgeDB Cloud 实例，使 EdgeDB 客户端库无需任何额外配置即可自动连接到它。
+
+你也可以从 `@repo/database` 中删除 `prisma/` 目录：
+
+```sh Terminal
+rm -fr packages/database/prisma
+```
+
+## 4. 更新数据库连接代码
+
+更新数据库连接代码以使用 EdgeDB 客户端：
+
+```ts packages/database/index.ts
+import 'server-only';
+
+import { createClient } from "edgedb";
+
+export const database = createClient();
+```
+
+## 5. 更新模式文件并生成类型
+
+现在，你可以修改数据库模式：
+
+```sql dbschema/default.esdl
+module default {
+  type Page {
+    email: str {
+      constraint exclusive;
+    }
+    name: str
+  }
+}
+```
+
+并通过运行以下命令应用你的更改：
+
+```sh Terminal
+npx migration create
+npx migration apply
+```
+
+完成后，你还可以从数据库模式生成 TypeScript 查询构建器和类型：
+
+```sh Terminal
+npx @edgedb/generate edgeql-js
+npx @edgedb/generate interfaces
+```
+
+这些命令会自省数据库的模式，并在 `dbschema` 目录中生成代码。
+
+## 6. 更新你的查询
+
+现在你可以更新你的查询以使用 EdgeDB 客户端。
+
+例如，以下是如何在 `zh/app/(authenticated)/page.tsx` 中更新 `page` 查询：
+
+```tsx zh/app/(authenticated)/page.tsx {2,7-8}
+import { database } from '@repo/database';
+import edgeql from '@repo/database/dbschema/edgeql-js';
+
+// ...
+
+const App = async () => {
+  const pagesQuery = edgeql.select(edgeql.Page, () => ({ ...edgeql.Page['*'] }));
+  const pages = await pagesQuery.run(database);
+
+  // ...
+};
+
+export default App;
+```
+
+## 7. 用 EdgeDB UI 替换 Prisma Studio
+
+你也可以删除位于 `apps/studio` 的现在未使用的 Prisma Studio 应用：
+
+```sh Terminal
+rm -fr apps/studio
+```
+
+要管理你的数据库并浏览你的数据，你可以运行：
+
+```sh Terminal
+npx edgedb ui
+```
+
+## 8. 提取用于部署的 EdgeDB 环境变量
+
+在部署你的应用时，你需要在应用的云提供商中提供 `EDGEDB_SECRET_KEY` 和 `EDGEDB_INSTANCE` 环境变量以连接到你的 EdgeDB Cloud 实例。
+
+你可以使用 `npx edgedb cloud secretkey create` 或通过实例仪表板中的 "Secret Keys" 面板为你的实例生成专用的密钥。

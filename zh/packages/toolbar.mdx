@@ -1,0 +1,41 @@
+---
+title: 工具栏
+description: SuperStarter 使用 Vercel Toolbar 允许您在开发中覆盖功能标志。
+---
+
+[Vercel Toolbar](https://vercel.com/docs/workflow-collaboration/vercel-toolbar) 是一个工具，允许您留下反馈、导航重要仪表板页面、分享部署、使用草稿模式预览未发布内容以及实时编辑内容的编辑模式。SuperStarter 默认启用了 Vercel Toolbar。
+
+## 链接您的应用程序
+
+进入每个应用程序并运行 `vercel link`，如下所示：
+
+<CodeGroup>
+
+```sh Terminal
+cd apps/app
+vercel link
+```
+
+```sh Terminal
+cd apps/web
+vercel link
+```
+
+```sh Terminal
+cd apps/api
+vercel link
+```
+
+</CodeGroup>
+
+这将在每个应用程序中创建一个 `.vercel/project.json` 文件。
+
+## 添加环境变量
+
+然后，只需在每个应用程序的 `.env.local` 文件中添加 `FLAGS_SECRET` 环境变量，如下所示：
+
+```js .env.local
+FLAGS_SECRET="test"
+```
+
+这两个步骤是可选的，但建议执行以确保在每个应用程序中启用 Vercel Toolbar。

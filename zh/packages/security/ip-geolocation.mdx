@@ -1,0 +1,49 @@
+---
+title: IP 位置
+description: 访问应用程序中的IP地理位置数据
+---
+
+SuperStarter使用[Arcjet](https://arcjet.com)进行[应用安全防护](/zh/packages/security/application)，其中包含您可以在应用程序中使用的[IP详情和地理位置信息](https://docs.arcjet.com/reference/nextjs#ip-analysis)。
+
+在`app`应用中，Arcjet在`apps/app/app/(authenticated)/layout.tsx`文件中被调用，该文件在每个认证路由上运行。
+
+对于`web`应用，Arcjet在中间件中被调用，该中间件在每个请求上运行（静态资源除外）。
+
+在这两种情况下，您都可以基于IP详情应用应用/网站范围的规则，例如根据用户位置显示不同内容。
+
+## 访问IP位置数据
+
+IP详情可在Arcjet决策对象中获得，该对象从`aj.protect()`调用返回。IP位置字段可能为`undefined`，因此您可以使用各种实用函数来获取数据。
+
+```ts
+// ...
+const decision = await aj.protect(req);
+
+if (decision.ip.hasCity() && decision.ip.city === "San Francisco") {
+  // Create a custom response for San Francisco
+}
+
+if (decision.ip.hasRegion() && decision.ip.region === "California") {
+  // Create a custom response for California
+}
+
+if (decision.ip.hasCountry() && decision.ip.country === "US") {
+  // Create a custom response for the United States
+}
+
+if (decision.ip.hasContinent() && decision.ip.continent === "NA") {
+  // Create a custom response for North America
+}
+```
+
+See the Arcjet [IP analysis reference](https://docs.arcjet.com/reference/nextjs#ip-analysis) for more information on the fields available.
+
+## 在其他地方访问IP详情
+
+Next.js不允许从[根布局](https://nextjs.org/docs/app/building-your-application/routing/layouts-and-templates)或中间件传递数据到应用程序的其他页面。要在应用程序的其他部分访问IP详情，您需要从根布局(`app`)或中间件(`web`)中移除Arcjet调用，并在需要IP详情的特定页面中调用它。
+
+请参阅Arcjet文档了解如何在[路由处理器](https://docs.arcjet.com/reference/nextjs#protect)、[页面/服务器组件](https://docs.arcjet.com/reference/nextjs#pages--page-components)和[服务器操作](https://docs.arcjet.com/reference/nextjs#server-actions)中调用`aj.protect()`。
+
+<Note>
+  If you remove the Arcjet call from `apps/app/app/(authenticated)/layout.tsx` or `middleware.ts` it will no longer run on every request. You will need to call `aj.protect()` everywhere you wish to apply Arcjet rules, even if you don't need the IP details.
+</Note>

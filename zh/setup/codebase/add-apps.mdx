@@ -1,0 +1,70 @@
+---
+title: 添加应用
+description: 学习如何向你的SuperStarter工作区添加应用。
+---
+<Warning>
+高级主题
+
+这是一个高级主题 - 只有在确定要在你的SuperStarter项目中添加新应用并希望继续从SuperStarter仓库拉取更新时，才应遵循这些说明。
+</Warning>
+
+在某些情况下 - 创建一个新的仓库可能是管理应用的最简单方式。然而，如果你想将应用保留在monorepo中并从SuperStarter仓库拉取更新，可以按照以下说明操作。
+
+要将更新拉取到`web`之外的独立应用中 - 我们可以使用[git subtree](https://github.com/git-subtree/git-subtree)。
+
+基本上，我们将在`apps/web`创建一个子树，并为子树创建一个新的远程分支。当我们创建一个新应用时，我们将把子树拉入新应用中。这使我们能够使其与`apps/web`文件夹保持同步，并将其用作新应用的初始化代码。
+
+要向你的SuperStarter项目添加新应用，需要按照以下步骤操作：
+
+## 创建子树
+首先，我们需要为`apps/web`文件夹创建一个子树。我们将创建一个名为web-branch的分支，并为`apps/web`文件夹创建子树。
+
+```sh
+git subtree split --prefix=apps/web --branch web-branch
+```
+
+## 创建新应用
+
+现在，我们可以在apps文件夹中创建一个新应用。
+
+假设我们要在`apps/ai-chat`创建一个与`apps/web`文件夹结构相同的新应用`ai-chat`（该文件夹充当所有新应用的模板）。
+
+```sh
+git subtree add --prefix=apps/ai-chat origin web-branch --squash
+```
+
+现在你应该能看到`apps/ai-chat`文件夹，其中包含`apps/web`文件夹的内容。
+
+## 更新应用
+
+### 从SuperStarter仓库拉取最新更新
+
+以下命令将从SuperStarter仓库更新所有更改：
+
+```sh
+git pull upstream main
+```
+
+### 推送web-branch更新
+
+从SuperStarter仓库拉取更新后，你可以再次分割分支并将更新推送到`web-branch`：
+
+```sh
+git subtree split --prefix=apps/web --branch web-branch
+```
+
+现在，你可以将更新推送到`web-branch`：
+
+```sh
+git push origin web-branch
+```
+
+### 将更新拉取到新应用
+
+现在，你可以将更新拉取到新应用：
+
+```sh
+git subtree pull --prefix=apps/ai-chat origin web-branch --squash
+```
+
+完成！你现在在monorepo中有了一个新应用 🎉

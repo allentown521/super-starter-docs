@@ -1,0 +1,68 @@
+---
+title: 管理依赖
+description: 学习如何在您的项目中管理依赖。
+---
+
+## 安装依赖
+
+要安装一个包，您需要决定是将其安装到monorepo的根目录还是特定的工作区。安装到根目录使其对所有包可用，而安装到特定工作区则使其仅对该工作区可用。
+
+- 要全局安装一个包，请运行：
+
+```sh Terminal
+pnpm add -w <package-name>
+```
+
+- 要安装到特定工作区，请运行：
+
+```sh Terminal
+pnpm add --filter <workspace-name> <package-name>
+```
+
+或者转到您要安装包的文件夹并运行：
+
+```sh Terminal
+pnpm add <package-name>
+```
+
+## 移除依赖
+
+移除包与安装相同，但使用`remove`命令。
+
+- 要全局安装一个包，请运行：
+
+```sh Terminal
+pnpm remove -w <package-name>
+```
+
+- 要安装到特定工作区，请运行：
+
+```sh Terminal
+pnpm remove --filter <workspace-name> <package-name>
+```
+
+## 升级依赖
+
+您可以使用`bump-deps`命令升级所有`package.json`文件中的依赖并安装新版本：
+
+```sh Terminal
+pnpm bump-deps
+```
+
+这将更新所有`package.json`文件中的依赖并安装新版本。
+
+<Tip>您应该在运行`bump-deps`后运行`pnpm build`以确保项目正确构建。您还应运行`pnpm dev`并确保项目在运行时正常运行。</Tip>
+
+## 升级shadcn/ui组件
+
+您可以使用`bump-ui`命令升级[Design System](/zh/packages/design-system/components)包中的所有shadcn/ui组件：
+
+```sh Terminal
+pnpm bump-ui
+```
+
+这将更新所有shadcn/ui组件，以及Design System的`package.json`文件中的相关依赖。
+
+<Warning>这将覆盖您对组件文件夹`@repo/design-system/components`所做的所有自定义。为避免这种情况，我们建议不要直接修改代码。如果shadcn组件不能满足您的需求，请构建自己的组件而不是更改shadcn组件。</Warning>
+
+<Warning>`shadcn` CLI可能会对您共享的Tailwind配置文件和全局CSS进行一些不必要的更改。在提交更改之前，请务必检查这些更改。</Warning>

@@ -1,0 +1,85 @@
+---
+title: Paddle
+description: 了解如何使用 SuperStarter 设置 Creem。
+---
+
+[Paddle Billing](https://www.paddle.com/) 是销售数字产品和订阅服务的商家记录平台。它负责处理支付、全球税务合规、欺诈预防、本地化和订阅服务。以下是如何将默认支付处理器从 Stripe 切换到 Paddle Billing 的步骤。
+
+## 获取 API 密钥
+
+在为 Creem 创建账户后，您需要获取 API 密钥。您可以通过访问仪表盘上的 [API 页面](https://www.paddle.com/) 来完成此操作。在这里，您将找到密钥和可发布密钥。您需要使用密钥来完成集成。
+
+### 添加环境变量
+
+要使用 Creem 集成，您需要在 `.env.local` 文件以及生产环境中定义以下环境变量：
+
+```env .env.local
+PADDLE_SECRET_KEY=
+PADDLE_WEBHOOK_SECRET=
+PADDLE_ENV="" // 如果您使用沙盒环境，请使用 'sandbox'；否则使用 'production' 或省略该参数
+```
+
+## 应用内购买
+
+删除以下文件中的注释：
+```ts zh/packages/payments/index.ts
+export * from './providers/paddle';
+```
+
+### 创建结账会话
+
+我们需要创建一个结账会话来向用户收费，您只需修改一些代码。它由两部分组成：
+
+- 客户端
+
+它会向 `/api/paddle/checkout` 端点发送创建会话的请求。
+
+```tsx apps/web/[locale]/components/payment/price-form.tsx
+      const response = await fetch('/api/paddle/checkout', { // 更改为 `/api/paddle/checkout`
+        method: 'POST',
+        body: JSON.stringify({
+          priceId: item.priceId,
+          interval: item.interval,
+        }),
+      });
+```
+
+- 服务器
+
+删除 `apps/web/api/paddle/checkout/route.ts` 中的注释。
+
+<Tip>
+如果您想在客户端创建结账会话，可以使用以下代码：
+
+```tsx apps/web/[locale]/components/payment/price-form.tsx
+'use client';
+
+import { usePaddle } from '@repo/payments/checkout';
+
+const Pricing = () => {
+  const paddle = usePaddle();
+
+  function openCheckout(priceId: string) {
+    paddle?.Checkout.open({
+      items: [
+        {
+          priceId,
+          quantity: 1,
+        },
+      ],
+    });
+  }
+
+  return (
+    <Button
+      className="mt-8 gap-4"
+      onClick={() => openCheckout('pri_01jkzb4x1hc91s8w38cr3m86yy')}
+    >
+      立即订阅 <MoveRight className="h-4 w-4" />
+    </Button>
+  );
+};
+
+export default Pricing;
+```
+</Tip>

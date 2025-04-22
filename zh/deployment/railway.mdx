@@ -1,0 +1,28 @@
+---
+title: Railway
+description: 学习如何将 SuperStarter 部署到 Railway。
+---
+
+在本指南中，我们将向您展示如何轻松地将您的 SuperStarter SaaS 部署到 [Railway](https://railway.app/)。
+
+在开始之前，请确保您已拥有 Railway 账户。如果还没有，您可以在 [Railway](https://railway.app/signup) 免费创建一个。
+
+## 1. 创建新项目
+创建账户后，您应该会在仪表板上看到从 Git 仓库创建新站点的提示。点击 **从 Git 导入** 按钮。
+
+## 2. 选择您的仓库
+如果尚未连接，系统会要求您连接 Git 提供商账户。之后，您可以选择要部署的仓库。
+
+## 3. 配置构建
+配置构建和启动命令以确保您的项目能正确构建和启动。
+
+请确保将它们设置为以下值：
+- 构建命令 - `pnpm --filter web build`
+- 启动命令 - `pnpm --filter web start`
+
+## 4. 定义环境变量
+现在为您的应用程序定义环境变量。您可以从 .env.local 文件中复制它们
+
+## 5. 部署站点
+现在点击部署站点按钮并等待部署完成。之后，您应该能够访问新部署的 SaaS 应用。
+

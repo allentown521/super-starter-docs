@@ -1,0 +1,38 @@
+---
+title: 深色模式
+description: 如何在设计系统中使用深色模式。
+---
+
+SuperStarter 通过结合 [Tailwind CSS](https://tailwindcss.com/docs/dark-mode) 和 [next-themes](https://github.com/pacocoursey/next-themes) 提供了内置的深色模式支持。
+
+## 实现
+
+深色模式的实现采用了 Tailwind 的 `darkMode: 'class'` 策略，通过向 `html` 元素添加 `dark` 类来切换深色模式。这种方法可以更好地控制深色模式，并防止主题错误的闪烁。
+
+`next-themes` 提供程序已在应用程序中配置，自动处理主题持久化和系统偏好检测。Clerk 的 Provider 和 Sonner 等第三方组件也已预先配置为尊重此设置。
+
+## 使用
+
+默认情况下，每个应用程序主题将默认为用户的操作系统偏好。
+
+要允许用户手动更改主题，您可以使用位于设计系统包中的 `ModeToggle` 组件。我们已经将其添加到 `app` 侧边栏和 `web` 导航栏中，但您可以在任何地方导入它：
+
+```tsx page.tsx
+import { ModeToggle } from '@repo/design-system/components/mode-toggle';
+
+const MyPage = () => (
+  <ModeToggle />
+);
+```
+
+您可以通过直接使用 `next-themes` 中的 `useTheme` 钩子来检查主题。例如：
+
+```tsx page.tsx
+import { useTheme } from 'next-themes';
+
+const MyPage = () => {
+  const { resolvedTheme } = useTheme();
+
+  return resolvedTheme === 'dark' ? '深色模式' : '浅色模式';
+}
+```

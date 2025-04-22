@@ -1,0 +1,41 @@
+---
+title: Netlify
+description: 学习如何将 SuperStarter 部署到 Netlify。
+---
+
+在本指南中，我们将向您展示如何轻松地将您的 SuperStarter SaaS 部署到 Netlify。
+
+开始之前，请确保您已拥有 Netlify 账户。如果还没有，您可以在 [netlify.com](https://www.netlify.com/) 免费创建一个。
+
+## 1. 创建新项目
+创建账户后，您会在仪表板上看到从 Git 仓库创建新站点的提示。点击 **Import from Git** 按钮。
+
+<Frame>
+  <img src="/images/deployment/netlify-start-project.webp" alt="" />
+</Frame>
+
+## 2. 选择您的仓库
+如果尚未连接，系统会要求您连接 Git 提供商账户。之后，您可以选择要部署的仓库。
+
+## 3. 配置构建
+选择仓库后，系统会提示您配置构建设置。通常 Netlify 会自动检测正确的设置。如果没有，您可以像下面截图那样手动配置：
+
+<Frame>
+  <img src="/images/deployment/netlify-deployment-configuration.webp" alt="" />
+</Frame>
+
+请确保将本地 .env.local 文件中的所有环境变量复制粘贴到 Netlify 构建设置的 **Environment Variables** 部分。
+
+## 4. 部署站点
+现在点击 Deploy site 按钮并等待部署完成。之后，您应该能够访问新部署的 SaaS。
+
+<Tip>
+站点部署完成后，请前往 `Site configuration` -> `Build & deploy` -> `Functions region` 并选择最接近您数据库所在区域的地区。这将减少 API 函数的加载时间，提高 SaaS 的整体性能。
+
+更改区域后，请务必通过在项目的 `Deploys` 页面上点击 Trigger deploy 按钮重新部署站点。
+  <img src="/images/deployment/netlify-functions-region.webp" alt="" />
+</Tip>
+
+## 环境变量
+
+如果您在 Netlify 上部署，我们建议利用 [Shared Environment Variables](https://docs.netlify.com/configure-builds/environment-variables/#shared-environment-variables) 功能。

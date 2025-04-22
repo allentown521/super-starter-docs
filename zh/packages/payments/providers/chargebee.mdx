@@ -1,0 +1,47 @@
+---
+title: Chargebee
+description: 学习如何将Chargebee与SuperStarter集成。
+---
+
+## 获取API密钥
+
+创建Chargebee账户后，您需要获取API密钥。您可以前往仪表板的[API页面](https://www.chargebee.com/docs/2.0/api_keys.html)获取。在这里您会找到`Secret key`和`Publishable key`。集成需要使用`Secret key`。
+
+### 添加环境变量
+
+要使用Chargebee集成，您需要在`.env.local`和生产环境中定义以下环境变量：
+
+```env .env.local
+CHARGEBEE_API_KEY=
+CHARGEBEE_SITE=
+CREEM_API_KEY=""
+```
+
+## 应用内购买
+
+删除以下注释：
+```ts zh/packages/payments/index.ts
+export * from './providers/chargebee';
+```
+
+### 创建结账会话
+
+我们需要创建一个结账会话来向用户收费，您只需修改部分代码。这包含两部分：
+
+- 客户端
+
+向`/api/chargebee/checkout`端点发送创建会话的请求。
+
+```tsx zh/apps/web/[locale]/components/payment/price-form.tsx
+      const response = await fetch('/api/chargebee/checkout', { // 修改为`/api/chargebee/checkout`
+        method: 'POST',
+        body: JSON.stringify({
+          priceId: item.priceId,
+          interval: item.interval,
+        }),
+      });
+```
+
+- 服务端
+
+删除`apps/web/api/chargebee/checkout/route.ts`中的注释

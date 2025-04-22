@@ -1,0 +1,43 @@
+---
+title: Postmark
+description: 了解如何使用Postmark发送邮件。
+---
+
+使用Postmark与SuperStarter
+
+<Steps>
+  <Step title="创建Postmark账户">
+
+    [创建Postmark账户](https://postmark.com/)并获取您的API密钥。
+
+  </Step>
+  <Step title="添加环境变量">
+
+    将`POSTMARK_TOKEN`环境变量添加到您的.env.local文件和部署环境中：
+
+    然后，确保激活Postmark：
+
+    ```ts /packages/email/index.ts
+    export * from './providers/postmark';
+    ```
+
+  </Step>
+  <Step title="发送邮件">
+
+    ```tsx apps/web/app/contact/actions/contact.tsx
+    import { postmarkClient } from '@repo/email';
+    import { ContactTemplate } from '@repo/email/emails/contact';
+    import { render } from "@react-email/components";
+
+    const emailHtml = await render(<ContactTemplate name={name} email={email} message={message} />);
+
+    await postmarkClient.send({
+        From: 'sender@acme.com',
+        To: 'recipient@acme.com',
+        Subject: 'The email subject',
+        HtmlBody: emailHtml,
+    });
+    ```
+
+  </Step>
+</Steps>

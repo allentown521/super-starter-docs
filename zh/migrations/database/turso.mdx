@@ -1,0 +1,167 @@
+---
+title: 切换到Turso
+description: 如何将数据库提供商切换为Turso。
+---
+
+[Turso](https://turso.tech)是一个多租户数据库平台，适用于各种类型的应用程序，包括具有设备端RAG的AI应用程序、本地优先的向量搜索、离线写入和注重隐私的低延迟数据访问。
+
+以下是如何将您的`SuperStarter`项目从Neon切换到[Turso](https://turso.tech)。
+
+## 1. 注册Turso
+
+您可以使用[Dashboard](https://app.turso.tech)或[CLI](https://docs.turso.tech/cli)来管理您的账户、数据库和认证令牌。
+
+_在本指南中，我们将使用CLI。_
+
+## 2. 创建数据库
+
+使用Turso CLI创建一个新数据库并为其命名：
+
+```sh Terminal
+turso db create <database-name>
+```
+
+您现在可以获取数据库的URL：
+
+```sh Terminal
+turso db show <database-name> --url
+```
+
+它看起来会像这样：
+
+```
+libsql://<database-name>-<account-or-org-slug>.turso.io
+```
+
+## 3. 创建数据库认证令牌
+
+您需要创建一个认证令牌以连接到您的Turso数据库：
+
+```sh Terminal
+turso db tokens create <database-name>
+```
+
+## 4. 更新您的环境变量
+
+更新您的环境变量以使用新的Turso连接字符串：
+
+```js apps/database/.env
+DATABASE_URL="libsql://<database-name>-<account-or-org-slug>.turso.io"
+DATABASE_AUTH_TOKEN="..."
+```
+
+```js apps/app/.env.local
+DATABASE_URL="libsql://<database-name>-<account-or-org-slug>.turso.io"
+DATABASE_AUTH_TOKEN="..."
+```
+
+等等。
+
+现在在`zh/packages/env/index.ts`中，将`DATABASE_AUTH_TOKEN`添加到`server`和`runtimeEnv`对象中：
+
+```ts {3,12}
+const server: Parameters<typeof createEnv>[0]["server"] = {
+  // ...
+  DATABASE_AUTH_TOKEN: z.string(),
+  // ...
+};
+
+export const env = createEnv({
+  client,
+  server,
+  runtimeEnv: {
+    // ...
+    DATABASE_AUTH_TOKEN: process.env.DATABASE_AUTH_TOKEN,
+    // ...
+  },
+});
+```
+
+## 5. 安装@libsql/client
+
+[`@libsql/client`](https://www.npmjs.com/@libsql/client)用于连接托管的Turso数据库。
+
+卸载Neon的现有依赖...
+
+```sh Terminal
+pnpm remove @neondatabase/serverless @prisma/adapter-neon ws @types/ws --filter @repo/database
+```
+
+...并安装Turso和libSQL的新依赖：
+
+```sh Terminal
+pnpm add @libsql/client --filter @repo/database
+```
+
+## 6. 更新Webpack配置
+
+打开`zh/packages/next-config/index.ts`并将`@libsql/client`添加到外部依赖列表中：
+
+```ts zh/packages/next-config/index.ts {5}
+let nextConfig: NextConfig = {
+  ...config,
+  webpack: (config, { isServer }) => {
+    if (isServer) {
+      config.externals = [...(config.externals || []), "@libsql/client"];
+    }
+
+    // ...
+  },
+};
+```
+
+## 7. 更新数据库连接代码
+
+打开`zh/packages/database/index.ts`并进行以下更改：
+
+```ts zh/packages/database/index.ts
+import "server-only";
+
+import { createClient } from "@libsql/client";
+import { env } from "@repo/env";
+
+const libsql = createClient({
+  url: env.DATABASE_URL,
+  authToken: env.DATABASE_AUTH_TOKEN,
+});
+
+export const database = libsql;
+```
+
+## 8. 应用模式更改
+
+现在使用CLI连接到Turso数据库：
+
+```sh Terminal
+turso db shell <database-name>
+```
+
+并将模式应用到数据库：
+
+```sql
+CREATE TABLE pages (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT UNIQUE NOT NULL,
+  name TEXT
+);
+```
+
+## 9. 更新应用程序代码
+
+现在，无论您通常在何处调用Prisma，都请改用`libsql`客户端：
+
+```ts packages/app/app/(authenticated)/page.tsx
+import { database } from "@repo/database";
+
+type PageType = {
+  id: number;
+  email: string;
+  name?: string;
+};
+
+// ...
+
+const { rows } = await database.execute(`SELECT * FROM pages`);
+
+const pages = rows as unknown as Array<PageType>;
+```

@@ -1,0 +1,29 @@
+---
+title: Provider
+description: 一个全局的Provider组件，用于包裹你的应用程序
+---
+
+设计系统包还导出了一个`DesignSystemProvider`组件，它实现了许多上下文、功能和高阶组件，包括Tooltips、Toasts、Analytics、Dark Mode等。
+
+该Provider已经添加到默认应用中。如果你想添加一个新应用，请确保将其添加到根布局中，同时包含[fonts](/zh/packages/design-system/typography)和全局CSS，如下所示：
+
+```tsx layout.tsx
+import '@repo/design-system/styles/globals.css';
+import { fonts } from '@repo/design-system/lib/fonts';
+import { DesignSystemProvider } from '@repo/design-system';
+import type { ReactNode } from 'react';
+
+type RootLayoutProperties = {
+  readonly children: ReactNode;
+};
+
+const RootLayout = ({ children }: RootLayoutProperties) => (
+  <html lang="en" className={fonts} suppressHydrationWarning>
+    <body>
+      <DesignSystemProvider>{children}</DesignSystemProvider>
+    </body>
+  </html>
+);
+
+export default RootLayout;
+```

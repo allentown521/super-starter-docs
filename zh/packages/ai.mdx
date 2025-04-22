@@ -1,0 +1,149 @@
+---
+title: AI
+description: 如何在 SuperStarter 中使用 AI。
+---
+
+SuperStarter 有一个预配置的 `ai` 包，它使用 [ai-sdk](https://sdk.vercel.ai/) 提供了一个简单的接口来与 AI 模型进行交互。
+
+## 使用方法
+
+要使用 AI 功能，您可以从 `@repo/ai` 包中导入它。
+
+### 生成文本
+
+您可以使用 `generateText` 函数从 AI 模型生成文本。例如：
+
+```ts generate.ts
+import { generateText } from '@repo/ai';
+import { provider } from '@repo/ai/lib/provider';
+import { models } from '@repo/ai/lib/models';
+
+const response = await generateText({
+  model: models.chat,
+  prompt: 'Hello, world!',
+});
+```
+
+### 组件
+
+AI 包附带了一些组件，您可以用它们来构建自己的 AI 聊天机器人，比如 `Thread` 和 `Message`。
+
+```tsx chatbot.tsx
+import { Thread } from '@repo/ai/components/thread';
+import { Message } from '@repo/ai/components/message';
+
+export const Chatbot = () => {
+  const { messages } = useChat();
+
+  return (
+    <Thread>
+      {messages.map((message) => (
+        <Message key={message.id} data={message} />
+      ))}
+    </Thread>
+  );
+}
+```
+
+## 添加支付代理功能
+
+您可以使用 `paymentsAgentToolkit` 为您的 AI 代理添加支付功能以提供金融服务。由于 SuperStarter 默认使用 Stripe，以下是使用示例：
+
+```ts generate.ts
+import { generateText } from '@repo/ai';
+import { paymentsAgentToolkit } from '@repo/payments/ai';
+import { provider } from '@repo/ai/lib/provider';
+import { models } from '@repo/ai/lib/models';
+
+const response = await generateText({
+  model: models.chat,
+  tools: {
+    ...paymentsAgentToolkit.getTools(),
+  },
+  maxSteps: 5,
+  prompt: 'Create a payment link for a new product called "Test" with a price of $100.',
+})
+```
+
+## 添加分析
+
+根据您的使用场景、环境以及是生成还是流式处理，有多种方法可以为您的 AI 代理添加分析功能。
+
+以下是使用我们的 `analytics` 包为 `generateText` 请求添加分析的简单示例：
+
+```ts generate.ts
+import { generateText } from '@repo/ai';
+import { analytics } from '@repo/analytics/posthog/server';
+import { currentUser } from '@repo/auth/server';
+import { provider } from '@repo/ai/lib/provider';
+import { models } from '@repo/ai/lib/models';
+
+const prompt = 'Hello, world!';
+const tokenInputCost = 0.0000025;
+const tokenOutputCost = 0.00001;
+const startTime = performance.now();
+const user = await currentUser();
+
+if (!user) {
+  throw new Error('User not found');
+}
+
+const response = await generateText({
+  model,
+  prompt,
+});
+
+const endTime = performance.now();
+
+analytics.capture({
+  event: 'chat_completion',
+  distinctId: user.id,
+  properties: {
+    model: models.chat.modelId,
+    prompt,
+    prompt_tokens: response.usage.promptTokens,
+    completion_tokens: response.usage.completionTokens,
+    total_tokens: response.usage.totalTokens,
+    input_cost_in_dollars: response.usage.promptTokens * tokenInputCost,
+    output_cost_in_dollars: response.usage.promptTokens * tokenOutputCost,
+    total_cost_in_dollars:
+      response.usage.promptTokens * tokenInputCost +
+      response.usage.completionTokens * tokenOutputCost,
+    response_time_in_ms: endTime - startTime,
+  },
+});
+```
+
+## 使用不同的提供者
+
+如果您想使用不同的提供者，您可以修改 `@repo/ai/lib/provider.ts` 中的 `provider` 来使用您想要的提供者。例如，要使用 Anthropic，您可以将其更改为：
+
+```ts packages/ai/lib/provider.ts
+import { createAnthropic } from '@ai-sdk/anthropic';
+
+export const provider = createAnthropic({
+  apiKey: env.ANTHROPIC_API_KEY,
+});
+```
+
+## 自定义 AI 代理规则
+
+对于使用 Cursor 或 GitHub Copilot 的用户 - 您可以通过更新下面列出的相应文件来自定义 AI 代理规则。每个聊天响应都会根据您的规则读取文件并提供更有针对性的响应。
+
+<Warning>保持您的指令简短精确。糟糕的指令会降低 Cursor 和 Copilot 的质量和性能。</Warning>
+
+### Cursor
+
+更新 `.cursorrules` 文件以根据您的项目需求自定义 AI 代理。这些规则可以随时更新，并会随着时间的推移更好地帮助您。
+
+关于如何自定义 Cursor 规则的优秀示例可以在 [awesome-cursorrules](https://github.com/PatrickJS/awesome-cursorrules) 找到。
+
+了解更多关于 [Cursor 规则](https://docs.cursor.com/context/rules-for-ai) 的信息。
+
+### GitHub Copilot
+
+要开始使用 [GitHub Copilot Instructions](https://docs.github.com/en/copilot/customizing-copilot/adding-custom-instructions-for-github-copilot)，您必须首先在 VSCode 中启用 `Use Instruction Files` 设置。
+
+更新 `.github/copilot-instructions.md` 文件以根据您的项目需求自定义 AI 代理。这些指令可以随时更新，并会随着时间的推移更好地帮助您。
+
+<Note>需要注意的是，AI 输出可能仍然包含幻觉或不准确之处，因此请始终审查和验证生成的建议。</Note>

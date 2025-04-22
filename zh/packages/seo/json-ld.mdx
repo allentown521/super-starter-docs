@@ -1,0 +1,28 @@
+---
+title: JSON-LD
+description: 我们如何实现JSON-LD结构化数据
+---
+
+## 默认配置
+
+SuperStarter有一个专用的JSON+LD助手，旨在创建完全验证的Google结构化数据，使您的内容更有可能出现在Google搜索结果中。
+
+默认情况下，结构化数据在以下页面上实现：
+
+- `Blog` 用于博客索引
+- `BlogPosting` 用于博客文章页面
+
+## 使用方法
+
+我们的`@repo/seo`包提供了一个基于`schema-dts`构建的JSON+LD助手，允许以类型安全的方式生成结构化数据。您可以像这样声明自己的JSON+LD实现：
+
+```page.tsx
+import { JsonLd } from '@repo/seo/json-ld';
+import type { WithContext, YourInterface } from '@repo/seo/json-ld';
+
+const jsonLd: WithContext<YourInterface> = {
+  // ...
+};
+
+return <JsonLd code={jsonLd} />;
+```

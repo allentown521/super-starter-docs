@@ -1,0 +1,34 @@
+---
+title: 组件
+description: SuperStarter 默认提供了由 shadcn/ui 构建的组件库
+---
+
+SuperStarter 内置了一个由 [shadcn/ui](https://ui.shadcn.com/) 驱动的设计系统。
+
+## 默认配置
+
+shadcn/ui 默认配置为使用 "New York" 风格，Tailwind 的 `neutral` 调色板和 CSS 变量。您可以在 `@repo/design-system` 中自定义组件配置，特别是 `components.json` 文件。所有组件都已安装并定期更新。
+
+## 安装组件
+
+要从根目录安装新组件，请使用 `shadcn` CLI：
+
+```sh Terminal
+npx shadcn@latest add select -c packages/design-system
+```
+
+这会将组件安装到 Design System 包中。
+
+## 更新组件
+
+要更新 shadcn/ui，您可以从根目录运行以下命令：
+
+```sh Terminal
+npx shadcn@latest add --all --overwrite -c packages/design-system
+```
+
+我们也有一个专用命令。了解更多关于[更新](/zh/setup/codebase/update)的信息。
+
+## 更换库
+
+如果您更喜欢其他组件库，可以随时替换为类似的库，例如 Tailwind 的 [Catalyst](https://catalyst.tailwindui.com/)。

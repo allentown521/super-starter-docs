@@ -1,0 +1,75 @@
+---
+title: 概述
+description: 学习如何在你的应用程序中发送邮件。
+---
+
+我们集成了 [React Email](https://react.email/) - 一个高质量、无样式的组件集合，用于使用 React 和 TypeScript 创建漂亮的邮件。
+
+<Note>
+为什么选择 React Email
+
+它让你能够像在应用程序中一样使用 Tailwind CSS 来设计邮件样式。当然，应用程序中的配置也会被重用于邮件。它还让你能够在邮件中使用组件，因此你可以构建一个通用模板并在所有邮件中使用它。
+</Note>
+
+## 邮件服务提供商
+
+在仓库的 `@repo/email` 包中，你可以找到 `providers` 文件夹。
+
+有多种服务提供商可供选择：
+
+<CardGroup cols={2}>
+  <Card title="Resend" icon="link" href="/zh/packages/email/resend"  />
+  <Card title="Plunk" icon="link" href="/zh/packages/email/plunk"  />
+    <Card title="SendGrid" icon="link" href="/zh/packages/email/sendgrid"  />
+    <Card title="Mailersend" icon="link" href="/zh/packages/email/mailersend"  />
+    <Card title="Postmark" icon="link" href="/zh/packages/email/postmark"  />
+    <Card title="Nodemailer" icon="link" href="/zh/packages/email/nodemailer"  />
+</CardGroup>
+
+## 设置发件人邮箱地址
+
+接下来，设置 `EMAIL_FROM` 环境变量作为发件人邮箱地址。这将是所有邮件的发件人地址。请确保该邮箱地址和域名已在你的邮件服务提供商中验证。
+
+## 邮件模板
+
+模板位于 `@repo/email` 包中。你可以在 `packages/email/emails` 目录中找到它们。
+
+### 创建邮件模板
+
+要创建一个新的邮件模板，只需在 `emails` 文件夹中创建一个新的 .tsx 文件。这是一个简单的邮件模板示例：
+
+```tsx emails/my-email.tsx
+import { Button, Html } from "@react-email/components";
+import * as React from "react";
+
+export default function Email() {
+  return (
+    <Html>
+      <Button
+        href="https://example.com"
+        style={{ background: "#000", color: "#fff", padding: "12px 20px" }}
+      >
+        点击我
+      </Button>
+    </Html>
+  );
+}
+```
+
+### 预览邮件
+
+<Frame>
+  <img src="/images/email.png" alt="邮件预览" />
+</Frame>
+
+<Tip>`email` 应用程序运行在 3003 端口。</Tip>
+
+要预览邮件模板，只需运行 `email` 包：
+
+```sh Terminal
+pnpm --filter email dev
+```
+
+## 发送邮件
+
+发送邮件非常简单，我们将在下一节中向你展示如何操作。

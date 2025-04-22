@@ -1,0 +1,43 @@
+---
+title: SendGrid
+description: 了解如何使用SendGrid发送邮件。
+---
+
+在SuperStarter中使用SendGrid
+
+<Steps>
+  <Step title="创建SendGrid账户">
+
+    [创建SendGrid账户](https://login.twilio.com/u/signup)并获取API密钥。
+
+  </Step>
+  <Step title="添加环境变量">
+
+    将`SENDGIRD_TOKEN`环境变量添加到您的.env.local文件以及部署环境中：
+
+    然后，确保激活SendGrid：
+
+    ```ts /packages/email/index.ts
+    export * from './providers/sendgrid';
+    ```
+
+  </Step>
+  <Step title="发送邮件">
+
+    ```tsx apps/web/app/contact/actions/contact.tsx
+    import { sendgridClient } from '@repo/email';
+    import { ContactTemplate } from '@repo/email/emails/contact';
+    import { render } from "@react-email/components";
+
+    const emailHtml = await render(<ContactTemplate name={name} email={email} message={message} />);
+
+    await sendgridClient.send({
+        from: 'sender@acme.com',
+        to: 'recipient@acme.com',
+        subject: '邮件主题',
+        react: emailHtml,
+    });
+    ```
+
+  </Step>
+</Steps>

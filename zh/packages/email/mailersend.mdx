@@ -1,0 +1,49 @@
+---
+title: MailerSend
+description: 了解如何使用MailerSend发送邮件。
+---
+
+使用MailerSend与SuperStarter
+
+<Steps>
+  <Step title="创建MailerSend账户">
+
+    [创建MailerSend账户](https://accounts.mailersend.com/)并获取您的API密钥。
+
+  </Step>
+  <Step title="添加环境变量">
+
+    将`MAILERSEND_TOKEN`环境变量添加到您的.env.local文件和部署环境中：
+
+    然后，确保激活MailerSend：
+
+    ```ts /packages/email/index.ts
+    export * from './providers/mailersend';
+    ```
+
+  </Step>
+  <Step title="发送邮件">
+
+    ```tsx apps/web/app/contact/actions/contact.tsx
+    import { mailerSendClient } from '@repo/email';
+    import { ContactTemplate } from '@repo/email/emails/contact';
+    import { render } from '@react-email/components';
+
+    const emailHtml = await render(<ContactTemplate name={name} email={email} message={message} />);
+
+    const sentFrom = new Sender("you@yourdomain.com", "您的姓名");
+    const recipients = [
+    new Recipient("your@client.com", "您的客户")
+    ];
+
+    const emailParams = new EmailParams()
+    .setFrom(sentFrom)
+    .setTo(recipients)
+    .setSubject("这是主题")
+    .setHtml(emailHtml)
+
+    await mailerSendClient.email.send(emailParams);
+    ```
+
+  </Step>
+</Steps>

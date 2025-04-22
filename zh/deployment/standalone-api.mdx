@@ -1,0 +1,95 @@
+---
+title: Standalone API
+description: 了解如何将您的 SuperStarter API 作为独立服务与前端分开部署。
+---
+
+
+本指南将向您展示如何将您的 SuperStarter API 作为独立服务进行部署。如果您希望在不同的平台上运行 API 和前端，或者希望将 API 作为“长期运行”服务而不是无服务器部署，这将非常有用。如果您的后端有执行时间较长的任务（例如可能会超过无服务器部署的超时限制），您可能需要使用此方法。
+
+本指南解释了如何将 SuperStarter API 作为独立服务进行部署。由于 Hono 有多种部署选项（例如 [Deno](https://deno.com/)、[Bun](https://bun.sh/)），本指南将主要关注 [Node.js](https://nodejs.org/) 部署。
+
+## 为您的 API 创建独立应用
+
+好消息是我们的 `api` 目录是独立的。如果您当前的 api 目录是 `/apps/web/api`，您可以将代码复制到 `/apps/api`
+
+如果您使用的是标准的 next.js api 路由，您需要参考 [hono](/zh/apps/api/overview#hono) 来迁移到 hono。您可以在 `/apps/api` 目录中找到示例。
+
+接下来，将以下文件添加到 apps/api 目录中：
+
+```ts apps/api/index.ts
+import { serve } from '@hono/node-server';
+import { log } from '@repo/observability/log';
+import app from './server/api';
+
+const port = Number.parseInt(process.env.PORT || '3002');
+
+// 作为独立的 Node.js 服务器部署
+serve(
+  {
+    fetch: app.fetch,
+    port,
+  },
+  () => {
+    log.info(`服务器正在端口 ${port} 上运行`);
+  }
+);
+```
+
+## 添加重写规则到 web 应用
+API 将在与应用程序不同的 URL 上运行。为了避免处理跨域请求，我们将通过 web 应用代理 API 请求。为此，您需要向您的 web 应用添加重写规则：
+
+```ts /packages/next-config/index.ts
+	async rewrites() {
+		return [
+			{
+				source: "/api/:path((?!search$).*)",
+				destination: `${process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3002"}/api/:path*`,
+			},
+		];
+	},
+```
+
+<Note>
+我们正在将所有请求重定向到 /api 路径到 API 服务，除了 `/api/search` 路径。这是因为文档搜索是我们 web 应用中的一个无服务器函数，我们不想通过 API 服务代理它。
+
+现在，您应该能够在本地运行 API 服务，通过在 monorepo 中运行已知的 pnpm dev 命令。它将以开发模式启动两个应用。
+
+为了保持仓库的整洁，您还可以删除 `/apps/web/app/api/[[...rest]]` 文件夹，因为它不再需要了。
+</Note>
+
+## 部署 API 服务
+
+您基本上可以将您的 API 作为任何其他 Node.js 项目进行部署。我们将快速介绍两种最受欢迎的选项：Node.js 和 Docker。
+
+### 作为 Node.js 服务器部署
+像 Vercel、Heroku 或 Netlify 这样的 PaaS 提供商允许您通过几次点击来部署您的 Node.js 应用。您可以按照我们针对最受欢迎提供商的专用指南进行操作。每个过程都相似，并将包含几个关键步骤：
+
+1. 将您的仓库连接到 PaaS 提供商
+2. 设置构建设置（例如构建命令、输出目录）
+3. 设置环境变量
+4. 部署项目
+
+```sh Terminal
+# 构建 API 服务
+pnpm --filter api start
+ 
+# 启动 API 服务
+pnpm --filter api build
+```
+
+### 作为 Docker 容器部署
+
+将您的 API 作为 Docker 容器部署是一个很好的选择，如果您希望对部���过程有更多的控制。您可以按照我们的 [docker 专用指南](/zh/deployment/docker) 来了解如何将您的 API 作为 Docker 容器部署。
+
+对于 API 应用程序，Dockerfile 将位于 `apps/api` 目录中
+
+为了使 Prisma 在 Docker 容器中工作，您需要在 schema.prisma 文件中将引擎类型设置为二进制：
+
+```prisma schema.prisma
+generator client {
+  provider = "prisma-client-js"
+  engineType = "binary"
+}
+```
+
+就是这样！您现在可以将 API 层作为一个独立服务发展，与项目中的其他应用分开，并将其部署到任何您想要的地方。

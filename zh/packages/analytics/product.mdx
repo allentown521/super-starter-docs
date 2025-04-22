@@ -1,0 +1,57 @@
+---
+title: 产品分析
+description: 捕获产品事件和指标。
+---
+
+SuperStarter 通过 PostHog 支持产品分析 —— 一个用于分析、测试、观察和部署新功能的单一平台。
+
+## 使用方法
+
+要捕获产品事件，您可以使用从 `@repo/analytics` 包导出的 `analytics` 对象。
+
+首先导入适用于相关环境的 `analytics` 对象：
+
+```tsx
+// For server-side code
+import { analytics } from '@repo/analytics/posthog/server';
+
+// For client-side code
+import { analytics } from '@repo/analytics/posthog/client';
+```
+
+然后，您可以使用 `capture` 方法发送事件：
+
+```tsx
+analytics.capture({
+  event: 'Product Purchased',
+  distinctId: 'user_123',
+});
+```
+
+## Webhooks
+
+为了自动捕获身份验证和支付事件，我们将 PostHog 的 Node.js 服务器端库与 Clerk 和 Stripe webhooks 结合，如下所示：
+
+<Mermaid chart={`
+graph TD
+  A[User Action in App] -->|Triggers| B[Clerk Webhook]
+  A -->|Triggers| E[Stripe Webhook]
+  A -->|Client-Side Call| PostHog
+  B -->|Sends Data| C1[webhooks/clerk]
+  E -->|Sends Data| C2[webhooks/stripe]
+
+  subgraph API
+    C1
+    C2
+  end
+
+  subgraph PostHog
+  end
+
+  C1 -->|Clerk Events| PostHog
+  C2 -->|Stripe Events| PostHog
+`} />
+
+## 反向代理
+
+我们还设置了 Next.js 重写来反向代理 PostHog 请求，这意味着您的客户端分析事件不会被广告拦截器阻止。

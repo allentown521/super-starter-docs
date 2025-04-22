@@ -1,0 +1,55 @@
+---
+title: 保护API端点
+description: 了解如何在SuperStarter应用程序中保护API端点。
+---
+
+## 检查用户是否已认证
+
+要保护您的API端点，您可以在路由器或特定端点上使用`honoAuthMiddlewareWrap`。
+
+```ts hello/index.ts
+import { honoAuthMiddlewareWrap } from "@repo/auth/middleware";
+import { Hono } from "hono";
+
+const app = new Hono();
+
+const hello = app.basePath("/hello").get(
+  "/",
+  honoAuthMiddlewareWrap,
+  // ...
+  (c) => {
+    const { name } = c.req.query();
+    return c.json({ message: `Hello ${name || "World"}!` });
+  }
+);
+
+export default hello;
+```
+
+如果用户未认证，中间件将抛出错误。
+
+`honoAuthMiddlewareWrap`还会向端点提供`auth`信息。如果到达处理程序，`auth`中这两个对象都可用。
+
+```ts hello/index.ts
+import { getAuth, honoAuthMiddlewareWrap } from '@repo/auth/middleware';
+import { Hono } from "hono";
+
+const app = new Hono();
+
+const hello = app.basePath('/hello').get('/', honoAuthMiddlewareWrap, (c) => {
+    const auth = getAuth(c);
+
+  if (!auth?.userId) {
+    return c.json({
+      message: '您尚未登录。',
+    });
+  }
+
+  return c.json({
+    message: '您已登录！',
+    userId: auth.userId,
+  });
+});
+
+export default hello;
+```

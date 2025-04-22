@@ -1,0 +1,46 @@
+---
+title: Creem
+description: 学习如何将Creem与SuperStarter集成。
+---
+
+## 获取API密钥
+
+在您创建了Creem账户后，您需要获取API密钥。您可以通过访问仪表板中的[API页面](https://www.creem.io/dashboard/developers)来获取。在这里您将找到`Secret key`和`Publishable key`。您需要`Secret key`才能使集成正常工作。
+
+### 添加环境变量
+
+要使用Creem集成，您需要在`.env.local`以及生产环境中定义以下环境变量：
+
+```env .env.local
+CREEM_API_KEY=
+CREEM_WEBHOOK_SECRET=
+```
+
+## 应用内购买
+
+删除注释：
+```ts zh/packages/payments/index.ts
+export * from './providers/creem';
+```
+
+### 创建结账会话
+
+我们需要创建一个结账会话来向您的用户收费，您只需要修改一些代码。它由两部分组成：
+
+- 客户端
+
+它发送一个请求到`/api/creem/checkout`端点来创建会话。
+
+```tsx zh/apps/web/[locale]/components/payment/price-form.tsx
+      const response = await fetch('/api/creem/checkout', { // change to `/api/creem/checkout`
+        method: 'POST',
+        body: JSON.stringify({
+          priceId: item.priceId,
+          interval: item.interval,
+        }),
+      });
+```
+
+- 服务端
+
+删除`zh/apps/web/api/creem/checkout/route.ts`中的注释

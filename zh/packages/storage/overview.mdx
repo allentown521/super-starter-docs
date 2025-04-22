@@ -1,0 +1,25 @@
+---
+title: 概述
+description: 如何在您的应用中存储文件。
+---
+
+使用SuperStarter，您可以轻松上传和管理应用中的文件（图片、视频、文档等）。
+
+## 文件上传
+
+最常见的文件上传方式是使用客户端上传。通过客户端上传，您可以避免支付通过服务器传输文件二进制数据的入口/出口费用。
+
+此外，大多数托管平台如[Vercel](https://vercel.com/docs/functions/runtimes#size-limits)或[Netlify](https://answers.netlify.com/t/what-is-the-maximum-file-size-upload-limit-in-a-netlify-form-submission/108419)都有文件大小和最大无服务器函数执行时间的限制。
+
+这就是为什么SuperStarter利用存储提供商的`presigned URLs`功能来上传文件。客户端不是将文件发送到无服务器函数，而是从无服务器函数请求一个有时限的presigned URL，然后直接将文件上传到存储提供商。
+
+1. 客户端从无服务器函数请求presigned URL
+2. 服务器解析请求，验证有效载荷，可选地保存元数据，并将presigned URL返回给客户端
+3. 客户端在过期时间内将文件上传到presigned URL
+4. (可选)文件上传后，无服务器函数会收到上传事件通知，并将文件元数据保存到数据库
+
+存储的配置和使用简单直接。我们将在后续章节中更详细地探讨这一点。
+
+<Note>
+这些限制对大多数用例来说不是问题，但如果您需要上传非常大的文件或需要长时间处理文件，您可能需要`presigned URLs`功能。
+</Note>

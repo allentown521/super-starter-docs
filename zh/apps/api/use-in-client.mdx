@@ -1,0 +1,52 @@
+---
+title: 使用API客户端
+description: 学习如何在您的SuperStarter应用程序中从API获取数据。
+---
+
+要以类型安全的方式从您的应用程序查询此端点，您可以在Next.js应用程序中使用`apiClient`。
+
+## `apps/api`中的路由
+
+```tsx
+import { apiClient as hc } from 'apps/api/server/api/index';
+
+  const res = await hc.api.hello.$get({
+    query: { name: '' },
+  });
+```
+
+## `apps/web`中的路由
+
+check [Hono 文档](https://hono.dev/docs/concepts/stacks#sharing-the-types) 了解更多详情
+
+### 导出路由类型
+
+```tsx hello/index.ts
+const route = app.get(
+  '/hello',
+  zValidator(
+    'query',
+    z.object({
+      name: z.string(),
+    })
+  ),
+  (c) => {
+    const { name } = c.req.valid('query')
+    return c.json({
+      message: `Hello! ${name}`,
+    })
+  }
+)
+
+export type AppType = typeof route
+export default handle(app)
+```
+
+### 使用客户端
+
+```tsx
+import { hc } from 'hono/client';
+  const res = await hc.api.hello.$get({
+    query: { name: '' },
+  });
+```

@@ -1,0 +1,90 @@
+---
+title: 切换到 Supabase
+description: 如何将数据库提供商更改为 Supabase。
+---
+
+[Supabase](https://supabase.com) 是一个开源的 Firebase 替代方案，提供 Postgres 数据库、身份验证、即时 API、边缘函数、实时订阅和存储。
+
+`SuperStarter` 使用 Neon 作为数据库提供商，Prisma 作为 ORM，以及 Clerk 进行身份验证。本指南将提供将数据库提供商从 Neon 切换到 Supabase 所需的步骤。本指南基于一些现有资源，包括 [Supabase 的指南](https://supabase.com/partners/integrations/prisma) 和 [Prisma 的指南](https://www.prisma.io/docs/orm/overview/databases/supabase)。
+
+<Note>
+ 对于身份验证，将提供另一个指南来切换到 Supabase Auth，具有与 Clerk 相同的功能，如组织管理、用户角色等（即将推出）。
+</Note>
+
+以下是如何为您的 `SuperStarter` 项目从 Neon 切换到 [Supabase](https://supabase.com)。
+
+## 1. 注册 Supabase
+
+在 [supabase.com](https://supabase.com) 创建一个免费账户。您可以通过仪表板管理您的项目，或使用 [Supabase CLI](https://supabase.com/docs/guides/local-development)。
+
+_在本指南中，我们将同时使用仪表板和 CLI。_
+
+## 2. 创建项目
+
+从 [Supabase 仪表板](https://supabase.com/dashboard) 创建一个新项目。为其命名并选择您偏好的区域。创建后，您将获得项目的连接详细信息。前往 **设置** 页面，然后点击 **数据库**。
+
+我们需要为下一步跟踪以下内容：
+
+- `Transaction` 模式下的数据库 URL，端口以 `6543` 结尾。我们将其称为 `DATABASE_URL`。
+- `Session` 模式下的数据库 URL，端口以 `5432` 结尾。我们将其称为 `DIRECT_URL`。
+
+## 3. 更新环境变量
+
+使用 Supabase 连接详细信息更新 `.env` 文件。确保在 `DATABASE_URL` 值的末尾添加 `?pgbouncer=true&connection_limit=1`。 
+
+```js .env
+DATABASE_URL="postgres://postgres:postgres@127.0.0.1:54322/postgres?pgbouncer=true&connection_limit=1"
+DIRECT_URL="postgres://postgres:postgres@127.0.0.1:54322/postgres"
+```
+
+<Note>
+`pgbouncer=true` 会禁用 Prisma 生成预处理语句。这是必要的，因为我们的连接池器尚不支持事务模式下的预处理语句。`connection_limit=1` 参数仅在您从无服务器环境使用 Prisma 时是必需的。
+</Note>
+
+## 4. 替换依赖项
+
+Prisma 还没有 Supabase 适配器，因此我们只需要移除 Neon 适配器并直接连接到 Supabase。
+
+首先，从项目中移除 Neon 依赖...
+
+```sh Terminal
+pnpm remove @neondatabase/serverless @prisma/adapter-neon ws @types/ws --filter @repo/database
+```
+
+... and add the Supabase dependencies:
+
+```sh Terminal
+pnpm install -D supabase --filter @repo/database
+```
+
+## 5. 更新数据库包
+
+更新 `database` 包。我们将移除 Neon 扩展并直接连接到 Supabase，这应该会自动使用我们之前设置的环境变量。
+
+```ts packages/database/index.ts
+import 'server-only';
+import { PrismaClient } from '@prisma/client';
+
+export const database = new PrismaClient();
+
+export * from '@prisma/client';
+```
+
+## 6. 更新 Prisma 模式
+
+更新 `prisma/schema.prisma` 文件，使其包含 `DIRECT_URL`。这允许我们使用 Prisma CLI 绕过 Supavisor 对数据库执行其他操作（例如迁移）。
+
+```js prisma/schema.prisma {4}
+datasource db {
+  provider     = "postgresql"
+  url          = env("DATABASE_URL")
+  directUrl    = env("DIRECT_URL")
+  relationMode = "prisma"
+}
+```
+
+Now you can run the migration from the root of your `SuperStarter` project:
+
+```sh Terminal
+pnpm run migrate
+```

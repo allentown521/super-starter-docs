@@ -1,0 +1,58 @@
+---
+title: 定时任务
+description: 创建在特定时间间隔运行的无服务器函数。
+---
+
+默认情况下，SuperStarter使用Vercel的cron jobs功能按计划触发Next.js无服务器函数。不过，您可以用自己选择的背景作业服务（如trigger.dev或BetterStack）替换此设置。
+
+## 编写函数
+
+Next.js无服务器函数作为计划作业的基础。您可以在任何运行时编写它们，并使用简单的HTTP调用触发它们。
+
+为了演示，我们创建了一个名为`keep-alive`的示例端点，它在数据库中创建然后删除一个临时的`page`对象。这是一个防止数据库在一段时间不活动后进入睡眠状态的小技巧。如果不需要，您应该删除它。
+
+此外，虽然您可以将cron jobs添加到任何应用程序中，但我们使用`api`应用程序将我们的后台作业、webhooks和其他此类任务与我们的UI隔离开来。
+
+您可以通过在`apps/api/app/cron`文件夹中创建相关的`route.ts`文件来添加新函数。虽然您可以将它们放在任何地方，但我们使用名为`cron`的文件夹来存放设计为作为cron作业运行的端点。例如：
+
+```ts zh/apps/api/app/cron/[your-function]/route.ts
+import { database } from '@repo/database';
+
+// Must use GET for Vercel cron jobs
+export const GET = async () => {
+  // Do stuff
+
+  return new Response('OK', { status: 200 });
+};
+```
+
+## 调度
+
+编写完无服务器函数后，您可以通过修改API应用程序中的`vercel.json`文件来安排它。作为一个例子，我们已经将上面提到的`keep-alive`作业设置为每10分钟运行一次。
+
+```json zh/apps/api/vercel.json
+{
+  "crons": [
+    {
+      "path": "/cron/keep-alive",
+      "schedule": "0 1 * * *"
+    }
+  ]
+}
+```
+
+## Vercel 如何触发 cron 作业
+
+要触发cron作业，Vercel会向您项目的生产部署URL发出HTTP GET请求，使用vercel.json文件中提供的路径。例如，Vercel可能会向以下地址发出请求：
+
+```
+https://*.vercel.app/cron/keep-alive
+```
+
+## 手动触发
+
+如果您需要手动触发cron作业，您可以在Vercel仪表板中执行此操作，或者只需使用标准HTTP请求点击端点。例如：
+
+```sh Terminal
+curl -X GET http://localhost:3002/cron/keep-alive
+```

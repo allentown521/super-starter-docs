@@ -1,0 +1,39 @@
+---
+title: 开发
+description: 开始使用代码并开发您的SaaS。
+---
+
+<Steps>
+  <Step title="创建新数据库">
+    默认情况下，SuperStarter使用[Neon](https://neon.tech)作为数据库提供商，使用[Prisma](https://prisma.io)作为ORM。
+
+    请确保已创建新数据库并准备好连接字符串。例如，使用PostgreSQL时，连接字符串将如下所示：
+    ```
+    postgresql://<username>:<password>@<host>:<port>/<database>
+    ```
+  </Step>
+  <Step title="设置环境变量">
+    您可以[在此](/zh/setup/configuration/environment)阅读有关环境变量的更多信息。至少设置`DATABASE_URL`
+  </Step>
+  <Step title="配置数据库">
+    您需要使用`packages/database/prisma/schema.prisma`中定义的schema来搭建数据库：
+
+    ```sh Terminal
+    pnpm migrate
+    ```
+
+    有关默认Prisma配置（使用Neon）的更多详细信息，请参阅[数据库配置指南](/zh/packages/database#default-configuration)。
+  </Step>
+    <Step title="启动开发服务器">
+    现在您的应用应该已经准备就绪。要启动本地开发服务器，请导航到项目根目录并运行以下命令。
+    ```sh Terminal
+    pnpm dev
+    ```
+    打开上面列出的相关端口的localhost URL以查看应用，例如 🎉
+
+    - [http://localhost:3000/](http://localhost:3000/) — 主应用
+    - [http://localhost:3001/](http://localhost:3001/) — 网站
+    - [http://localhost:3002/](http://localhost:3002/) — API
+    - [http://localhost:3004/](http://localhost:6006/) — Storybook
+  </Step>
+</Steps>

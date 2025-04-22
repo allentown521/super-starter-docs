@@ -1,0 +1,102 @@
+---
+title: Docker
+description: 学习如何将SuperStarter部署为Docker容器。
+---
+
+
+在本指南中，我们将向您展示如何将您的SuperStarter应用程序部署为Docker容器，以便您可以将其部署到任何支持docker镜像的平台或服务器上。
+
+## 为什么要将您的SaaS部署为Docker容器？
+将您的SaaS部署为Docker容器可以让您完全控制服务器环境。它确保了更好的隐私性，如果管理得当，可以节省成本，并为您提供了根据特定需求自定义服务器设置的灵活性。与在Vercel等无服务器平台上托管相比，它还可以为您的应用程序带来性能提升，因为它消除了冷启动。
+
+## 为Docker部署设置Next.js应用程序
+首先，我们需要将Next.js应用程序配置为独立应用程序，以便稍后可以在Docker容器中运行该应用程序。为此，请在您的项目中添加以下`next.config.ts`文件：
+
+```js next.config.ts
+nextConfig.output = 'standalone';
+```
+
+## 为Next.js应用程序设置Docker配置
+
+接下来，在Next.js应用程序的根目录中创建一个Dockerfile（`apps/web/Dockerfile`），内容如下：
+
+```dockerfile Dockerfile
+FROM node:22-alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+ 
+FROM base AS builder
+RUN apk add --no-cache libc6-compat
+RUN apk update
+WORKDIR /app
+RUN pnpm add -g turbo
+COPY . .
+RUN turbo prune @repo/web --docker
+ 
+FROM base AS installer
+RUN apk add --no-cache libc6-compat
+RUN apk update
+WORKDIR /app
+ 
+COPY .gitignore .gitignore
+COPY --from=builder /app/out/json/ .
+COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+ENV CYPRESS_INSTALL_BINARY=0
+RUN pnpm install
+ 
+COPY --from=builder /app/out/full/ .
+COPY turbo.json turbo.json
+ 
+RUN pnpm --filter web build
+ 
+FROM base AS runner
+WORKDIR /app
+ 
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+USER nextjs
+ 
+COPY --from=installer /apps/web/next.config.ts .
+COPY --from=installer /apps/web/package.json .
+ 
+COPY --from=installer --chown=nextjs:nodejs /apps/web/.next/standalone ./
+COPY --from=installer --chown=nextjs:nodejs /apps/web/.next/static ./apps/web/.next/static
+COPY --from=installer --chown=nextjs:nodejs /apps/web/public ./apps/web/public
+ 
+USER nextjs
+ 
+EXPOSE 3000
+ 
+ENV PORT 3000
+ENV HOSTNAME "0.0.0.0"
+ 
+CMD ["node", "apps/web/server.js"]
+```
+
+在SuperStarter项目的根目录中，还添加一个.dockerignore文件，内容如下：
+
+```dockerignore .dockerignore
+Dockerfile
+.dockerignore
+node_modules
+**/node_modules
+npm-debug.log
+README.md
+.next
+.git
+```
+
+这就是所有必要的更改！现在您可以将您的应用程序构建为docker镜像，并将其部署到任何可以运行docker镜像的地方。
+
+## 在本地使用Docker运行您的应用程序
+如果您在本地机器上安装了Docker并希望在那里运行您的Next.js应用程序以测试docker镜像，只需从项目的根目录运行以下命令：
+
+```sh Terminal
+docker build -f apps/web/Dockerfile . --no-cache -t superstarter-docker
+docker run -p 3000:3000 superstarter-docker
+```
+
+要完全使用该应用程序，您需要将.env.local文件中定义的必要环境变量传递给容器。
+
+现在，您可以将您的应用程序部署到任何支持docker镜像的服务器上。

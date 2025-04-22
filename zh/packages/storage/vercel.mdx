@@ -1,0 +1,88 @@
+---
+title: Vercel
+description: 如何在您的应用中使用Vercel存储文件。
+---
+
+SuperStarter为文件存储提供了[Vercel Blob](https://vercel.com/docs/storage/vercel-blob)的简单封装。
+
+## 使用方法
+
+### 服务器端上传
+
+要使用Server Actions的`storage`包，请按照[Vercel的服务器操作文档](https://vercel.com/docs/storage/vercel-blob/server-upload#upload-a-file-using-server-actions)中的说明操作。
+
+```tsx page.tsx
+import { put } from '@repo/storage';
+import { revalidatePath } from 'next/cache';
+ 
+export async function Form() {
+  async function uploadImage(formData: FormData) {
+    'use server';
+    const imageFile = formData.get('image') as File;
+    const blob = await put(imageFile.name, imageFile, {
+      access: 'public',
+    });
+    revalidatePath('/');
+    return blob;
+  }
+ 
+  return (
+    <form action={uploadImage}>
+      <label htmlFor="image">Image</label>
+      <input type="file" id="image" name="image" required />
+      <button>Upload</button>
+    </form>
+  );
+}
+```
+
+<Tip>如果需要上传大于4.5 MB的文件，请考虑使用客户端上传。</Tip>
+
+### 客户端上传
+
+对于客户端使用，请查看[Vercel的客户端上传文档](https://vercel.com/docs/storage/vercel-blob/client-upload)。
+
+```tsx page.tsx
+'use client';
+ 
+import { type PutBlobResult } from '@repo/storage';
+import { upload } from '@repo/storage/client';
+import { useState, useRef } from 'react';
+ 
+export default function AvatarUploadPage() {
+  const inputFileRef = useRef<HTMLInputElement>(null);
+  const [blob, setBlob] = useState<PutBlobResult | null>(null);
+  return (
+    <>
+      <h1>Upload Your Avatar</h1>
+ 
+      <form
+        onSubmit={async (event) => {
+          event.preventDefault();
+ 
+          if (!inputFileRef.current?.files) {
+            throw new Error('No file selected');
+          }
+ 
+          const file = inputFileRef.current.files[0];
+ 
+          const newBlob = await upload(file.name, file, {
+            access: 'public',
+            handleUploadUrl: '/api/avatar/upload',
+          });
+ 
+          setBlob(newBlob);
+        }}
+      >
+        <input name="file" ref={inputFileRef} type="file" required />
+        <button type="submit">Upload</button>
+      </form>
+      {blob && (
+        <div>
+          Blob url: <a href={blob.url}>{blob.url}</a>
+        </div>
+      )}
+    </>
+  );
+}
+```

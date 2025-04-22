@@ -1,0 +1,61 @@
+---
+title: 环境变量
+description: 如何在SuperStarter中处理环境变量。
+---
+
+SuperStarter 提供了一个可组合的环境变量系统，允许您以类型安全的方式为每个包定义和验证环境变量，然后将它们组合到应用程序的单个环境变量文件中。
+
+## 概述
+
+类型安全由 [@t3-oss/env-nextjs](https://env.t3.gg/) 提供，它为所有环境变量提供运行时验证和自动补全。每个包都可以在自己的 `keys.ts` 文件中定义环境变量，该文件导出一个 `keys` 对象，其中包含所有已验证的环境变量，分为 `server` 和 `client` 变量。
+
+这些键随后被组合到应用程序根目录下的 `env.ts` 文件中。
+
+## 环境变量文件
+
+作为初始设置脚本的一部分，每个 `.env.example` 文件都会被复制到每个 Next.js 应用程序和一些包中的真实环境变量文件中。从这里开始，您可以自己填写变量。
+
+<Note>
+为了使应用程序在最小配置下正常运行，每个模块的环境变量中都已预先设置了占位符。您只需根据实际需要将这些占位符更改为您想要使用的实际值。
+</Note>
+
+以下是您需要填写的文件：
+
+- `app/.env.local` - 应用程序的环境变量。
+
+`DATABASE_URL` `*STRIPE*` `*CLERK*`.
+
+- `web/.env.local` - Web 应用程序的环境变量。
+
+`RESEND_TOKEN` `EMAIL_FROM` `*CLERK*`.
+
+- `api/.env.local` - API 应用程序的环境变量。
+
+`DATABASE_URL` `*CLERK*`.
+
+- `packages/database/.env` - 数据库包的环境变量。
+
+`DATABASE_URL`
+
+- `packages/internationalization/.env.local` - 国际化包的环境变量。
+
+<Info>
+  我们正在努力消除对包环境变量文件的需求，因此如果您有任何建议，请告诉我们。
+</Info>
+
+## 验证规则
+
+每个包的 `keys.ts` 文件都包含每个环境变量的验证规则。这些规则用于验证 `.env.local` 文件中的环境变量。您可以检查这些文件以查看每个变量的验证规则。
+
+<Tip>您应该尽可能具体地进行验证。例如，如果您知道供应商密钥以 `sec_` 开头，则应将其验证为 `z.string().min(1).startsWith('sec_')`。这不仅会使您的意图对阅读代码的人更清晰，而且还有助于防止运行时错误。</Tip>
+
+## 集成环境变量
+
+一些环境变量将由集成和其他工具添加。例如，当您从 Vercel Marketplace 添加 Sentry 集成时，前缀为 `SENTRY_` 的环境变量会自动添加到 Vercel 项目中。此外，[`VERCEL_PROJECT_PRODUCTION_URL`](https://vercel.com/docs/environment-variables/system-environment-variables) 是一个非常有用的环境变量，它指向该项目在 Vercel 上部署的“生产”URL。
+
+## 添加环境变量
+
+要添加新的环境变量，您需要做两件事：
+
+1. 将变量添加到项目中的每个 `.env.local` 文件中
+2. 将变量添加到相关包的 `keys.ts` 文件中的 `server` 或 `client` 对象中。

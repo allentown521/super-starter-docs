@@ -1,0 +1,18 @@
+---
+title: 应用包分析
+description: 如何分析和优化您的应用包大小
+---
+
+SuperStarter 使用 [@vercel/next-bundle-analyzer](https://github.com/vercel/next-bundle-analyzer) 来分析和优化您的应用包大小。每个应用都有一个 `next.config.ts` 文件，当 `ANALYZE` 环境变量设置为 `true` 时，该文件将配置为使用分析器。
+
+## 使用方法
+
+要运行分析器，只需从项目根目录执行以下命令：
+
+```sh Terminal
+pnpm analyze
+```
+
+Turborepo 将在命令执行时自动为每个应用运行分析器。一旦包分析器为每个应用完成运行，它将在您的默认浏览器中自动打开三个 HTML 文件：`client`、`nodejs` 和 `edge`。每个文件都显示一个树状图，描述在该特定环境下加载的模块的大小和影响。
+
+然后，您可以通过移除或动态加载最重的模块来优化您的应用。

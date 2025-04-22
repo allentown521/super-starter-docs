@@ -1,0 +1,159 @@
+---
+title: uploadthing
+description: 如何将默认存储提供商更改为uploadthing。
+---
+
+[uploadthing](https://uploadthing.com) 是一个云存储文件平台。它是AWS S3的一个很好的替代方案，并且对小型项目免费。以下是切换默认存储提供商到uploadthing的方法。
+
+## 1. 更新环境变量
+
+接下来，将环境变量添加到您的`.env.local`文件中：
+
+```js apps/app/.env
+// 添加以下内容：
+UPLOADTHING_TOKEN=""
+```
+
+
+## 2. 更新现有存储文件
+
+更新`index.ts`和`client.ts`以使用新的`uploadthing`包：
+
+<CodeGroup>
+
+```ts packages/storage/index.ts
+export * from './providers/uploadthing';
+```
+
+```ts packages/storage/client.ts
+export * from '@uploadthing/react';
+```
+
+</CodeGroup>
+
+## 3. 创建新的SSR文件
+
+我们还需要为存储包创建一个新文件来处理Tailwind CSS类和SSR。
+
+```ts packages/storage/ssr.ts
+export { NextSSRPlugin as StorageSSRPlugin } from '@uploadthing/react/next-ssr-plugin';
+```
+
+## 4. 在应用中创建文件路由器
+
+在应用的`lib`目录中创建一个新文件来定义文件路由器。该文件将用于定义应用的文件路由，使用您的[Auth](/zh/packages/authentication)包获取当前用户。
+
+```ts apps/app/app/lib/upload.ts
+import { currentUser } from '@repo/auth/server';
+import { type FileRouter, UploadError, storage } from '@repo/storage';
+  
+export const router: FileRouter = {
+  imageUploader: storage({
+    image: {
+      maxFileSize: '4MB',
+      maxFileCount: 1,
+    },
+  })
+    .middleware(async () => {
+      const user = await currentUser();
+
+      if (!user) {
+        throw new UploadError('Unauthorized');
+      }
+
+      return { userId: user.id };
+    })
+    .onUploadComplete(({ metadata, file }) => ({ uploadedBy: metadata.userId }),
+};
+```
+
+## 5. 创建路由处理器
+
+在应用的`api`目录中创建一个新的路由处理器来处理文件路由。
+
+```ts apps/app/app/api/upload/route.ts
+import { router } from '@/app/lib/upload';
+import { createRouteHandler } from '@repo/storage';
+
+export const { GET, POST } = createRouteHandler({ router });
+```
+
+## 6. 更新根布局
+
+更新根布局以包含`StorageSSRPlugin`。这将添加SSR水合并避免上传按钮出现加载状态。
+
+```tsx apps/app/app/layout.tsx {4,5,7,16}
+import '@repo/design-system/styles/globals.css';
+import { DesignSystemProvider } from '@repo/design-system';
+import { fonts } from '@repo/design-system/lib/fonts';
+import { extractRouterConfig } from '@repo/storage';
+import { StorageSSRPlugin } from '@repo/storage/ssr';
+import type { ReactNode } from 'react';
+import { router } from './lib/upload';
+
+type RootLayoutProperties = {
+  readonly children: ReactNode;
+};
+
+const RootLayout = ({ children }: RootLayoutProperties) => (
+  <html lang="en" className={fonts} suppressHydrationWarning>
+    <body>
+      <StorageSSRPlugin routerConfig={extractRouterConfig(router)} />
+      <DesignSystemProvider>{children}</DesignSystemProvider>
+    </body>
+  </html>
+);
+
+export default RootLayout;
+```
+
+## 7. 更新Tailwind CSS
+
+更新设计系统的`globals.css`文件以包含以下内容：
+
+```css packages/design-system/styles/globals.css
+@import "uploadthing/tw/v4";
+@source "../node_modules/@uploadthing/react/dist";
+```
+
+## 8. 创建上传按钮
+
+为上传按钮创建一个新组件。这将使用`generateUploadButton`函数创建一个按钮，该按钮将文件上传到`imageUploader`端点。
+
+```tsx apps/app/app/(authenticated)/components/upload-button.tsx
+'use client';
+
+import type { router } from '@/app/lib/upload';
+import { generateUploadButton } from '@repo/storage/client';
+import { toast } from 'sonner';
+
+const UploadButton = generateUploadButton<typeof router>();
+
+export const UploadForm = () => (
+  <UploadButton
+    endpoint="imageUploader"
+    onClientUploadComplete={(res) => {
+      // Do something with the response
+      console.log('Files: ', res);
+      toast.success('Upload Completed');
+    }}
+    onUploadError={(error: Error) => {
+      toast.error(`ERROR! ${error.message}`);
+    }}
+  />
+);
+```
+
+现在，您可以将该组件导入应用程序，并将其作为常规组件使用。
+
+## 9. 高级配置
+
+uploadthing是一个功能强大的平台，提供了许多高级配置选项。您可以在[uploadthing文档](https://docs.uploadthing.com/)中了解更多信息。
+
+<Card title="文件路由" icon="route" href="https://docs.uploadthing.com/file-routes" horizontal>
+  了解如何定义文件路由
+</Card>
+
+<Card title="安全性" icon="shield" href="https://docs.uploadthing.com/concepts/auth-security" horizontal>
+  如何保护UploadThing流程的不同部分。
+</Card>

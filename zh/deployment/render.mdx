@@ -1,0 +1,28 @@
+---
+title: Render
+description: 学习如何将 SuperStarter 部署到 Render。
+---
+
+在本指南中，我们将向您展示如何轻松地将您的 SuperStarter SaaS 部署到 [Render](https://render.com/)。
+
+## 为什么选择在 Render 上部署您的 SaaS？
+将您的 SaaS 作为 node 应用程序部署在 Render 上，可以让您完全控制服务器环境。它能确保更好的隐私性，如果管理得当还能节省成本，并为您提供灵活性以根据特定需求自定义服务器设置。与 Vercel 等无服务器平台相比，它还能提升应用程序性能，因为它消除了冷启动问题。
+
+## 将应用程序部署到 Render
+如果尚未连接，系统会要求您连接 Git 提供商账户。之后，您可以选择要部署的仓库。
+
+在继续之前，请确保您已在 Render 上拥有账户。您可以在 [render.com](https://render.com/) 免费注册。
+
+1. 要在 Render 上部署您的应用程序，请点击仪表板上的 `New` 按钮并选择 `Web Service`
+
+2. 然后选择 `Build and deploy from a Git repository` 并连接您的仓库
+
+3. 在下一步中，为您的项目输入名称并设置以下配置：
+   - 构建命令: `corepack enable; pnpm install --frozen-lockfile; pnpm build`
+   - 启动命令: `pnpm --filter web start`
+
+4. 现在为您的应用程序定义环境变量。您可以从 `.env.local` 文件中复制它们
+
+5. 最后，为您的服务选择一个计划。出于测试目的甚至 MVP，您可以从免费层开始。对于生产环境，我们建议升级到付费计划，它提供更多资源、更好的性能，并且不会在闲置一段时间后休眠。
+
+6. 然后点击 `Create Web Service`，Render 将开始构建和部署您的应用程序。部署完成后，您可以通过提供的 URL 访问您的应用程序。

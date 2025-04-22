@@ -1,0 +1,63 @@
+---
+title: 更新代码库
+description: 了解如何从SuperStarter仓库更新代码库到最新版本和功能。
+---
+
+<Warning>
+在更新代码库之前，请确保你的git仓库是干净的，并且没有未提交的更改。
+</Warning>
+
+## 使用CLI
+
+手动操作可能比较困难，因此我们创建了一个脚本来帮助你，这是推荐的更新项目的方式。
+
+```sh Terminal
+npx super-starter@latest update
+```
+
+这将运行我们的更新脚本，这将指导您完成更新项目的过程。
+
+```
+┌  Let's update your SuperStarter project!
+│
+│
+◆  Select a version to update to:
+│  ● v2.2.15
+│  ○ v2.2.14
+│  ○ v2.2.13
+│  ○ v2.2.12
+│  ○ v2.2.11
+└
+```
+
+这会将最新版本的 SuperStarter 克隆到一个临时目录中，应用更新，然后将文件复制到您的项目中。在这里，您可以提交更改并将其推送到您的存储库。
+
+## 使用Git
+
+添加上游远程仓库指向原始仓库以拉取更新：
+
+```sh Terminal
+git remote add origin https://github.com/focusapps/SuperStarter/
+```
+
+> 如果您以前已经在设置中执行此操作，则可以跳过此步骤。
+
+从 SuperStarter 存储库更新存储库:
+
+```sh Terminal
+- Pull changes
+git pull upstream main
+
+- Merge changes
+git merge upstream/main
+```
+<Note>
+在pnpm-lock.yaml中遇到冲突？
+
+如果你在`pnpm-lock.yaml`文件中发现冲突，接受任意一个更改（避免手动编辑），然后运行：
+```sh Terminal
+pnpm i
+```
+您的锁定文件现在将反映您的更改和来自上游仓库的更新.
+</Note>
+<Tip>由于SuperStarter是一个样板而不是库，你可能需要手动合并你所做的更改与更新中的更改。</Tip>

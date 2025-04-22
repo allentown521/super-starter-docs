@@ -1,0 +1,74 @@
+---
+title: 测试
+description: SuperStarter中的测试配置说明
+---
+
+SuperStarter使用[Vitest](https://vitest.dev/)进行单元测试。这是一个快速轻量的测试框架，兼容Jest的API。单元测试会作为Turborepo中`build`任务的一部分自动运行。
+
+## 运行测试
+
+要运行测试，只需执行：
+
+```sh Terminal
+pnpm test
+```
+
+这会运行每个应用中`__tests__`文件夹下的所有测试，不过目前我们只为`app`项目编写了几个测试。
+
+## 添加测试
+
+我们使用[Testing Library](https://testing-library.com/)进行测试。这个优秀的库让你能够以接近用户实际交互的方式测试组件。
+
+在`__tests__`文件夹中，创建一个名为`[page].test.tsx`的新文件（其中`[page]`是你要测试的页面名称）。以下是`home`页面的测试示例：
+
+```tsx apps/app/__tests__/home.test.tsx
+import { render, screen } from '@testing-library/react';
+import { expect, test } from 'vitest';
+import Page from '../app/(unauthenticated)/home/page';
+
+test('首页', () => {
+  render(<Page />);
+  expect(
+    screen.getByRole('heading', {
+      level: 1,
+      name: 'Hello, world!',
+    })
+  ).toBeDefined();
+});
+```
+
+## 为其他应用添加Vitest
+
+要为其他应用添加Vitest，需要先安装依赖：
+
+```sh Terminal
+pnpm install -D vitest @testing-library/react @testing-library/dom --filter [app]
+```
+
+同时将`@repo/testing`包添加到`package.json`文件的`devDependencies`部分：
+
+```json apps/[app]/package.json {2}
+"devDependencies": {
+  "@repo/testing": "workspace:*"
+}
+```
+
+在应用根目录创建名为`vitest.config.ts`的新文件并添加以下内容：
+
+```ts apps/[app]/vitest.config.ts
+export { default } from '@repo/testing';
+```
+
+然后，在相关应用的`__tests__`文件夹中创建新文件，并在`package.json`文件中添加`test`命令：
+
+```json apps/[app]/package.json {3}
+{
+  "scripts": {
+    "test": "vitest"
+  }
+}
+```
+
+Turborepo会自动识别新的`test`脚本并运行测试。
+
+之后，只需按照上述说明编写测试即可。

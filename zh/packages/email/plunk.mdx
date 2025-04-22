@@ -1,0 +1,39 @@
+---
+title: Plunk
+description: 了解如何使用Plunk发送邮件。
+---
+
+使用Plunk与SuperStarter
+
+<Steps>
+  <Step title="创建Plunk账户">
+
+    [创建Plunk账户](https://useplunk.com/)并获取您的API密钥。
+
+  </Step>
+  <Step title="添加环境变量">
+
+    将`PLUNK_TOKEN`环境变量添加到您的.env.local文件和部署环境中：
+
+    然后，确保激活Plunk：
+
+    ```ts /zh/packages/email/index.ts
+    export * from './providers/plunk';
+    ```
+
+  </Step>
+  <Step title="发送邮件">
+
+    ```tsx apps/web/app/contact/actions/contact.tsx
+    import { plunk } from '@repo/email';
+    import { ContactTemplate } from '@repo/email/emails/contact';
+
+    await plunk.emails.send({
+        to: 'recipient@acme.com',
+        subject: 'The email subject',
+        body: <ContactTemplate name={name} email={email} message={message} />,
+    });
+    ```
+
+  </Step>
+</Steps>

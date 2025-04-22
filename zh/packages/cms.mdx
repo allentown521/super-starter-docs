@@ -1,0 +1,82 @@
+---
+title: 内容管理
+description: SuperStarter 中 内容管理 的配置方法
+---
+
+[Fumadocs](https://fumadocs.com/) 是一个基于 Markdown 的内容管理系统，帮助您在代码库中以结构化的方式管理内容。我们使用它通过 MDX 来管理 `博客`、`文档` 和其他 `内容页面`（如 `法律页面`）。
+
+## 如何编写内容？
+
+所有内容都位于 `apps/web/content` 目录中，内容分为三个子目录：`blog`、`docs` 和 `legal`。
+
+您只需在相应的目录中创建新的 MDX 文件，Fumadocs 会自动扫描这些文件并生成相应的页面。
+
+<Tip>
+如果您不想了解太多技术细节，可以直接跳过以下部分。
+
+您只需参考目录中的示例 mdx 文件来编写新内容，这非常简单
+</Tip>
+
+## 如何通过 Adsense 盈利？
+
+如果您想在文档中添加 Google 广告，请按照以下步骤操作：
+
+1. 将您的 Google 广告 ID 添加到环境变量 `NEXT_PUBLIC_GOOGLE_ADS_PUB_ID` 中
+2. 在文章中希望广告出现的位置添加 `<Adsense />` 标签
+
+```mdx fuma.mdx
+---
+title: Fuma doc
+authors: [allentown]
+tags: ["Fuma doc"]
+date: 2024-12-27
+---
+
+## 关于 Fumadocs
+
+![banner](/zh/images/blog/fuma.png)
+
+<Adsense />
+
+```
+
+
+## 什么是内容源？
+
+您内容的输入/来源，可以是 CMS，也可以是本地数据层，如 **内容集合** 和 **Fumadocs MDX**（官方内容源）。
+
+Fumadocs 经过精心设计，允许自定义内容源，如果您感兴趣，还有 [Sanity](https://github.com/fuma-nama/fumadocs-sanity) 的示例。
+
+<Note>`lib/source.ts` 是您组织内容源代码的地方。</Note>
+
+## 布局样式
+
+您可以打开 `app/layout.config.tsx`，它包含布局的共享选项。
+Fumadocs 为文档页面提供默认的 **文档布局**，为其他页面提供 **首页布局**。
+
+您可以在 `layout.tsx` 中自定义布局。
+
+## 搜索
+
+`app/api/search/route.ts` 包含搜索的路由处理器，默认由 [Orama](https://orama.com) 提供支持。
+
+## 导航链接
+
+导航链接会传递给布局，您也可以在布局配置中自定义它们。
+
+```tsx app/layout.config.tsx
+import { BookIcon } from 'lucide-react';
+import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+ 
+export const baseOptions: BaseLayoutProps = {
+  links: [
+    {
+      icon: <BookIcon />,
+      text: 'Blog',
+      url: '/blog',
+    },
+  ],
+};
+```
+
+访问 [Fumadocs](https://fumadocs.vercel.app/docs/ui) 了解更多详情和附加功能。

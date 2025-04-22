@@ -1,0 +1,8 @@
+---
+title: 在API端点中使用区域设置
+description: 学习如何在SuperStarter API端点中使用用户的区域设置
+---
+
+有时您需要在API端点中使用用户的区域设置。例如，您可能想要从本地化的数据库中获取数据，或者想以用户的区域设置发送电子邮件。
+
+为了使用户的区域设置在端点处理程序中可用，您可以使用[`languageDetector`](https://hono.dev/docs/middleware/builtin/language#language-middleware)中间件。

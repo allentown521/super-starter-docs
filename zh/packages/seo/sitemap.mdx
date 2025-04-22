@@ -1,0 +1,62 @@
+---
+title: 网站地图
+description: 我们如何为网站生成站点地图。
+---
+
+SuperStarter 自动为网站生成站点地图，使用 Next.js 内置的[站点地图生成](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap#generating-a-sitemap-using-code-js-ts)功能(`sitemap.ts`)。生成过程会扫描项目中的不同目录，并为各种类型的内容创建站点地图条目：
+
+## 页面集合
+
+如果您添加新页面或更改营销页面的路由，需要确保站点地图反映这些更改。
+
+您可以在 `apps/web/config.ts` 中找到站点地图的配置：
+
+```ts apps/web/config.ts
+export const getSitemapConfig: sitemapConfig = {
+  staticPages: [
+    {
+      path: '/zh/contact',
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+  ],
+};
+```
+
+## 内容集合
+
+系统会扫描以下目录：
+
+### 博客文章
+- 读取 `content/blog` 目录中的所有文件
+- 移除文件名中的 `.mdx` 扩展名
+
+### 文档文章
+- 读取 `content/docs` 目录中的所有文件
+- 移除文件名中的 `.mdx` 扩展名
+
+### 法律页面
+- 同样扫描 `content/legal` 目录
+- 移除 `.mdx` 扩展名
+
+## 站点地图生成
+
+最终的站点地图通过合并所有这些路由生成：
+
+1. 添加基础URL作为根条目
+2. 添加 `getSitemapConfig` 对象中定义的所有页面路由
+3. 添加 `blog/` 路径下的所有博客文章
+4. 添加 `docs/` 路径下的所有文档文章
+5. 添加 `legal/` 路径下的所有法律页面
+
+每个站点地图条目包括：
+- 完整URL(将基础URL与路由组合)
+- `lastModified` 时间戳(设置为当前日期)
+
+<Tip>站点地图会在每次构建时**自动重新生成**，确保与您的内容保持同步。</Tip>
+
+<Note>
+有一点需要注意，您是否需要设置 `VERCEL_PROJECT_PRODUCTION_URL` 环境变量，这将影响站点地图中所有URL的域名。如果您的网站部署在vercel上，此变量将自动设置为项目部署的域名，您也可以手动设置以指定您的域名。
+
+对于 `web` 应用，可以设置为 `your-domain.com`，该值不包含协议方案https://。
+</Note>

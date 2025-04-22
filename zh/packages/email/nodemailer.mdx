@@ -1,0 +1,45 @@
+---
+title: Nodemailer
+description: 了解如何使用Nodemailer发送邮件。
+---
+
+要将Nodemailer与SuperStarter一起使用，请确保您有一个可用的SMTP服务器，可以从该服务器发送邮件。
+
+<Steps>
+  <Step title="创建 Nodemailer 帐户">
+
+    [创建Nodemailer账户](https://resend.com/)并获取您的API密钥。
+
+  </Step>
+  <Step title="添加环境变量">
+
+    将`NODEMAILER_HOST`、`NODEMAILER_USER`、`NODEMAILER_USER`和`NODEMAILER_PASS`环境变量添加到您的.env.local文件和部署环境中：
+
+    然后，确保激活Nodemailer：
+
+    ```ts /packages/email/index.ts
+    export * from './providers/nodemailer';
+    ```
+
+  </Step>
+  <Step title="发送邮件">
+
+    ```tsx apps/web/app/contact/actions/contact.tsx
+    import { nodemailerTransporter } from '@repo/email';
+    import { ContactTemplate } from '@repo/email/emails/contact';
+    import { render } from "@react-email/components";
+
+    const emailHtml = await render(<ContactTemplate name={name} email={email} message={message} />);
+
+    const options = {
+    from: 'you@example.com',
+    to: 'user@gmail.com',
+    subject: 'hello world',
+    html: emailHtml,
+    };
+
+    await nodemailerTransporter.sendMail(options);
+    ```
+
+  </Step>
+</Steps>

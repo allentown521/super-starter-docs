@@ -1,0 +1,26 @@
+---
+title: 运行时间监控
+description: 我们在SuperStarter中配置运行时间监控的方式。
+---
+
+运行时间监控功能通过BetterStack的仪表板进行配置。
+
+## 监控设置
+
+当您创建项目时，我建议添加一些特定的URL进行监控。假设我们使用`superstarter.com`及其子域名，以下是您应该添加的内容：
+
+1. `superstarter.com` - `web`项目，如果首页返回成功响应，则应该正常运行。
+2. `app.superstarter.com` - `app`项目，如果首页返回成功响应，则应该正常运行。
+3. `api.superstarter.com/health` - `api`项目，如果`health`路由返回成功响应，则应该正常运行。这是一个运行在Edge运行时上的存根端点，因此非常快速。
+
+## 在UI中的使用
+
+SuperStarter提供了一个来自`@repo/observability`的`Status`组件，用于显示应用程序的当前状态。您可以在网站页脚中看到此组件的示例。
+
+状态组件显示3种可能的状态：
+
+- `所有系统正常` - 100%的运行时间监控器报告正常
+- `部分中断` - 至少一个运行时间监控器报告中断
+- `性能下降` - 0%的运行时间监控器报告正常
+
+此功能依赖于`BETTERSTACK_API_KEY`和`BETTERSTACK_URL`环境变量。

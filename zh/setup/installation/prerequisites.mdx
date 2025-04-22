@@ -1,0 +1,41 @@
+---
+title: 先决条件
+description: 如何配置您的开发环境以使用SuperStarter。
+---
+
+在开始之前，您需要在您的机器上安装以下软件。
+
+- [Node.js](https://nodejs.org/en/download/) (v20或更高版本)
+- [Git](https://git-scm.com/)
+- [VSCode](https://code.visualstudio.com/) (推荐，或其他代码编辑器)
+- [pnpm](https://pnpm.io/)
+
+SuperStarter默认使用[pnpm](https://pnpm.io/installation)作为包管理器，但您可以通过在[安装](/zh/setup/installation/clone#use-the-cli)步骤中传递标志来使用[npm](https://www.npmjs.com/)、[yarn](https://yarnpkg.com/)或[bun](https://bun.sh/)。
+
+
+## Stripe CLI
+
+我们使用[Stripe CLI](https://docs.stripe.com/stripe-cli)将[支付webhooks](/zh/packages/payments#webhooks)转发到您的本地机器。
+
+<Note>Stripe CLI是可选的，但如果您使用Stripe作为支付处理器，建议使用它来测试您的支付集成。</Note>
+
+安装后，您可以登录以验证您的Stripe账户。
+
+```sh Terminal
+stripe login
+```
+
+## 账户
+
+SuperStarter依赖各种SaaS产品。您需要创建以下服务的账户，然后在您的[环境变量](/zh/env)中设置API密钥：
+
+<Note>别担心，您不需要使用所有服务。我们将在[安装](/zh/setup/installation/development)步骤中按需指导您如何配置。</Note>
+
+- [Arcjet](https://arcjet.com)，用于[应用安全](/zh/packages/security/application)。
+- [BetterStack](https://betterstack.com)，用于[日志记录](/zh/packages/observability/logging)和[正常运行时间监控](/zh/packages/observability/uptime)。
+- [Clerk](https://clerk.com)，用于[身份验证](/zh/packages/authentication)。
+- [Google Analytics](https://developers.google.com/analytics)，用于[网络分析](/zh/packages/analytics/web)。
+- [Posthog](https://posthog.com)，用于[产品分析](/zh/packages/analytics/product)。
+- [Resend](https://resend.com)，用于[交易邮件](/zh/packages/email)。
+- [Sentry](https://sentry.io)，用于[错误跟踪](/zh/packages/observability/error-capture)。
+- [Stripe](https://stripe.com)，用于[支付](/zh/packages/payments)。

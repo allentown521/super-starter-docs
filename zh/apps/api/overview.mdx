@@ -1,0 +1,31 @@
+---
+title: API概述
+description: SuperStarter中"API"应用的工作原理
+---
+
+<Tip>`api`应用运行在3002端口。我们建议将其部署到`api.{yourdomain}.com`。</Tip>
+
+SuperStarter从`apps/api`目录导出API。它设计为与主应用分开运行，用于运行不属于面向用户主应用的独立功能，如webhooks、定时任务等。
+
+## 概述
+
+该API设计用于运行无服务器函数，并非作为传统的Node.js服务器使用。然而，它设计得非常灵活，如果需要，您可以切换到运行[传统服务器](/zh/deployment/standalone-api)。
+
+从功能上讲，如果您在Vercel上运行这些项目，将API与主应用分离并不重要。无服务器函数都是独立的基础设施组件，可以独立扩展。但是，独立运行它为非Web应用(如移动应用、智能家居设备等)提供了专用端点。
+
+## Hono
+
+SuperStarter设计为一个可扩展且生产就绪的全栈启动套件。核心功能之一是专用且可扩展的API层。为了实现类型安全，我们选择[Hono](https://hono.dev/)作为API服务器及其RPC客户端。
+
+### 为什么选择Hono
+
+Hono是一个面向TypeScript和JavaScript的现代简约Web框架。它设计简单、快速且易于使用，同时也非常灵活且易于扩展。您几乎可以将其部署在任何地方，并与Hono RPC客户端一起以类型安全的方式使用。它还能自动为您的API生成OpenAPI文档。
+
+<Tip>
+不用担心，如果您暂时不打算使用Hono，可以继续使用[Next.js API路由](https://nextjs.org/docs/pages/building-your-application/routing/api-routes)来处理API请求。您可以跳过后面的章节，Hono只是一个可选方案，并非必须。
+</Tip>
+
+## 功能特性
+
+- **定时任务**：API用于运行[定时任务](/zh/packages/cron)。这些任务定义在`apps/api/app/cron`目录中。每个定时任务都是一个导出路由处理程序的`.ts`文件。
+- **Webhooks**：API用于运行[入站webhooks](/zh/packages/webhooks)。这些定义在`apps/api/app/webhooks`目录中。每个webhook都是一个导出路由处理程序的`.ts`文件。

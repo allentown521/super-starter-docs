@@ -1,0 +1,46 @@
+---
+title: Web Analytics
+description: 捕获页面浏览量、页面离开事件和自定义事件。
+---
+
+<Frame>
+  <img src="/images/web-analytics.png" alt="" />
+</Frame>
+
+SuperStarter 提供了一些网页分析库。
+
+## Vercel Web Analytics
+
+Vercel 内置的分析工具提供了对网站访问者的详细洞察，包括热门页面、推荐来源和人口统计等新指标。您只需访问 Vercel 项目中的 Analytics 选项卡并点击对话框中的 Enable 即可启用。
+
+阅读更多信息 [here](https://vercel.com/docs/analytics/quickstart).
+
+## Google Analytics
+
+[Google Analytics](https://analytics.google.com/) 跟踪用户行为、页面浏览量、会话时长和其他参与度指标，以提供有关用户活动和营销效果的洞察。GA 跟踪代码使用 [@next/third-parties](https://nextjs.org/docs/app/building-your-application/optimizing/third-party-libraries#google-analytics) 注入以提高性能。
+
+要启用它，只需在您的项目中添加一个 `NEXT_PUBLIC_GA_MEASUREMENT_ID` 环境变量。
+
+## Plausible
+
+[Plausible.io](https://plausible.io/) 是一个简单、隐私至上的 Google Analytics 替代品。
+
+要启用它，只需添加 `NEXT_PUBLIC_PLAUSIBLE_SITE_SRC` 和 `NEXT_PUBLIC_PLAUSIBLE_SITE_DOMAIN` 环境变量到您的项目中。
+
+## Umami
+
+[Umami](https://umami.is/) 是一个开源的网页分析工具。它是一个简单、自托管的 Google Analytics 替代品。它注重隐私，不使用 cookie。它也非常快速和轻量。
+
+要启用它，只需添加 `NEXT_PUBLIC_UMAMI_SITE_ID` 和 `NEXT_PUBLIC_UMAMI_SITE_SRC` 环境变量到您的项目中。
+
+## PostHog
+
+[PostHog](https://posthog.com/) 是一个用于分析、测试、观察和部署新功能的单一平台。PostHog 是一个用于分析、测试、观察和部署新功能的单一平台。它包含许多产品，包括网页分析工具、事件分析、功能标志等。
+
+PostHog 的网页分析工具默认启用，可捕获页面浏览量、页面离开事件和自定义事件。
+
+要启用它，只需添加 `NEXT_PUBLIC_POSTHOG_KEY` 和 `NEXT_PUBLIC_POSTHOG_HOST` 环境变量到您的项目中。
+
+### 会话回放
+
+PostHog 的会话回放功能让您可以准确看到用户在您网站上的操作。它记录控制台日志和网络错误，并捕获诸如资源时间和被阻止请求等性能数据。此功能默认禁用，因此请确保在您的项目设置中启用它。

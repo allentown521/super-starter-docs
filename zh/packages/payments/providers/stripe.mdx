@@ -1,0 +1,150 @@
+---
+title: Stripe
+description: 学习如何在SuperStarter中设置Stripe支付。
+---
+
+SuperStarter默认使用[Stripe](https://stripe.com/)进行支付和账单处理。在您的项目中集成Stripe非常简单。
+
+## 获取API密钥
+
+创建Stripe账户后，您需要获取API密钥。您可以访问仪表板中的[API页面](https://dashboard.stripe.com/apikeys)获取。在这里您会找到`Secret key`和`Publishable key`。集成需要使用`Secret key`。
+
+### 添加环境变量
+
+要使用Stripe集成，您需要在`.env.local`和生产环境中定义以下环境变量：
+
+```env .env.local
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
+```
+
+## 应用内购买
+
+您可以通过导入`stripe`对象在应用中的任何地方使用Stripe：
+
+```ts page.tsx {1,5}
+import { stripe } from '@repo/payments';
+
+// ...
+
+await stripe.prices.list();
+```
+
+### 创建结账会话
+
+我们需要创建一个结账会话来向用户收费，我们已为您实现了整个过程。它包含两部分：
+
+- 客户端
+
+它向`/zh/api/stripe/checkout`端点发送请求以创建会话。
+
+```tsx apps/web/[locale]/components/payment/price-form.tsx
+      const response = await fetch('/api/stripe/checkout', {
+        method: 'POST',
+        body: JSON.stringify({
+          priceId: item.priceId,
+          interval: item.interval,
+        }),
+      });
+```
+
+- 服务端
+
+```ts apps/web/api/stripe/checkout/route.ts
+  const session = await stripe.checkout.sessions.create({
+    line_items: [{ price: priceId, quantity: 1 }],
+    mode: interval === 'one-time' ? 'payment' : 'subscription',
+    success_url: `${env.NEXT_PUBLIC_APP_URL}/login`,
+    cancel_url: `${env.NEXT_PUBLIC_WEB_URL}/#pricing`,
+  });
+```
+
+<Tip>
+这是开箱即用的功能，如果您想自定义，可以修改这两个文件。
+</Tip>
+
+<Tip>
+Stripe允许使用产品的购买链接而无需通过API创建结账会话。但建议使用API创建结账会话以获得更好的跟踪和分析功能。
+</Tip>
+
+## Webhooks
+
+Stripe webhooks在`apps/api`应用中的`POST /zh/webhooks/stripe`路由处理。该路由构建事件并根据事件类型决定如何处理。
+
+<Note>
+我们已为您实现了基本的Webhook处理程序结构。您可以根据需要修改它。
+</Note>
+
+### 本地开发
+
+为了在本地测试webhooks，我们已在`apps/api`应用中配置了[Stripe CLI](https://stripe.com/docs/stripe-cli)将webhooks转发到您的本地服务器。当您运行`pnpm dev`时，这将自动启动。
+
+## 反欺诈
+
+随着应用程序的增长，您将不可避免地遇到信用卡欺诈。如果您按照上述方式使用他们的SDK集成支付，[Stripe Radar](https://stripe.com/radar)默认启用。这提供了一套工具来帮助您检测和预防欺诈。
+
+如果您在每个页面加载中嵌入 Stripe JS 脚本，Stripe Radar 支持更多 [高级反欺诈功能](https://docs.stripe.com/disputes/prevention/advanced-fraud-detection)。默认情况下，这在 SuperStarter 中不启用，但您可以按如下方式添加它:
+
+<Steps>
+  <Step title="Edit the layout">
+    编辑 `apps/app/app/layout.tsx` 并在开头的 `<html>` 标记之后和开头的 `<body>` 标记之前添加 `<Script src="https://js.stripe.com/v3/" />`。您还需要添加 `import Script from 'next/script'`
+
+    ```tsx {5, 13}
+    import '@repo/design-system/styles/globals.css';
+    import { DesignSystemProvider } from '@repo/design-system';
+    import { fonts } from '@repo/design-system/lib/fonts';
+    import type { ReactNode } from 'react';
+    import Script from 'next/script';
+
+    type RootLayoutProperties = {
+      readonly children: ReactNode;
+    };
+
+    const RootLayout = ({ children }: RootLayoutProperties) => (
+      <html lang="en" className={fonts} suppressHydrationWarning>
+        <Script src="https://js.stripe.com/v3/" />
+        <body>
+          <DesignSystemProvider>{children}</DesignSystemProvider>
+        </body>
+      </html>
+    );
+
+    export default RootLayout;
+    ```
+  </Step>
+  <Step title="Add script to the website">
+    在网站的 `apps/web/app/layout.tsx` 中添加相同的脚本。
+  </Step>
+  <Step title="Prevent common fraud patterns with Arcjet">
+    使用 [Arcjet](/packages/security/application) [IP 地址分析](https://docs.arcjet.com/reference/nextjs#ip-analysis) [阻止来自 VPN 和代理服务器的请求](https://docs.arcjet.com/blueprints/vpn-proxy-detection) 防止常见的欺诈模式。这些通常被欺诈者用来隐藏自己的位置，但也有合法用途，因此默认情况下不会被阻止。您可以简单地阻止这些用户，也可以调整结账流程，要求在处理他们的付款之前获得批准。
+  </Step>
+</Steps>
+
+例如，在`apps/app/app/(authenticated)/layout.tsx`中，你可以在调用`aj.protect()`后添加以下内容:
+
+```ts
+import { redirect } from 'next/navigation';
+// ...
+
+if (
+  decision.ip.isHosting() ||
+  decision.ip.isVpn() ||
+  decision.ip.isProxy() ||
+  decision.ip.isRelay()
+) {
+  // The IP is from a hosting provider, VPN, or proxy. We can check the name
+  // of the service and customize the response
+  if (decision.ip.hasService()) {
+    if (decision.ip.service !== 'Apple Private Relay') {
+      // We trust Apple Private Relay because it requires an active iCloud
+      // subscription, so deny all other VPNs
+      redirect('/vpn-blocked');
+    }
+  } else {
+    // The service name is not available, but we still think it's a VPN
+    redirect('/vpn-blocked');
+  }
+}
+```
+
+在这种情况下，我们将提供一个友好的重定向到一个页面，解释用户被阻止的原因（您需要创建该页面）。您也可以返回更通用的错误信息。更多高级示例请参阅 [Arcjet 文档](https://docs.arcjet.com/blueprints/payment-form#additional-checks)。

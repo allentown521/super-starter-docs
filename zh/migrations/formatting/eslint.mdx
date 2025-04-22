@@ -1,0 +1,93 @@
+---
+title: 切换到 ESLint
+description: 如何将默认的 linter 切换为 ESLint。
+---
+
+以下是如何从 Biome 切换到 [ESLint](https://eslint.org) 的步骤。在本例中，我们还将添加 Next.js 和 React 插件，以及新的 ESLint 扁平配置。
+
+## 1. 更换所需依赖
+
+首先，从根目录的 `package.json` 文件中卸载现有的依赖...
+
+```sh Terminal
+pnpm remove -w @biomejs/biome ultracite
+```
+
+...然后安装新的依赖：
+
+```sh Terminal
+pnpm add -w -D eslint eslint-plugin-next eslint-plugin-react eslint-plugin-react-hooks typescript-eslint
+```
+
+## 2. 配置 ESLint
+
+删除项目中现有的 `biome.json` 文件，并创建一个新的 `eslint.config.mjs` 文件：
+
+```js eslint.config.mjs
+import react from 'eslint-plugin-react';
+import next from '@next/eslint-plugin-next';
+import hooks from 'eslint-plugin-react-hooks';
+import ts from 'typescript-eslint'
+
+export default [
+  ...ts.configs.recommended,
+  {
+    ignores: ['**/.next'],
+  },
+  { 
+    files: ['**/*.ts', '**/*.tsx'],
+    plugins: {
+      react: react,
+      'react-hooks': hooks,
+      '@next/next': next,
+    },
+    rules: {
+      ...react.configs['jsx-runtime'].rules,
+      ...hooks.configs.recommended.rules,
+      ...next.configs.recommended.rules,
+      ...next.configs['core-web-vitals'].rules,
+      '@next/next/no-img-element': 'error',
+    },
+  },
+]
+```
+
+## 3. 安装 ESLint VSCode 扩展
+
+<Tip>
+如果您在首次设置 Visual Studio Code 时选择了支持 "JavaScript" 语言，通常会自动安装此扩展。
+</Tip>
+
+安装 [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) VSCode 扩展，以在编辑器中获得 linting 和格式化支持。
+
+## 4. 更新 `.vscode/settings.json` 文件
+
+将以下内容添加到您的 `.vscode/settings.json` 文件中以匹配以下配置：
+
+```json .vscode/settings.json
+{
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.fixAll.eslint": true
+  },
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "emmet.showExpandedAbbreviation": "never",
+  "prettier.enable": true,
+  "tailwindCSS.experimental.configFile": "zh/packages/tailwind-config/config.ts",
+  "typescript.tsdk": "node_modules/typescript/lib"
+}
+```
+
+## 5. 重新启用 `lint` 脚本
+
+由于 Next.js 使用 ESLint 进行 linting，我们可以在根目录的 `package.json` 文件中重新启用 `lint` 脚本。在每个 Next.js 应用中，更新 `package.json` 文件以包含以下内容：
+
+```json apps/app/package.json {3}
+{
+  "scripts": {
+    "lint": "next lint"
+  }
+}
+```

@@ -1,0 +1,158 @@
+---
+title: 创建 AI 聊天机器人
+description: 让我们使用 SuperStarter 创建一个简单的 AI 聊天机器人。
+---
+
+今天我们将使用 SuperStarter 和内置的 AI 包来创建一个 AI 聊天机器人，该包由 [Vercel AI SDK](https://sdk.vercel.ai/) 提供支持。
+
+<Frame>
+  <img src="/images/ai-chatbot.png" style={{ borderRadius: '0.5rem' }} />
+</Frame>
+
+## 1. 创建新项目
+
+```bash Terminal
+npx super-starter@latest init ai-chatbot
+```
+
+这将创建一个名为 `ai-chatbot` 的新项目并安装必要的依赖项。
+
+## 2. 配置环境变量
+
+按照[环境变量](/zh/env)指南填写您的环境变量。
+
+特别要确保设置 `OPENAI_API_KEY` 环境变量。
+
+<Tip>确保您的 OpenAI 账户中有足够的额度。</Tip>
+
+## 3. 创建聊天机器人 UI
+
+我们将从创建一个简单的聊天机器人 UI 开始，它包含一个文本输入框和一个发送消息的按钮。
+
+在 `app/components` 目录中创建一个名为 `Chatbot` 的新文件。我们将使用以下几个组件：
+
+- `useChat` 来自我们的 AI 包，用于处理聊天逻辑。
+- `Button` 和 `Input` 组件来自我们的设计系统，用于渲染表单。
+- `Thread` 和 `Message` 组件来自我们的 AI 包，用于渲染聊天历史。
+- `handleError` 来自我们的设计系统，用于处理错误。
+- `SendIcon` 来自 `lucide-react`，用于创建发送图标。
+
+```tsx apps/app/app/(authenticated)/components/chatbot.tsx
+'use client';
+
+import { Message } from '@repo/ai/components/message';
+import { Thread } from '@repo/ai/components/thread';
+import { useChat } from '@repo/ai/lib/react';
+import { Button } from '@repo/design-system/components/ui/button';
+import { Input } from '@repo/design-system/components/ui/input';
+import { handleError } from '@repo/design-system/lib/utils';
+import { SendIcon } from 'lucide-react';
+
+export const Chatbot = () => {
+  const { messages, input, handleInputChange, isLoading, handleSubmit } =
+    useChat({
+      onError: handleError,
+      api: '/api/chat',
+    });
+
+  return (
+    <div className="flex h-[calc(100vh-64px-16px)] flex-col divide-y overflow-hidden">
+      <Thread>
+        {messages.map((message) => (
+          <Message key={message.id} data={message} />
+        ))}
+      </Thread>
+      <form
+        onSubmit={handleSubmit}
+        className="flex shrink-0 items-center gap-2 px-8 py-4"
+        aria-disabled={isLoading}
+      >
+        <Input
+          placeholder="问点什么吧！"
+          value={input}
+          onChange={handleInputChange}
+        />
+        <Button type="submit" size="icon" disabled={isLoading}>
+          <SendIcon className="h-4 w-4" />
+        </Button>
+      </form>
+    </div>
+  );
+};
+```
+
+## 4. 创建聊天机器人 API 路由
+
+在 `app/api` 目录中创建一个名为 `chat` 的新文件。这个 Next.js 路由处理程序将处理聊天机器人的响应。
+
+我们将使用 AI 包中的 `streamText` 函数将聊天机器人的响应流式传输到客户端。我们还将使用 AI 包中的 `provider` 函数来获取 OpenAI 提供者，以及 Observability 包中的 `log` 函数来记录聊天机器人的响应。
+
+```tsx apps/app/app/api/chat/route.ts
+import { streamText } from '@repo/ai';
+import { log } from '@repo/observability/log';
+import { models } from '@repo/ai/lib/models';
+
+export const POST = async (req: Request) => {
+  const body = await req.json();
+
+  log.info('🤖 收到聊天请求。', { body });
+  const { messages } = body;
+
+  log.info('🤖 生成响应中...');
+  const result = streamText({
+    model: models.chat,
+    system: '你是一个乐于助人的助手。',
+    messages,
+  });
+
+  log.info('🤖 流式传输响应中...');
+  return result.toDataStreamResponse();
+};
+```
+
+## 5. 更新应用
+
+最后，我们将更新 `app/page.tsx` 文件，使其成为一个简单的入口点，用于渲染聊天机器人 UI。
+
+```tsx apps/app/app/(authenticated)/page.tsx
+import { auth } from '@repo/auth/server';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import { Chatbot } from './components/chatbot';
+import { Header } from './components/header';
+
+const title = 'Acme Inc';
+const description = '我的应用。';
+
+export const metadata: Metadata = {
+  title,
+  description,
+};
+
+const App = async () => {
+  const { orgId } = await auth();
+
+  if (!orgId) {
+    notFound();
+  }
+
+  return (
+    <>
+      <Header pages={['构建您的应用']} page="AI 聊天机器人" />
+      <Chatbot />
+    </>
+  );
+};
+
+export default App;
+```
+
+## 6. 运行应用
+
+运行应用开发服务器，您应该能够在 [http://localhost:3000](http://localhost:3000) 看到聊天机器人 UI。
+
+```sh Terminal
+pnpm dev --filter app
+```
+
+就是这样！您现在已经使用 SuperStarter 和内置的 AI 包创建了一个 AI 聊天机器人。如果您有任何问题，请在 [Twitter](https://x.com/allentown521) 上联系我或在 [GitHub](https://github.com/focusapps/SuperStarter) 上提出问题。

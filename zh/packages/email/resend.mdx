@@ -1,0 +1,40 @@
+---
+title: Resend
+description: 了解如何使用Resend发送邮件。
+---
+
+使用Resend与SuperStarter
+
+<Steps>
+  <Step title="创建Resend账户">
+
+    [创建Resend账户](https://resend.com/)并获取您的API密钥。
+
+  </Step>
+  <Step title="添加环境变量">
+
+    将`RESEND_TOKEN`环境变量添加到您的.env.local文件和部署环境中：
+
+    然后，确保激活Resend：
+
+    ```ts /packages/email/index.ts
+    export * from './providers/resend';
+    ```
+
+  </Step>
+  <Step title="发送邮件">
+
+    ```tsx apps/web/app/contact/actions/contact.tsx
+    import { resend } from '@repo/email';
+    import { ContactTemplate } from '@repo/email/emails/contact';
+
+    await resend.emails.send({
+        from: 'sender@acme.com',
+        to: 'recipient@acme.com',
+        subject: 'The email subject',
+        react: <ContactTemplate name={name} email={email} message={message} />,
+    });
+    ```
+
+  </Step>
+</Steps>

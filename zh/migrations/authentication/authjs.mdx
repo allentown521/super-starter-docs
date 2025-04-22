@@ -1,0 +1,132 @@
+---
+title: 切换到 Auth.js
+description: 如何将认证提供者切换为 Auth.js。
+---
+
+<Warning>
+我们不推荐使用 Auth.js，它目前还不稳定
+</Warning>
+
+以下是如何从 Clerk 切换到 [Auth.js](https://authjs.dev/) 的指南。
+
+## 1. 替换依赖项
+
+从 `auth` 包中卸载现有的 Clerk 依赖...
+
+```sh Terminal
+pnpm remove @clerk/nextjs @clerk/themes @clerk/types --filter @repo/auth
+```
+
+...并安装 Auth.js 的依赖项。
+
+```sh Terminal
+pnpm add next-auth@beta --filter @repo/auth
+```
+
+## 2. 生成 Auth.js 密钥
+
+Auth.js 需要一个随机值密钥，用于加密令牌和邮箱验证哈希。在每个相关应用目录中，运行以下命令生成密钥：
+
+```sh Terminal
+cd apps/app && npx auth secret && cd -
+cd apps/web && npx auth secret && cd -
+cd apps/api && npx auth secret && cd -
+```
+
+这将在每个目录的 `.env.local` 文件中自动添加 `AUTH_SECRET` 环境变量。
+
+## 3. 替换相关文件
+
+删除 `auth` 包中现有的 `client.ts` 和 `server.ts` 文件。然后创建以下文件：
+
+```tsx packages/auth/index.ts
+import NextAuth from "next-auth";
+ 
+export const { handlers, signIn, signOut, auth } = NextAuth({
+  providers: [],
+});
+```
+
+## 4. 更新中间件
+
+用以下内容更新 `auth` 包中的 `middleware.ts` 文件：
+
+```tsx packages/auth/middleware.ts
+import 'server-only';
+
+export { auth as authMiddleware } from './';
+```
+
+## 5. 更新认证组件
+
+Auth.js 没有"注册"的概念，所以我们将使用 `signIn` 函数来注册用户。用相同的内容更新 `auth` 包中的 `sign-in.tsx` 和 `sign-up.tsx` 组件：
+
+<CodeGroup>
+
+```tsx packages/auth/components/sign-in.tsx
+import { signIn } from '../';
+
+export const SignIn = () => (
+  <form
+    action={async () => {
+      "use server";
+      await signIn();
+    }}
+  >
+    <button type="submit">登录</button>
+  </form>
+);
+```
+
+```tsx packages/auth/components/sign-up.tsx
+import { signIn } from '../';
+
+export const SignUp = () => (
+  <form
+    action={async () => {
+      "use server";
+      await signIn();
+    }}
+  >
+    <button type="submit">注册</button>
+  </form>
+);
+```
+
+</CodeGroup>
+
+## 6. 更新 Provider 文件
+
+Auth.js 没有作为高阶组件的 Provider 概念，所以你可以完全删除它或者替换为一个存根，如下所示：
+
+```tsx packages/auth/provider.tsx
+import type { ReactNode } from 'react';
+
+type AuthProviderProps = {
+  children: ReactNode;
+};
+
+export const AuthProvider = ({ children }: AuthProviderProps) => children;
+```
+
+## 7. 创建认证路由处理器
+
+在你的 `app` 应用中，创建一个认证路由处理器文件，内容如下：
+
+```tsx apps/app/api/auth/[...nextauth]/route.ts
+import { handlers } from "@repo/auth"
+
+export const { GET, POST } = handlers;
+```
+
+## 8. 更新你的应用
+
+从这里开始，你需要将应用中剩余的 Clerk 实现替换为 Auth.js 引用。这意味着要替换如下引用：
+
+```tsx page.tsx
+const { orgId } = await auth();
+const { redirectToSignIn } = await auth();
+const user = await currentUser();
+```
+
+<Note>请注意，你需要构建自己的"组织"逻辑，因为 Auth.js 没有组织的概念。</Note>

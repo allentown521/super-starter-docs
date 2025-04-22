@@ -1,0 +1,20 @@
+---
+title: 日志记录
+description: 我们在SuperStarter中配置日志记录的方式。
+---
+
+日志记录功能通过一个简单的封装抽象出来，提供了跨环境一致的日志记录接口。
+
+## 工作原理
+
+在开发环境中，日志会输出到控制台以便于调试。在生产环境中，日志会发送到BetterStack Logs，在那里可以搜索、过滤和分析。
+
+## 使用方法
+
+要使用这个日志记录设置，只需导入并使用`log`对象。它与`console`对象共享相同的接口，因此你可以在代码库中用`log`替换`console`。
+
+```tsx page.tsx
+import { log } from '@repo/observability/log';
+
+log.info('Hello, world!');
+```

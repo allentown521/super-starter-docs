@@ -1,0 +1,49 @@
+---
+title: 应用安全
+description: 为保护您的应用程序而采取的安全措施。
+---
+
+SuperStarter使用[Arcjet](https://arcjet.com/)，这是一个安全即代码产品，包含多个可以单独使用或组合使用的功能，为您的站点提供深度防御。您可以[注册免费账户](https://arcjet.com/)并将API密钥添加到环境变量中以使用我们包含的功能。
+
+<Note>当存在`ARCJET_KEY`环境变量时，安全功能会自动启用。</Note>
+
+## 理念
+
+适当的安全保护需要应用程序的完整上下文，这就是为什么安全规则和保护措施应该与它们保护的代码放在一起。
+
+Arcjet安全即代码意味着您可以对安全规则进行版本控制，通过拉取请求跟踪变更，并在部署到生产环境之前在本地进行测试。
+
+## 配置
+
+Arcjet在SuperStarter中配置了两个主要功能：机器人检测和Arcjet Shield WAF：
+
+- [机器人检测](https://docs.arcjet.com/bot-protection/concepts)配置为允许搜索引擎、预览链接生成器（如Slack和Twitter预览）以及常见的正常运行时间监控服务。所有其他机器人，如爬虫和AI爬虫，将被阻止。您可以[配置其他机器人类型](https://docs.arcjet.com/bot-protection/identifying-bots)以允许或阻止。
+- [Arcjet Shield WAF](https://docs.arcjet.com/shield/concepts)将检测并阻止常见攻击，如SQL注入、跨站脚本和其他[OWASP Top 10漏洞](https://owasp.org/www-project-top-ten/)。
+
+`web`和`app`应用都配置了Arcjet，在`@repo/security`有一个包含Shield WAF规则的中心客户端。每个应用然后扩展这个客户端以添加额外的规则：
+
+### Web
+
+对于`web`应用，机器人检测和Arcjet Shield WAF都在中间件中配置，以阻止爬虫和其他机器人，但仍允许搜索引擎、预览链接生成器和监控服务。默认情况下，这将在每个请求上运行，静态资源除外。
+
+### App
+
+对于`app`应用，中心客户端在认证路由布局`apps/app/app/(authenticated)/layout.tsx`中扩展了机器人检测功能，以阻止除预览链接生成器外的所有机器人。这仅会在认证路由上运行。为了额外的保护，您可能还想在`apps/app/app/(unauthenticated)/layout.tsx`路由上配置Arcjet，但Clerk默认在其登录路由处理程序中包含机器人检测和速率限制。
+
+当规则被触发时，请求将被阻止并返回错误。您可以在代码中自定义错误消息，重定向到其他页面，或以其他方式处理错误。
+
+## 扩展您的安全
+
+SuperStarter包含一个针对SaaS应用常见威胁的Arcjet样板设置，但由于规则是在代码中定义的，您可以轻松地在运行时动态调整它们。
+
+例如，如果您为应用程序构建API，您可以使用[Arcjet速率限制](https://docs.arcjet.com/rate-limiting/quick-start)，根据用户的定价计划设置不同的配额。
+
+其他功能包括[PII检测](https://docs.arcjet.com/sensitive-info/quick-start)和[电子邮件验证](https://docs.arcjet.com/email-validation/quick-start)。它们在样板中没有使用，但可以根据需要添加。
+
+### DDoS攻击怎么办？
+
+网络层攻击通常是通用的且流量巨大，最好由您的托管平台处理。大多数云提供商默认提供网络DDoS保护功能。
+
+Arcjet更靠近您的应用程序，因此可以理解上下文。这很重要，因为某些类型的流量可能看起来不像DDoS攻击，但仍可能产生相同的效果，例如发出过多的API请求。Arcjet在所有环境中都有效，因此不会锁定特定平台的安全功能。
+
+大规模网络攻击最好由您的托管提供商处理。应用程序级别的攻击需要由应用程序处理。这就是Arcjet发挥作用的地方。

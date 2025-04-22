@@ -9,60 +9,250 @@
   },
   "favicon": "/images/icon.png",
   "navigation": {
-    "tabs": [
+    "languages": [
       {
-        "tab": "Getting Started",
-        "groups": [
+        "language": "en",
+        "tabs": [
           {
-            "group": " ",
-            "pages": [
-              "overview",
-              "teckstack",
-              "faq"
+            "tab": "Getting Started",
+            "groups": [
+              {
+                "group": " ",
+                "pages": [
+                  "overview",
+                  "teckstack",
+                  "faq"
+                ]
+              },
+              {
+                "group": " ",
+                "pages": [
+                  {
+                    "group": "Installation",
+                    "pages": [
+                      "setup/installation/prerequisites",
+                      "setup/installation/clone",
+                      "setup/installation/development"
+                    ]
+                  },
+                  {
+                    "group": "Codebase",
+                    "pages": [
+                      "setup/codebase/project-structure",
+                      "setup/codebase/update",
+                      "setup/codebase/manage-dependencies",
+                      "setup/codebase/add-packages",
+                      "setup/codebase/add-apps"
+                    ]
+                  },
+                  {
+                    "group": "Configuration",
+                    "pages": [
+                      "setup/configuration/environment",
+                      "setup/configuration/app-config"
+                    ]
+                  },
+                  {
+                    "group": "Deployment",
+                    "pages": [
+                      "deployment/checklist",
+                      "deployment/overview",
+                      "deployment/vercel",
+                      "deployment/netlify",
+                      "deployment/render",
+                      "deployment/flyio",
+                      "deployment/coolify",
+                      "deployment/railway",
+                      "deployment/aws",
+                      "deployment/docker",
+                      "deployment/standalone-api"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
-            "group": " ",
-            "pages": [
+            "tab": "Apps",
+            "groups": [
               {
-                "group": "Installation",
+                "group": "  ",
                 "pages": [
-                  "setup/installation/prerequisites",
-                  "setup/installation/clone",
-                  "setup/installation/development"
+                  "apps/web",
+                  "apps/app",
+                  {
+                    "group": "API",
+                    "pages": [
+                      "apps/api/overview",
+                      "apps/api/add-new-endpoint",
+                      "apps/api/protect-endpoint",
+                      "apps/api/use-in-client",
+                      "apps/api/use-locale"
+                    ]
+                  },
+                  "apps/storybook"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Packages",
+            "groups": [
+              {
+                "group": " ",
+                "pages": [
+                  "packages/ai",
+                  {
+                    "group": "Analytics",
+                    "pages": [
+                      "packages/analytics/web",
+                      "packages/analytics/product"
+                    ]
+                  },
+                  "packages/authentication",
+                  "packages/cms",
+                  "packages/collaboration",
+                  "packages/cron",
+                  "packages/database",
+                  {
+                    "group": "Design System",
+                    "pages": [
+                      "packages/design-system/blocks",
+                      "packages/design-system/colors",
+                      "packages/design-system/components",
+                      "packages/design-system/dark-mode",
+                      "packages/design-system/provider",
+                      "packages/design-system/typography"
+                    ]
+                  },
+                  {
+                    "group": "Email",
+                    "pages": [
+                      "packages/email/overview",
+                      "packages/email/resend",
+                      "packages/email/plunk",
+                      "packages/email/postmark",
+                      "packages/email/sendgrid",
+                      "packages/email/nodemailer",
+                      "packages/email/mailersend"
+                    ]
+                  },
+                  "packages/flags",
+                  "packages/formatting",
+                  "packages/internationalization",
+                  {
+                    "group": "Observability",
+                    "pages": [
+                      "packages/observability/error-capture",
+                      "packages/observability/debugging",
+                      "packages/observability/logging",
+                      "packages/observability/uptime"
+                    ]
+                  },
+                  {
+                    "group": "Next.js Config",
+                    "pages": [
+                      "packages/next-config/overview",
+                      "packages/next-config/bundle-analysis"
+                    ]
+                  },
+                  "packages/live-chat",
+                  "packages/notifications",
+                  {
+                    "group": "Payments",
+                    "pages": [
+                      "packages/payments/overview",
+                      "packages/payments/config",
+                      {
+                        "group": "Payment Providers",
+                        "pages": [
+                          "packages/payments/providers/stripe",
+                          "packages/payments/providers/lemonsqueezy",
+                          "packages/payments/providers/paddle",
+                          "packages/payments/providers/polar",
+                          "packages/payments/providers/chargebee",
+                          "packages/payments/providers/creem"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "Security",
+                    "pages": [
+                      "packages/security/application",
+                      "packages/security/rate-limiting",
+                      "packages/security/dependencies",
+                      "packages/security/headers",
+                      "packages/security/ip-geolocation"
+                    ]
+                  },
+                  {
+                    "group": "SEO",
+                    "pages": [
+                      "packages/seo/metadata",
+                      "packages/seo/sitemap",
+                      "packages/seo/robots",
+                      "packages/seo/json-ld"
+                    ]
+                  },
+                  {
+                    "group": "Storage",
+                    "pages": [
+                      "packages/storage/overview",
+                      "packages/storage/vercel",
+                      "packages/storage/uploadthing",
+                      "packages/storage/s3"
+                    ]
+                  },
+                  "packages/testing",
+                  "packages/toolbar",
+                  "packages/webhooks"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Migrations",
+            "groups": [
+              {
+                "group": "Authentication",
+                "pages": [
+                  "migrations/authentication/authjs",
+                  "migrations/authentication/better-auth"
                 ]
               },
               {
-                "group": "Codebase",
+                "group": "Database",
                 "pages": [
-                  "setup/codebase/project-structure",
-                  "setup/codebase/update",
-                  "setup/codebase/manage-dependencies",
-                  "setup/codebase/add-packages",
-                  "setup/codebase/add-apps"
+                  "migrations/database/drizzle",
+                  "migrations/database/planetscale",
+                  "migrations/database/prisma-postgres",
+                  "migrations/database/supabase",
+                  "migrations/database/edgedb",
+                  "migrations/database/turso"
                 ]
               },
               {
-                "group": "Configuration",
+                "group": "Feature flags",
                 "pages": [
-                  "setup/configuration/environment",
-                  "setup/configuration/app-config"
+                  "migrations/flags/hypertune"
                 ]
               },
               {
-                "group": "Deployment",
+                "group": "Formatting",
                 "pages": [
-                  "deployment/checklist",
-                  "deployment/overview",
-                  "deployment/vercel",
-                  "deployment/netlify",
-                  "deployment/render",
-                  "deployment/flyio",
-                  "deployment/coolify",
-                  "deployment/railway",
-                  "deployment/aws",
-                  "deployment/docker",
-                  "deployment/standalone-api"
+                  "migrations/formatting/eslint"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "Recipes",
+            "groups": [
+              {
+                "group": "  ",
+                "pages": [
+                  "recipes/ai-chatbot"
                 ]
               }
             ]
@@ -70,187 +260,250 @@
         ]
       },
       {
-        "tab": "Apps",
-        "groups": [
+        "language": "zh",
+        "tabs": [
           {
-            "group": "  ",
-            "pages": [
-              "apps/web",
-              "apps/app",
+            "tab": "入门指南",
+            "groups": [
               {
-                "group": "API",
+                "group": " ",
                 "pages": [
-                  "apps/api/overview",
-                  "apps/api/add-new-endpoint",
-                  "apps/api/protect-endpoint",
-                  "apps/api/use-in-client",
-                  "apps/api/use-locale"
-                ]
-              },
-              "apps/storybook"
-
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Packages",
-        "groups": [
-          {
-            "group": " ",
-            "pages": [
-              "packages/ai",
-              {
-                "group": "Analytics",
-                "pages": [
-                  "packages/analytics/web",
-                  "packages/analytics/product"
-                ]
-              },
-              "packages/authentication",
-              "packages/cms",
-              "packages/collaboration",
-              "packages/cron",
-              "packages/database",
-              {
-                "group": "Design System",
-                "pages": [
-                  "packages/design-system/blocks",
-                  "packages/design-system/colors",
-                  "packages/design-system/components",
-                  "packages/design-system/dark-mode",
-                  "packages/design-system/provider",
-                  "packages/design-system/typography"
+                  "zh/overview",
+                  "zh/teckstack",
+                  "zh/faq"
                 ]
               },
               {
-                "group": "Email",
+                "group": " ",
                 "pages": [
-                  "packages/email/overview",
-                  "packages/email/resend",
-                  "packages/email/plunk",
-                  "packages/email/postmark",
-                  "packages/email/sendgrid",
-                  "packages/email/nodemailer",
-                  "packages/email/mailersend"
-                ]
-              },
-              "packages/flags",
-              "packages/formatting",
-              "packages/internationalization",
-              {
-                "group": "Observability",
-                "pages": [
-                  "packages/observability/error-capture",
-                  "packages/observability/debugging",
-                  "packages/observability/logging",
-                  "packages/observability/uptime"
-                ]
-              },
-              {
-                "group": "Next.js Config",
-                "pages": [
-                  "packages/next-config/overview",
-                  "packages/next-config/bundle-analysis"
-                ]
-              },
-              "packages/live-chat",
-              "packages/notifications",
-              {
-                "group": "Payments",
-                "pages": [
-                  "packages/payments/overview",
-                  "packages/payments/config",
                   {
-                    "group": "Payment Providers",
+                    "group": "安装指南",
                     "pages": [
-                      "packages/payments/providers/stripe",
-                      "packages/payments/providers/lemonsqueezy",
-                      "packages/payments/providers/paddle",
-                      "packages/payments/providers/polar",
-                      "packages/payments/providers/chargebee",
-                      "packages/payments/providers/creem"
+                      "zh/setup/installation/prerequisites",
+                      "zh/setup/installation/clone",
+                      "zh/setup/installation/development"
+                    ]
+                  },
+                  {
+                    "group": "代码库管理",
+                    "pages": [
+                      "zh/setup/codebase/project-structure",
+                      "zh/setup/codebase/update",
+                      "zh/setup/codebase/manage-dependencies",
+                      "zh/setup/codebase/add-packages",
+                      "zh/setup/codebase/add-apps"
+                    ]
+                  },
+                  {
+                    "group": "配置管理",
+                    "pages": [
+                      "zh/setup/configuration/environment",
+                      "zh/setup/configuration/app-config"
+                    ]
+                  },
+                  {
+                    "group": "部署指南",
+                    "pages": [
+                      "zh/deployment/checklist",
+                      "zh/deployment/overview",
+                      "zh/deployment/vercel",
+                      "zh/deployment/netlify",
+                      "zh/deployment/render",
+                      "zh/deployment/flyio",
+                      "zh/deployment/coolify",
+                      "zh/deployment/railway",
+                      "zh/deployment/aws",
+                      "zh/deployment/docker",
+                      "zh/deployment/standalone-api"
                     ]
                   }
                 ]
-              },
-              {
-                "group": "Security",
-                "pages": [
-                  "packages/security/application",
-                  "packages/security/rate-limiting",
-                  "packages/security/dependencies",
-                  "packages/security/headers",
-                  "packages/security/ip-geolocation"
-                ]
-              },
-              {
-                "group": "SEO",
-                "pages": [
-                  "packages/seo/metadata",
-                  "packages/seo/sitemap",
-                  "packages/seo/robots",
-                  "packages/seo/json-ld"
-                ]
-              },
-              {
-                "group": "Storage",
-                "pages": [
-                  "packages/storage/overview",
-                  "packages/storage/vercel",
-                  "packages/storage/uploadthing",
-                  "packages/storage/s3"
-                ]
-              },
-              "packages/testing",
-              "packages/toolbar",
-              "packages/webhooks"
-            ]
-          }
-        ]
-      },
-      {
-        "tab": "Migrations",
-        "groups": [
-          {
-            "group": "Authentication",
-            "pages": [
-              "migrations/authentication/authjs",
-              "migrations/authentication/better-auth"
+              }
             ]
           },
           {
-            "group": "Database",
-            "pages": [
-              "migrations/database/drizzle",
-              "migrations/database/planetscale",
-              "migrations/database/prisma-postgres",
-              "migrations/database/supabase",
-              "migrations/database/edgedb",
-              "migrations/database/turso"
+            "tab": "应用模块",
+            "groups": [
+              {
+                "group": "  ",
+                "pages": [
+                  "zh/apps/web",
+                  "zh/apps/app",
+                  {
+                    "group": "API 接口",
+                    "pages": [
+                      "zh/apps/api/overview",
+                      "zh/apps/api/add-new-endpoint",
+                      "zh/apps/api/protect-endpoint",
+                      "zh/apps/api/use-in-client",
+                      "zh/apps/api/use-locale"
+                    ]
+                  },
+                  "zh/apps/storybook"
+                ]
+              }
             ]
           },
           {
-            "group": "Feature flags",
-            "pages": [
-              "migrations/flags/hypertune"
+            "tab": "功能包",
+            "groups": [
+              {
+                "group": " ",
+                "pages": [
+                  "zh/packages/ai",
+                  {
+                    "group": "数据分析",
+                    "pages": [
+                      "zh/packages/analytics/web",
+                      "zh/packages/analytics/product"
+                    ]
+                  },
+                  "zh/packages/authentication",
+                  "zh/packages/cms",
+                  "zh/packages/collaboration",
+                  "zh/packages/cron",
+                  "zh/packages/database",
+                  {
+                    "group": "界面设计",
+                    "pages": [
+                      "zh/packages/design-system/blocks",
+                      "zh/packages/design-system/colors",
+                      "zh/packages/design-system/components",
+                      "zh/packages/design-system/dark-mode",
+                      "zh/packages/design-system/provider",
+                      "zh/packages/design-system/typography"
+                    ]
+                  },
+                  {
+                    "group": "邮件",
+                    "pages": [
+                      "zh/packages/email/overview",
+                      "zh/packages/email/resend",
+                      "zh/packages/email/plunk",
+                      "zh/packages/email/postmark",
+                      "zh/packages/email/sendgrid",
+                      "zh/packages/email/nodemailer",
+                      "zh/packages/email/mailersend"
+                    ]
+                  },
+                  "zh/packages/flags",
+                  "zh/packages/formatting",
+                  "zh/packages/internationalization",
+                  {
+                    "group": "监控与日志",
+                    "pages": [
+                      "zh/packages/observability/error-capture",
+                      "zh/packages/observability/debugging",
+                      "zh/packages/observability/logging",
+                      "zh/packages/observability/uptime"
+                    ]
+                  },
+                  {
+                    "group": "Next.js 配置",
+                    "pages": [
+                      "zh/packages/next-config/overview",
+                      "zh/packages/next-config/bundle-analysis"
+                    ]
+                  },
+                  "zh/packages/live-chat",
+                  "zh/packages/notifications",
+                  {
+                    "group": "支付",
+                    "pages": [
+                      "zh/packages/payments/overview",
+                      "zh/packages/payments/config",
+                      {
+                        "group": "支付提供商",
+                        "pages": [
+                          "zh/packages/payments/providers/stripe",
+                          "zh/packages/payments/providers/lemonsqueezy",
+                          "zh/packages/payments/providers/paddle",
+                          "zh/packages/payments/providers/polar",
+                          "zh/packages/payments/providers/chargebee",
+                          "zh/packages/payments/providers/creem"
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "group": "安全",
+                    "pages": [
+                      "zh/packages/security/application",
+                      "zh/packages/security/rate-limiting",
+                      "zh/packages/security/dependencies",
+                      "zh/packages/security/headers",
+                      "zh/packages/security/ip-geolocation"
+                    ]
+                  },
+                  {
+                    "group": "SEO",
+                    "pages": [
+                      "zh/packages/seo/metadata",
+                      "zh/packages/seo/sitemap",
+                      "zh/packages/seo/robots",
+                      "zh/packages/seo/json-ld"
+                    ]
+                  },
+                  {
+                    "group": "存储",
+                    "pages": [
+                      "zh/packages/storage/overview",
+                      "zh/packages/storage/vercel",
+                      "zh/packages/storage/uploadthing",
+                      "zh/packages/storage/s3"
+                    ]
+                  },
+                  "zh/packages/testing",
+                  "zh/packages/toolbar",
+                  "zh/packages/webhooks"
+                ]
+              }
             ]
           },
           {
-            "group": "Formatting",
-            "pages": [
-              "migrations/formatting/eslint"
+            "tab": "迁移",
+            "groups": [
+              {
+                "group": "认证迁移",
+                "pages": [
+                  "zh/migrations/authentication/authjs",
+                  "zh/migrations/authentication/better-auth"
+                ]
+              },
+              {
+                "group": "数据库",
+                "pages": [
+                  "zh/migrations/database/drizzle",
+                  "zh/migrations/database/planetscale",
+                  "zh/migrations/database/prisma-postgres",
+                  "zh/migrations/database/supabase",
+                  "zh/migrations/database/edgedb",
+                  "zh/migrations/database/turso"
+                ]
+              },
+              {
+                "group": "功能标志",
+                "pages": [
+                  "zh/migrations/flags/hypertune"
+                ]
+              },
+              {
+                "group": "格式化",
+                "pages": [
+                  "zh/migrations/formatting/eslint"
+                ]
+              }
             ]
-          }
-        ]
-      },
-      {
-        "tab": "Recipes",
-        "groups": [
+          },
           {
-            "group": "  ",
-            "pages": [
-              "recipes/ai-chatbot"
+            "tab": "实践案例",
+            "groups": [
+              {
+                "group": "  ",
+                "pages": [
+                  "zh/recipes/ai-chatbot"
+                ]
+              }
             ]
           }
         ]

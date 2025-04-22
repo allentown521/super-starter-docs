@@ -1,0 +1,37 @@
+---
+title: 认证
+description: 我们使用Clerk来处理认证、用户和组织管理。
+---
+
+<Frame>
+  <img src="/images/authentication.png" alt="" />
+</Frame>
+
+SuperStarter通过`auth`包来管理认证。默认情况下，这个包是对[Clerk](https://clerk.com/)的封装，它提供了一个完整的认证和用户管理解决方案，可以与Next.js应用程序无缝集成。
+
+<Tip>
+您需要先在Clerk项目设置中启用`Enable organizations`才能使用组织管理功能。
+</Tip>
+
+## 应用内
+
+`@repo/auth`包暴露了一个`AuthProvider`，但您不需要直接使用它。[`DesignSystemProvider`](/zh/packages/design-system/provider)包含了所有相关的provider和高阶组件。
+
+从这里开始，您可以使用Clerk提供的所有预构建组件和hooks。为了演示这一点，我们已经在侧边栏中添加了`<OrganizationSwitcher>`和`<UserButton>`组件，并构建了登录和注册页面。
+
+<Frame>
+  <img src="/images/sign-in.png" alt="登录页面" />
+</Frame>
+
+## Webhooks
+
+Clerk使用webhooks来处理认证事件。这些事件在`api`应用的`POST /webhooks/clerk`路由中处理。请确保在您的Clerk项目设置中启用所需的webhook事件。
+
+## 邮件模板
+
+Clerk会自动处理认证和授权邮件。您可以在其仪表板中配置Clerk发送的邮件的主题。
+
+### 本地开发
+
+我们可以使用[Tunnel](/zh/packages/payments/overview#tunnel)在本地开发中测试webhooks。
+Tunnel是一个将本地机器端口暴露到互联网的工具。这使我们能够在本地测试webhook。

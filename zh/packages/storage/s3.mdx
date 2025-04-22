@@ -1,0 +1,117 @@
+---
+title: S3 兼容存储
+description: 如何将默认存储提供商切换为 S3 兼容存储。
+---
+
+目前支持所有 S3 兼容存储提供商，包括 [AWS S3](https://aws.amazon.com/s3/)、[DigitalOcean Spaces](https://www.digitalocean.com/products/spaces)、[Cloudflare R2](https://www.cloudflare.com/products/r2/)、[Supabase Storage](https://supabase.com/storage) 等。以下是如何将默认存储提供商切换为 AWS S3 兼容存储的指南。
+
+您可以在[官方 AWS 文档](https://docs.aws.amazon.com/AmazonS3/latest/API/Welcome.html)或您特定存储提供商的文档中了解更多关于 S3 服务配置的信息。
+
+## 权限设置
+在开始管理文件之前，请确保您已配置好存储。
+
+大多数 S3 兼容存储提供商允许您配置存储桶权限和访问策略。正确设置这些对于保护您的文件和控制访问权限至关重要。
+
+以下是一些关键的安全建议：
+
+- 默认情况下保持存储桶私有
+- 使用 IAM 角色和策略管理访问
+- 对敏感数据启用服务器端加密
+- 为客户端上传适当配置 CORS 设置
+- 定期审核存储桶权限和访问日志
+- 强烈不建议将存储桶设为公开，因为这可能会暴露敏感数据，导致未经授权的访问和带宽使用产生的意外费用。
+
+有关配置存储桶策略和权限的详细指导，请参阅存储提供商的文档:
+
+- [AWS S3 文档](https://docs.aws.amazon.com/AmazonS3/latest/userguide/access-policy-language-overview.html)
+- [DigitalOcean Spaces 文档](https://docs.digitalocean.com/products/spaces/how-to/manage-access/)
+- [Cloudflare R2 文档](https://developers.cloudflare.com/r2/api/s3/tokens/)
+- [Supabase Storage 文档](https://supabase.com/docs/guides/storage/security/access-control)
+
+## 1. 更新环境变量
+
+接下来，将这些环境变量添加到`.env.local`文件中:
+
+```js apps/app/.env
+
+// Add this:
+AWS_ACCESS_KEY_ID=""
+AWS_SECRET_ACCESS_KEY=""
+AWS_BUCKET_NAME=""
+AWS_REGION=""
+AWS_ENDPOINT=""
+```
+
+
+## 2. 更新现有存储文件
+
+更新 `index.ts` 和 `client.ts` 以使用新的 `uploadthing` 软件包:
+
+```ts packages/storage/index.ts
+export * from './providers/s3';
+```
+
+## 3. 准备上传端点
+
+如[概述](/zh/packages/storage/overview)页面所述，SuperStarter 使用预签名 URL 将文件上传到您的存储提供商。因此，我们首先需要实现 `api/signed-upload-url` API 路由，以便能够将文件上传到 `documents` 存储桶。
+
+```ts apps/api/server/api/routes/upload/index.ts
+export const uploadsRouter = new Hono().basePath("/uploads").post(
+	"/signed-upload-url",
+    // using the authMiddleware will make sure the user is authenticated
+	authMiddlewareWrap,
+	validator(
+		"query",
+		z.object({
+			bucket: z.string().min(1),
+			path: z.string().min(1),
+		}),
+	),
+ // ...
+	async (c) => {
+		const { bucket, path } = c.req.valid("query");
+ 
+  // ...
+ 
+	  const signedUrl = await getSignedUploadUrl(path, { bucket });
+		return c.json({ signedUrl });
+ 
+		throw new HTTPException(403);
+	},
+);
+```
+
+## 4. 从用户界面上传文件
+
+然后，您就可以用它从前端代码中将文件上传到生成的预指定 URL:
+
+```tsx upload.tsx
+const upload = useMutation({
+    mutationFn: async (data: { file?: File }) => {
+      const extension = data.file?.type.split("/").pop();
+      const path = `files/${crypto.randomUUID()}.${extension}`;
+ 
+      const { url: uploadUrl } = await handle(api.upload.signedUploadUrl.$get)({
+        query: { path },
+      });
+ 
+      const response = await fetch(uploadUrl, {
+        method: "PUT",
+        body: data.file,
+        headers: {
+          "Content-Type": data.file?.type ?? "",
+        },
+      });
+ 
+      if (!response.ok) {
+        throw new Error("Failed to upload file!");
+      }
+    },
+    onError: (error) => {
+      toast.error(error.message});
+    },
+    onSuccess: async ({ publicUrl, oldImage }, _b, context) => {
+      toast.success("File uploaded!");
+    },
+  });
+```
