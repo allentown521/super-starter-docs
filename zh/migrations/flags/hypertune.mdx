@@ -7,20 +7,20 @@ description: 如何将功能标志提供者更改为 Hypertune。
 
 以下是如何将您的 SuperStarter 项目切换到使用 Hypertune 进行功能标志管理！
 
-## 1. Create a new Hypertune project
+## 1. 创建一个新的 Hypertune 项目
 
-Go to Hypertune and create a [new project](https://app.hypertune.com/?new_project=1). Then go to the Settings page of your project and copy the main token.
+访问 Hypertune 并创建一个[新项目](https://app.hypertune.com/?new_project=1)。然后转到项目的设置页面并复制主令牌。
 
-## 2. Update the environment variables
+## 2. 更新环境变量
 
-Update the environment variables across the project. For example:
+更新整个项目的环境变量。例如:
 
 ```js apps/app/.env
 // Add this:
 NEXT_PUBLIC_HYPERTUNE_TOKEN=""
 ```
 
-Add a `.env` file to the `feature-flags` package with the following contents:
+在 `feature-flags` 软件包中添加内容如下的 `.env` 文件:
 
 ```js packages/feature-flags/.env
 NEXT_PUBLIC_HYPERTUNE_TOKEN=""
@@ -30,9 +30,9 @@ HYPERTUNE_PLATFORM=vercel
 HYPERTUNE_GET_HYPERTUNE_IMPORT_PATH=../lib/getHypertune
 ```
 
-## 3. Update the `keys.ts` file in the `feature-flags` package
+## 3. 更新 `feature-flags` 软件包中的 `keys.ts` 文件
 
-Use the `NEXT_PUBLIC_HYPERTUNE_TOKEN` environment variable in the call to `createEnv`:
+在调用 `createEnv` 时使用 `NEXT_PUBLIC_HYPERTUNE_TOKEN` 环境变量:
 
 ```ts packages/feature-flags/keys.ts {6-8,14}
 import { createEnv } from '@t3-oss/env-nextjs';
@@ -53,25 +53,25 @@ export const keys = () =>
   });
 ```
 
-## 4. Swap out the required dependencies
+## 4. 替换所需依赖项
 
-First, delete the `create-flag.ts` file.
+首先，删除 `create-flag.ts` 文件。
 
-Then, uninstall the existing dependencies from the `feature-flags` package:
+然后，从 `feature-flags` 包中卸载现有依赖项：
 
 ```sh Terminal
 pnpm remove @repo/analytics --filter @repo/feature-flags
 ```
 
-Then, install the new dependencies:
+然后，安装新的依赖项：
 
 ```sh Terminal
 pnpm add hypertune server-only --filter @repo/feature-flags
 ```
 
-## 5. Set up Hypertune code generation
+## 5. 设置 Hypertune 代码生成
 
-Add `analyze` and `build` scripts to the `package.json` file for the `feature-flags` package, which both execute the `hypertune` command:
+在 `feature-flags` 包的 `package.json` 文件中添加 `analyze` 和 `build` 脚本，这两个脚本都执行 `hypertune` 命令：
 
 ```json packages/feature-flags/package.json
 {
@@ -82,13 +82,13 @@ Add `analyze` and `build` scripts to the `package.json` file for the `feature-fl
 }
 ```
 
-Then run code generation with the following command:
+然后使用以下命令运行代码生成：
 
 ```sh Terminal
 pnpm build --filter @repo/feature-flags 
 ```
 
-This will generate the following files:
+这将生成以下文件：
 
 ```txt
 packages/feature-flags/generated/hypertune.ts
@@ -96,9 +96,9 @@ packages/feature-flags/generated/hypertune.react.tsx
 packages/feature-flags/generated/hypertune.vercel.tsx
 ```
 
-## 6. Set up Hypertune client instance
+## 6. 设置 Hypertune 客户端实例
 
-Add a `getHypertune.ts` file in the `feature-flags` package which defines a `getHypertune` function that returns an initialized instance of the Hypertune SDK on the server:
+在 `feature-flags` 包中添加一个 `getHypertune.ts` 文件，该文件定义了一个 `getHypertune` 函数，用于在服务器上返回一个初始化的 Hypertune SDK 实例：
 
 ```ts packages/feature-flags/lib/getHypertune.ts
 import 'server-only';
@@ -138,16 +138,16 @@ export default async function getHypertune(params?: {
 }
 ```
 
-## 7. Update `index.ts`
+## 7. 更新 `index.ts`
 
-Hypertune automatically generates feature flag functions that use the `flags` package. To export them the same way as before, update the `index.ts` file to export everything from the `generated/hypertune.vercel.ts` file:
+Hypertune 会自动生成使用 `flags` 包的功能标志函数。为了像以前一样导出它们，请更新 `index.ts` 文件以从 `generated/hypertune.vercel.ts` 文件中导出所有内容：
 
 ```ts packages/feature-flags/index.ts
 export * from "./generated/hypertune.vercel.tsx"
 ```
 
-Hypertune adds a `Flag` suffix to all these generated feature flag functions, so you will need to update flag usages with this, e.g. `showBetaFeature` => `showBetaFeatureFlag`.
+Hypertune 会为所有这些生成的特征标志函数添加后缀 `Flag`，因此您需要更新标志的用法，例如 `showBetaFeature` => `showBetaFeatureFlag`.
 
-## 8. Add more feature flags
+## 8. 添加更多的功能标志
 
-To add more feature flags, create them in the Hypertune UI and then re-run code generation. They will be automatically added to your generated files.
+要添加更多特性标志，请在 Hypertune UI 中创建它们，然后重新运行代码生成。它们将自动添加到生成的文件中。

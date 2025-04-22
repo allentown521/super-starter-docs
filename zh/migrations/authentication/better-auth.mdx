@@ -13,13 +13,13 @@ Better Auth 是一个全面的、开源的 TypeScript 认证框架。它设计�
 pnpm remove @clerk/nextjs @clerk/themes @clerk/types --filter @repo/auth
 ```
 
-...and install the Better Auth dependencies:
+然后安装 Better Auth 依赖项:
 
 ```sh Terminal
 pnpm add better-auth next --filter @repo/auth
 ```
 
-Additionally, add `@repo/database` to the `auth` package dependencies.
+此外，在 `auth` 软件包依赖关系中添加 `@repo/database`。
 
 ## 2. 更新环境变量
 
@@ -29,7 +29,7 @@ Additionally, add `@repo/database` to the `auth` package dependencies.
 npx @better-auth/cli secret
 ```
 
-This will add a `BETTER_AUTH_SECRET` environment variable to the `.env.local` file.
+这将在 `.env.local` 文件中添加一个 `BETTER_AUTH_SECRET` 环境变量。
 
 ## 3. 设置服务端和客户端认证
 
