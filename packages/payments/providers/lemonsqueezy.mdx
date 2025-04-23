@@ -20,9 +20,9 @@ LEMON_SQUEEZY_WEBHOOK_SECRET=
 
 ## In-App Purchases
 
-Delete the comment in:
-```ts /packages/payments/index.ts
-export * from './providers/lemonsqueezy';
+You can use Lemonsqueezy anywhere in your application by importing a `lemonsqueezy` object:
+```ts page.tsx
+import { lemonsqueezy } from '@repo/payments';
 ```
 
 ### Creating a Checkout Session
@@ -45,7 +45,7 @@ It sends a request to create a session to the `/api/lemonsqueezy/checkout` endpo
 
 - Server
 
-Delete the comment in `apps/web/api/lemonsqueezy/checkout/route.ts`
+Implementing business logic in `apps/web/api/lemonsqueezy/checkout/route.ts`.
 
 <Tip>
 Lemonsqueezy allows using the product's [Purchase Link](https://docs.lemonsqueezy.com/guides/developer-guide/taking-payments#creating-checkouts-from-the-lemon-squeezy-dashboard) without creating a checkout session through the API.

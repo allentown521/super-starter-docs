@@ -1,17 +1,17 @@
 ---
 title: Paddle
-description: Learn how to set up Creem with SuperStarter.
+description: Learn how to set up Paddle with SuperStarter.
 ---
 
 [Paddle Billing](https://www.paddle.com/) is a merchant of record for selling digital products and subscriptions. It takes care of payments, global tax compliance, fraud prevention, localization, and subscriptions. Here’s how to switch the default payment processor from Stripe to Paddle Billing.
 
 ## Get the api key
 
-After you have created your account for Creem, you will need to get the API key. You can do this by going to the [API page](https://www.paddle.com/) in the dashboard. Here you will find the Secret key and the Publishable key. You will need the Secret key for the integration to work.
+After you have created your account for Paddle, you will need to get the API key. You can do this by going to the [API page](https://www.paddle.com/) in the dashboard. Here you will find the Secret key and the Publishable key. You will need the Secret key for the integration to work.
 
 ### Add environment variables
 
-To use the Creem integration, you need to define the following environment variables to your `.env.local` as well as your production environment:
+To use the Paddle integration, you need to define the following environment variables to your `.env.local` as well as your production environment:
 
 ```env .env.local
 PADDLE_SECRET_KEY=
@@ -21,9 +21,9 @@ PADDLE_ENV="" // Use 'sandbox' if you're using the sandbox environment - else us
 
 ## In-App Purchases
 
-Delete the comment in:
-```ts /packages/payments/index.ts
-export * from './providers/paddle';
+You can use Paddle anywhere in your application by importing a `paddle` object:
+```ts page.tsx
+import { paddle } from '@repo/payments';
 ```
 
 ### Creating a Checkout Session
@@ -46,7 +46,7 @@ It sends a request to create a session to the `/api/paddle/checkout` endpoint.
 
 - Server
 
-Delete the comment in `apps/web/api/paddle/checkout/route.ts`
+Implementing business logic in `apps/web/api/paddle/checkout/route.ts`.
 
 <Tip>
 If you want create a checkout session in client side, you can use the following code:

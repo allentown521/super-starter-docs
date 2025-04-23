@@ -18,9 +18,9 @@ CREEM_WEBHOOK_SECRET=
 
 ## 应用内购买
 
-删除注释：
-```ts zh/packages/payments/index.ts
-export * from './providers/creem';
+您可以通过导入`creem`对象在应用中的任何地方使用Creem：
+```ts page.tsx
+import { creem } from '@repo/payments';
 ```
 
 ### 创建结账会话
@@ -43,4 +43,4 @@ export * from './providers/creem';
 
 - 服务端
 
-删除`zh/apps/web/api/creem/checkout/route.ts`中的注释
+在`apps/web/api/creem/checkout/route.ts`中实现业务逻辑

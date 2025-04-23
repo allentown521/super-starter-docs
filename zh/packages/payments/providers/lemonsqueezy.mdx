@@ -20,9 +20,9 @@ LEMON_SQUEEZY_WEBHOOK_SECRET=
 
 ## 应用内购买
 
-删除以下注释：
-```ts /packages/payments/index.ts
-export * from './providers/lemonsqueezy';
+您可以通过导入`lemonsqueezy`对象在应用中的任何地方使用Lemonsqueezy：
+```ts page.tsx
+import { lemonsqueezy } from '@repo/payments';
 ```
 
 ### 创建结账会话
@@ -45,7 +45,7 @@ export * from './providers/lemonsqueezy';
 
 - 服务端
 
-删除`apps/web/api/lemonsqueezy/checkout/route.ts`中的注释
+在`apps/web/api/lemonsqueezy/checkout/route.ts`中实现业务逻辑
 
 <Tip>
 Lemonsqueezy允许使用产品的[购买链接](https://docs.lemonsqueezy.com/guides/developer-guide/taking-payments#creating-checkouts-from-the-lemon-squeezy-dashboard)，而无需通过API创建结账会话。

@@ -1,17 +1,17 @@
 ---
 title: Paddle
-description: 了解如何使用 SuperStarter 设置 Creem。
+description: 了解如何使用 SuperStarter 设置 Paddle。
 ---
 
 [Paddle Billing](https://www.paddle.com/) 是销售数字产品和订阅服务的商家记录平台。它负责处理支付、全球税务合规、欺诈预防、本地化和订阅服务。以下是如何将默认支付处理器从 Stripe 切换到 Paddle Billing 的步骤。
 
 ## 获取 API 密钥
 
-在为 Creem 创建账户后，您需要获取 API 密钥。您可以通过访问仪表盘上的 [API 页面](https://www.paddle.com/) 来完成此操作。在这里，您将找到密钥和可发布密钥。您需要使用密钥来完成集成。
+在为 Paddle 创建账户后，您需要获取 API 密钥。您可以通过访问仪表盘上的 [API 页面](https://www.paddle.com/) 来完成此操作。在这里，您将找到密钥和可发布密钥。您需要使用密钥来完成集成。
 
 ### 添加环境变量
 
-要使用 Creem 集成，您需要在 `.env.local` 文件以及生产环境中定义以下环境变量：
+要使用 Paddle 集成，您需要在 `.env.local` 文件以及生产环境中定义以下环境变量：
 
 ```env .env.local
 PADDLE_SECRET_KEY=
@@ -21,9 +21,9 @@ PADDLE_ENV="" // 如果您使用沙盒环境，请使用 'sandbox'；否则使�
 
 ## 应用内购买
 
-删除以下文件中的注释：
-```ts zh/packages/payments/index.ts
-export * from './providers/paddle';
+您可以通过导入`paddle`对象在应用中的任何地方使用Paddle：
+```ts page.tsx
+import { paddle } from '@repo/payments';
 ```
 
 ### 创建结账会话
@@ -46,7 +46,7 @@ export * from './providers/paddle';
 
 - 服务器
 
-删除 `apps/web/api/paddle/checkout/route.ts` 中的注释。
+在`apps/web/api/paddle/checkout/route.ts`中实现业务逻辑
 
 <Tip>
 如果您想在客户端创建结账会话，可以使用以下代码：

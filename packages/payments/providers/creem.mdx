@@ -18,9 +18,9 @@ CREEM_WEBHOOK_SECRET=
 
 ## In-App Purchases
 
-Delete the comment in:
-```ts /packages/payments/index.ts
-export * from './providers/creem';
+You can use Creem anywhere in your application by importing a `creem` object:
+```ts page.tsx
+import { creem } from '@repo/payments';
 ```
 
 ### Creating a Checkout Session
@@ -43,4 +43,4 @@ It sends a request to create a session to the `/api/creem/checkout` endpoint.
 
 - Server
 
-Delete the comment in `apps/web/api/creem/checkout/route.ts`
+Implementing business logic in `apps/web/api/creem/checkout/route.ts`.

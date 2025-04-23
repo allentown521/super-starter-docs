@@ -19,9 +19,9 @@ CREEM_API_KEY=""
 
 ## In-App Purchases
 
-Delete the comment in:
-```ts /packages/payments/index.ts
-export * from './providers/chargebee';
+You can use Chargebee anywhere in your application by importing a `chargebee` object:
+```ts page.tsx
+import { chargebee } from '@repo/payments';
 ```
 
 ### Creating a Checkout Session
@@ -44,4 +44,4 @@ It sends a request to create a session to the `/api/chargebee/checkout` endpoint
 
 - Server
 
-Delete the comment in `apps/web/api/chargebee/checkout/route.ts`
+Implementing business logic in `apps/web/api/chargebee/checkout/route.ts`.
