@@ -6,7 +6,7 @@ description: 了解SuperStarter应用程序和包的结构。
 
 SuperStarter是一个monorepo，这意味着它在一个仓库中包含多个包。这是现代Web应用程序的常见模式，因为它允许您在应用程序的不同部分之间共享代码，并将它们一起管理。
 
-该monorepo由[Turborepo](https://turbo.build/repo)管理，这是一个用于管理monorepo的工具。它提供了一种简单的方式来管理单个仓库中的多个包，并且专为现代Web应用程序设计。
+该monorepo由[Turborepo](https://turborepo.com)管理，这是一个用于管理monorepo的工具。它提供了一种简单的方式来管理单个仓库中的多个包，并且专为现代Web应用程序设计。
 
 ## 应用程序
 
@@ -26,6 +26,6 @@ SuperStarter包含多个在monorepo中共享的[包](/zh/packages)。这些包�
 
 ## 边界
  
- next-forge使用[Turborepo的边界](https://turbo.build/repo/docs/reference/boundaries)来确保Turborepo功能正常工作，通过检查包管理器工作区违规。
+ next-forge使用[Turborepo的边界](https://turborepo.com/docs/reference/boundaries)来确保Turborepo功能正常工作，通过检查包管理器工作区违规。
  
  您可以运行`pnpm run boundaries`来检查任何违规行为。
