@@ -69,6 +69,21 @@ Stripe allows using the product's Buy Link without creating a checkout session t
 
 ## Webhooks
 
+### Create a webhook
+
+To configure a new webhook, go to the [Webhooks page](https://dashboard.stripe.com/webhooks) in the Stripe dashboard. Click the Add endpoint button and select at least the following events:
+
+For subscriptions:
+- `customer.subscription.created`
+- `customer.subscription.updated`
+- `customer.subscription.deleted`
+
+For one-off payments:
+- `checkout.session.completed`
+
+
+### Webhook Handler
+
 Stripe webhooks are handled in the `POST /webhooks/stripe` route in the `apps/api` app. This route constructs the event and then switches on the event type to determine how to process the event.
 
 <Note>

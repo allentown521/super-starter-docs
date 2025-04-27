@@ -45,3 +45,17 @@ import { chargebee } from '@repo/payments';
 - 服务端
 
 在`apps/web/api/chargebee/checkout/route.ts`中实现业务逻辑
+
+## Webhooks
+
+### 创建Webhook
+
+要配置新的Webhook，请转到Chargebee仪表板中的Webhooks页面。点击“添加端点”按钮，并至少选择以下事件：
+
+- `Subscription Created`
+- `Subscription Changed`
+- `Subscription Cancelled`
+
+### Webhook处理程序
+
+Stripe的Webhook在`apps/api`应用中的`POST /webhooks/chargebee`路由中处理。此路由会构造事件，然后根据事件类型进行切换以确定如何处理该事件。

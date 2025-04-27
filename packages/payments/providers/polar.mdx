@@ -45,3 +45,25 @@ It sends a request to create a session to the `/api/polar/checkout` endpoint.
 - Server
 
 Implementing business logic in `apps/web/api/polar/checkout/route.ts`.
+
+## Webhooks
+
+### Create a webhook
+
+To configure a new webhook, go to the Webhooks page in the polar dashboard. Click the Add endpoint button and select at least the following events:
+
+For subscriptions:
+- `subscription.created`
+- `subscription.updated`
+- `subscription.canceled`
+
+For one-off payments:
+- `order.created`
+
+### Webhook Handler
+
+Stripe webhooks are handled in the `POST /webhooks/polar` route in the `apps/api` app. This route constructs the event and then switches on the event type to determine how to process the event.
+
+<Note>
+We have implemented the basic structure of the `Webhook` handler for you. You can modify it as needed.
+</Note>

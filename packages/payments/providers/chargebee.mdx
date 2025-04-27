@@ -45,3 +45,17 @@ It sends a request to create a session to the `/api/chargebee/checkout` endpoint
 - Server
 
 Implementing business logic in `apps/web/api/chargebee/checkout/route.ts`.
+
+## Webhooks
+
+### Create a webhook
+
+To configure a new webhook, go to the Webhooks page in the chargebee dashboard. Click the Add endpoint button and select at least the following events:
+
+- `Subscription Created`
+- `Subscription Changed`
+- `Subscription Cancelled`
+
+### Webhook Handler
+
+Stripe webhooks are handled in the `POST /webhooks/chargebee` route in the `apps/api` app. This route constructs the event and then switches on the event type to determine how to process the event.

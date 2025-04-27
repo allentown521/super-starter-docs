@@ -69,6 +69,21 @@ Stripe允许使用产品的购买链接而无需通过API创建结账会话。�
 
 ## Webhooks
 
+### 创建一个Webhook
+
+要配置新的Webhook，请转到Stripe仪表板的[webhooks](https://dashboard.stripe.com/webhooks)页面。然后点击“添加端点”按钮，至少选择以下事件：
+
+对于订阅：
+- `customer.subscription.created`
+- `customer.subscription.updated`
+- `customer.subscription.deleted`
+
+对于一次性支付：
+- `checkout.session.completed`
+
+
+### 处理Webhook
+
 Stripe webhooks在`apps/api`应用中的`POST /zh/webhooks/stripe`路由处理。该路由构建事件并根据事件类型决定如何处理。
 
 <Note>

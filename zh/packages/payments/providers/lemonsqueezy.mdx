@@ -50,3 +50,31 @@ import { lemonsqueezy } from '@repo/payments';
 <Tip>
 Lemonsqueezy允许使用产品的[购买链接](https://docs.lemonsqueezy.com/guides/developer-guide/taking-payments#creating-checkouts-from-the-lemon-squeezy-dashboard)，而无需通过API创建结账会话。
 </Tip>
+
+## Webhook
+
+### 创建Webhook
+
+要配置新的Webhook，请前往Lemonsqueezy仪表板中的[Webhook页面](https://app.lemonsqueezy.com/settings/webhooks)。点击“添加端点”按钮，并至少选择以下事件：
+
+对于订阅：
+- `subscription_created`
+- `subscription_updated`
+- `subscription_cancelled`
+
+对于一次性付款：
+- `order_created`
+
+您还需要输入一个签名密钥，您可以在终端中运行以下命令来获取：
+
+```sh Terminal
+openssl rand -base64 32
+```
+
+### Webhook处理器
+
+Stripe的Webhook由`apps/api`应用中的`POST /webhooks/lemonsqueezy`路由处理。该路由会构建事件，然后根据事件类型来决定如何处理该事件。
+
+<Note>
+我们已为您实现了`Webhook`处理器的基本结构。您可以根据需要进行修改。
+</Note>

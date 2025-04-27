@@ -45,3 +45,25 @@ import { polar } from '@repo/payments';
 - 服务端
 
 在`apps/web/api/polar/checkout/route.ts`中实现业务逻辑
+
+## Webhook
+
+### 创建 Webhook
+
+要配置新的 Webhook，请前往 Polar 控制台的 Webhooks 页面。点击“添加端点”按钮，并至少选择以下事件：
+
+对于订阅：
+- `subscription.created`
+- `subscription.updated`
+- `subscription.canceled`
+
+对于一次性支付：
+- `order.created`
+
+### Webhook 处理器
+
+Stripe 的 Webhook 在 `apps/api` 应用的 `POST /webhooks/polar` 路由中处理。该路由会构建事件，然后根据事件类型来决定如何处理该事件。
+
+<Note>
+我们已经为您实现了 `Webhook` 处理器的基本结构。您可以根据需要进行修改。
+</Note>
