@@ -1,5 +1,5 @@
 ---
-title: Web Analytics
+title: 网页分析
 description: 捕获页面浏览量、页面离开事件和自定义事件。
 ---
 
@@ -9,13 +9,31 @@ description: 捕获页面浏览量、页面离开事件和自定义事件。
 
 SuperStarter 提供了一些网页分析库。
 
-## Vercel Web Analytics
+## Vercel 网页分析
 
-Vercel 内置的分析工具提供了对网站访问者的详细洞察，包括热门页面、推荐来源和人口统计等新指标。您只需访问 Vercel 项目中的 Analytics 选项卡并点击对话框中的 Enable 即可启用。
+Vercel 的内置分析工具能借助诸如热门页面、主要引荐来源和用户数据统计等新指标，深入洞察您网站的访问者情况。
 
-阅读更多信息 [here](https://vercel.com/docs/analytics/quickstart).
+1. ### 添加环境变量
 
-## Google Analytics
+首先，您需要在项目中添加以下环境变量：
+
+```js .env.local
+NEXT_PUBLIC_ENABLE_VERCEL_ANALYTICS=true
+```
+
+2. ### 从 Vercel 仪表盘启用
+
+接下来，您只需访问 Vercel 项目中的 “分析” 选项卡，然后在对话框中点击 “启用” 即可。
+
+了解更多[信息](https://vercel.com/docs/analytics/quickstart).
+
+<Warning>
+如果一切设置正确，您在访问任何页面时，应该能在浏览器的 “网络” 选项卡中看到来自 `/_vercel/insights/view` 的 Fetch/XHR 请求。
+
+如果您看到 `_vercel/insights/script.js` 返回 404 错误，请确保已从 Vercel 仪表盘启用该功能。否则，Vercel 会不断尝试重新请求该 JavaScript 文件，这将消耗大量的 Vercel 请求。
+</Warning>
+
+## Google 分析
 
 [Google Analytics](https://analytics.google.com/) 跟踪用户行为、页面浏览量、会话时长和其他参与度指标，以提供有关用户活动和营销效果的洞察。GA 跟踪代码使用 [@next/third-parties](https://nextjs.org/docs/app/building-your-application/optimizing/third-party-libraries#google-analytics) 注入以提高性能。
 

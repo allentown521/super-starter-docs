@@ -11,9 +11,27 @@ SuperStarter comes with some web analytics libraries.
 
 ## Vercel Web Analytics
 
-Vercel's built-in analytics tool offers detailed insights into your website's visitors with new metrics like top pages, top referrers, and demographics. All you have to do to enable it is visit the Analytics tab in your Vercel project and click Enable from the dialog.
+Vercel's built-in analytics tool offers detailed insights into your website's visitors with new metrics like top pages, top referrers, and demographics. 
+
+1. ### Add environment variables
+
+First, you need to add the following environment variables to your project:
+
+```js .env.local
+NEXT_PUBLIC_ENABLE_VERCEL_ANALYTICS=true
+```
+
+2. ### Enable it from the Vercel dashboard
+
+Then you have to do to enable it is visit the Analytics tab in your Vercel project and click Enable from the dialog.
 
 Read more about it [here](https://vercel.com/docs/analytics/quickstart).
+
+<Warning>
+If everything is set up properly, you should be able to see a Fetch/XHR request in your browser's Network tab from `/_vercel/insights/view` when you visit any page.
+
+If you see `_vercel/insights/script.js` 404, make sure you have enable it from the Vercel dashboard. Otherwise vercel will keep trying to re-request that js file, which will consume a lot of vercel requests.
+</Warning>
 
 ## Google Analytics
 
