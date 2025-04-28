@@ -19,25 +19,29 @@ As part of the initial setup script, each `.env.example` file is copied to a rea
 To enable the application to run normally with a minimum configuration, each module has a placeholder set in the environment variable in advance. You just need to change these placeholders to the actual value you want to use according to your actual needs.
 </Note>
 
-Here are the files you will need to fill in:
+Here are the values you must fill in for each environment variable file:
 
 - `app/.env.local` - The app's environment variables.
 
-`DATABASE_URL` `*STRIPE*` `*CLERK*`.
+1. `DATABASE_URL`
+
+2. `*CLERK*`
 
 - `web/.env.local` - The web app's environment variables.
 
-`RESEND_TOKEN` `EMAIL_FROM` `*CLERK*`.
+none.
 
 - `api/.env.local` - The API app's environment variables.
 
-`DATABASE_URL` `*CLERK*`.
+1. `DATABASE_URL`
 
 - `packages/database/.env` - The database package's environment variables.
 
-`DATABASE_URL`
+1. `DATABASE_URL`
 
 - `packages/internationalization/.env.local` - The internationalization package's environment variables.
+
+none.
 
 <Info>
   We're aiming to remove the need for the package environment variable files, so if you have any suggestions for how to do this, please let us know.

@@ -19,25 +19,29 @@ SuperStarter 提供了一个可组合的环境变量系统，允许您以类型�
 为了使应用程序在最小配置下正常运行，每个模块的环境变量中都已预先设置了占位符。您只需根据实际需要将这些占位符更改为您想要使用的实际值。
 </Note>
 
-以下是您需要填写的文件：
+以下是各个环境变量文件中您必须要填写的值：
 
 - `app/.env.local` - 应用程序的环境变量。
 
-`DATABASE_URL` `*STRIPE*` `*CLERK*`.
+1. `DATABASE_URL`
+
+2. `*CLERK*`
 
 - `web/.env.local` - Web 应用程序的环境变量。
 
-`RESEND_TOKEN` `EMAIL_FROM` `*CLERK*`.
+无
 
 - `api/.env.local` - API 应用程序的环境变量。
 
-`DATABASE_URL` `*CLERK*`.
+1. `DATABASE_URL`
 
 - `packages/database/.env` - 数据库包的环境变量。
 
-`DATABASE_URL`
+1. `DATABASE_URL`
 
 - `packages/internationalization/.env.local` - 国际化包的环境变量。
+
+无
 
 <Info>
   我们正在努力消除对包环境变量文件的需求，因此如果您有任何建议，请告诉我们。
