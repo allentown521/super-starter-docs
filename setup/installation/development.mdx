@@ -42,5 +42,15 @@ description: Get started with the code and develop your SaaS.
     - [http://localhost:3001/](http://localhost:3001/) — The LandingPage website.
     - [http://localhost:3002/](http://localhost:3002/) — The API.
     - [http://localhost:3004/](http://localhost:6006/) — The Storybook.
+
+    <Tip>
+    If you only want to launch a particular app, you can use the following command:
+    - `pnpm --filter app dev` - Launch the Main app
+    - `pnpm --filter web dev` - Launch the Landing page website
+    - `pnpm --filter api dev` - Launch the API
+    - `pnpm --filter storybook dev` - Launch the Storybook
+    - `pnpm --filter email dev` - Launch the Email previews
+    - `pnpm --filter database dev` - Launch the Prisma Studio
+    </Tip>
   </Step>
 </Steps>

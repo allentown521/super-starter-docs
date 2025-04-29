@@ -29,3 +29,11 @@ Hono是一个面向TypeScript和JavaScript的现代简约Web框架。它设计�
 
 - **定时任务**：API用于运行[定时任务](/zh/packages/cron)。这些任务定义在`apps/api/app/cron`目录中。每个定时任务都是一个导出路由处理程序的`.ts`文件。
 - **Webhooks**：API用于运行[入站webhooks](/zh/packages/webhooks)。这些定义在`apps/api/app/webhooks`目录中。每个webhook都是一个导出路由处理程序的`.ts`文件。
+
+## 开发
+
+要启动应用，请在根目录中运行以下命令：
+
+```sh Terminal
+pnpm --filter api dev
+```

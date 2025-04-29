@@ -21,3 +21,11 @@ SuperStarter从`apps/app`目录导出主应用。它设计为运行在您选择�
 - **认证系统**：应用包含完整的[认证系统](/zh/packages/authentication)，支持电子邮件、Google和社交登录。您可以轻松扩展以支持其他提供商和认证方法。应用还分为认证和非认证路由组
 - **数据库**：应用连接了[数据库](/zh/packages/database)，可以在React服务器组件中获取数据
 - **协作功能**：应用连接了[协作](/zh/packages/collaboration)包，包含Avatar Stack和Live Cursor组件
+
+## 开发
+
+要启动应用，请在根目录中运行以下命令：
+
+```sh Terminal
+pnpm --filter app dev
+```

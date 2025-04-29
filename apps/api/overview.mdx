@@ -29,3 +29,11 @@ Don't worry, if you don't plan to use Hono for the time being, you can continue 
 
 - **Cron jobs**: The API is used to run [cron jobs](/packages/cron). These are defined in the `apps/api/app/cron` directory. Each cron job is a `.ts` file that exports a route handler.
 - **Webhooks**: The API is used to run [inbound webhooks](/packages/webhooks). These are defined in the `apps/api/app/webhooks` directory. Each webhook is a `.ts` file that exports a route handler.
+
+## Development
+
+To start the app, run the following command in the root directory:
+
+```sh Terminal
+pnpm --filter api dev
+```

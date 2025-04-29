@@ -41,5 +41,15 @@ description: 开始使用代码并开发您的SaaS。
     - [http://localhost:3001/](http://localhost:3001/) — 落地页网站
     - [http://localhost:3002/](http://localhost:3002/) — API
     - [http://localhost:3004/](http://localhost:6006/) — Storybook
+
+    <Tip>
+    如果您只想启动某一个应用，可以使用以下命令：
+    - `pnpm --filter app dev` — 启动主应用
+    - `pnpm --filter web dev` — 启动落地页网站
+    - `pnpm --filter api dev` — 启动 API
+    - `pnpm --filter storybook dev` — 启动 Storybook
+    - `pnpm --filter email dev` — 启动 Email 预览
+    - `pnpm --filter database dev` — 启动 Prisma Studio
+    </Tip>
   </Step>
 </Steps>

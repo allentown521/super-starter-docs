@@ -15,9 +15,13 @@ SuperStarter使用[Storybook](https://storybook.js.org/)作为设计系统的前
 
 默认情况下，Storybook配置了我们的[blocks](/zh/packages/design-system/blocks)和[shadcn/ui](https://ui.shadcn.com/)中的每个组件，并允许您与它们交互。它还配置了相关字体和高阶组件，确保您的应用程序和Storybook之间体验一致。
 
-## 运行工作坊
+## 开发
 
-当您运行`pnpm dev`时，Storybook会自动启动。您也可以使用`pnpm dev --filter storybook`独立启动它。预览将在[localhost:6006](http://localhost:6006)可用。
+要启动应用，请在根目录中运行以下命令：
+
+```sh Terminal
+pnpm --filter storybook dev
+```
 
 ## 添加stories
 
