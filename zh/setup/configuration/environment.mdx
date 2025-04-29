@@ -21,31 +21,49 @@ SuperStarter 提供了一个可组合的环境变量系统，允许您以类型�
 
 以下是各个环境变量文件中您必须要填写的值：
 
-- `app/.env.local` - 应用程序的环境变量。
+- `app/.env.local` - App 应用的环境变量。
 
-1. `DATABASE_URL`
+```env .env.local
+DATABASE_URL=
+NEXT_PUBLIC_APP_URL=
+NEXT_PUBLIC_WEB_URL=
 
-2. `*CLERK*`
+CLERK_WEBHOOK_SECRET=
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=
+```
 
 - `web/.env.local` - Web 应用程序的环境变量。
 
-无
+```env .env.local
+NEXT_PUBLIC_APP_URL=
+NEXT_PUBLIC_WEB_URL=
+```
 
 - `api/.env.local` - API 应用程序的环境变量。
 
-1. `DATABASE_URL`
+```env .env.local
+NEXT_PUBLIC_APP_URL=
+NEXT_PUBLIC_WEB_URL=
+NEXT_PUBLIC_API_URL=
+```
 
 - `packages/database/.env` - 数据库包的环境变量。
 
-1. `DATABASE_URL`
+```env .env
+DATABASE_URL=
+```
 
 - `packages/internationalization/.env.local` - 国际化包的环境变量。
 
-无
+<Note>
+  - 对于 `NEXT_PUBLIC_APP_URL`、`NEXT_PUBLIC_WEB_URL` 和 `NEXT_PUBLIC_API_URL`，您不需要在本地修改，当您部署时才应该替换成您各个应用的 URL。
 
-<Info>
-  我们正在努力消除对包环境变量文件的需求，因此如果您有任何建议，请告诉我们。
-</Info>
+  - 对于 `*CLERK*`，本地应该使用测试环境的密钥，部署时应该使用生产环境的密钥。
+</Note>
 
 ## 验证规则
 
@@ -56,6 +74,10 @@ SuperStarter 提供了一个可组合的环境变量系统，允许您以类型�
 ## 集成环境变量
 
 一些环境变量将由集成和其他工具添加。例如，当您从 Vercel Marketplace 添加 Sentry 集成时，前缀为 `SENTRY_` 的环境变量会自动添加到 Vercel 项目中。此外，[`VERCEL_PROJECT_PRODUCTION_URL`](https://vercel.com/docs/environment-variables/system-environment-variables) 是一个非常有用的环境变量，它指向该项目在 Vercel 上部署的“生产”URL。
+
+<Tip>
+对于`VERCEL_PROJECT_PRODUCTION_URL`，当您部署到vercel时，它默认是您为该应用部署的域名
+</Tip>
 
 ## 添加环境变量
 

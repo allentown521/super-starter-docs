@@ -13,6 +13,19 @@ SuperStarter通过`auth`包来管理认证。默认情况下，这个包是对[C
 您需要先在Clerk项目设置中启用`Enable organizations`才能使用组织管理功能。
 </Tip>
 
+## 添加环境变量
+
+您需要为使用Clerk的应用程序添加一些环境变量。
+
+```env .env.local
+CLERK_WEBHOOK_SECRET=
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=
+```
+
 ## 应用内
 
 `@repo/auth`包暴露了一个`AuthProvider`，但您不需要直接使用它。[`DesignSystemProvider`](/zh/packages/design-system/provider)包含了所有相关的provider和高阶组件。

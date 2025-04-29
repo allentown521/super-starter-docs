@@ -23,28 +23,47 @@ Here are the values you must fill in for each environment variable file:
 
 - `app/.env.local` - The app's environment variables.
 
-1. `DATABASE_URL`
+```env .env.local
+DATABASE_URL=
+NEXT_PUBLIC_APP_URL=
+NEXT_PUBLIC_WEB_URL=
 
-2. `*CLERK*`
+CLERK_WEBHOOK_SECRET=
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=
+NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=
+NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=
+```
 
 - `web/.env.local` - The web app's environment variables.
 
-none.
+```env .env.local
+NEXT_PUBLIC_APP_URL=
+NEXT_PUBLIC_WEB_URL=
+```
 
 - `api/.env.local` - The API app's environment variables.
 
-1. `DATABASE_URL`
+```env .env.local
+NEXT_PUBLIC_APP_URL=
+NEXT_PUBLIC_WEB_URL=
+NEXT_PUBLIC_API_URL=
+```
 
 - `packages/database/.env` - The database package's environment variables.
 
-1. `DATABASE_URL`
+```env .env
+DATABASE_URL=
+```
 
 - `packages/internationalization/.env.local` - The internationalization package's environment variables.
 
-none.
 
 <Info>
-  We're aiming to remove the need for the package environment variable files, so if you have any suggestions for how to do this, please let us know.
+- For `NEXT_PUBLIC_APP_URL`, `NEXT_PUBLIC_WEB_URL`, and `NEXT_PUBLIC_API_URL`, you do not need to modify them locally, but should replace them with the URLs of your individual applications when you deploy them.
+
+- For `*CLERK*`, you should use the test key locally and the production key when deploying.
 </Info>
 
 ## Validation rules
@@ -56,6 +75,10 @@ Each package's `keys.ts` file contains the validation rules for each environment
 ## Integration environment variables
 
 Some environment variables will be added by integrations and other tooling. For example, environment variables prefixed with `SENTRY_` are automatically added to a Vercel project when you add the Sentry integration from the Vercel Marketplace. Additionally, [`VERCEL_PROJECT_PRODUCTION_URL`](https://vercel.com/docs/environment-variables/system-environment-variables) is a very handy environment variable that refers to the "production" URL to which this project is deployed on Vercel.
+
+<Tip>
+For `VERCEL_PROJECT_PRODUCTION_URL`, when you deploy to vercel, it defaults to the domain you deployed for the application
+</Tip>
 
 ## Adding an environment variable
 
