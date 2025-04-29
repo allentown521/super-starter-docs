@@ -23,16 +23,22 @@ description: 开始使用代码并开发您的SaaS。
     ```
 
     有关默认Prisma配置（使用Neon）的更多详细信息，请参阅[数据库配置指南](/zh/packages/database#default-configuration)。
+
+    <Note>
+    `apps/api`和`apps/app`应用使用了数据库作为示例，如果您需要构建这两个应用中的任意一个，请确保此步骤成功完成。否则您可以暂时忽略这一步。
+    </Note>
   </Step>
     <Step title="启动开发服务器">
     现在您的应用应该已经准备就绪。要启动本地开发服务器，请导航到项目根目录并运行以下命令。
+
     ```sh Terminal
     pnpm dev
     ```
-    打开上面列出的相关端口的localhost URL以查看应用，例如 🎉
+
+    打开上面列出的带有端口的localhost URL以查看应用，例如 🎉
 
     - [http://localhost:3000/](http://localhost:3000/) — 主应用
-    - [http://localhost:3001/](http://localhost:3001/) — 网站
+    - [http://localhost:3001/](http://localhost:3001/) — 落地页网站
     - [http://localhost:3002/](http://localhost:3002/) — API
     - [http://localhost:3004/](http://localhost:6006/) — Storybook
   </Step>

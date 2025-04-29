@@ -23,16 +23,23 @@ description: Get started with the code and develop your SaaS.
     ```
 
     For more details on the default Prisma configuration (using Neon), refer to the [Database Configuration Guide](/packages/database#default-configuration).
+
+    <Note>
+    The `apps/api` and `apps/app` application use the database as an example, if you need to build one of these applications then make sure that this step is completed successfully. Otherwise you can ignore this step for now
+    </Note>
+
   </Step>
     <Step title="Start your development server">
     Now your app should be ready to go. To start the local development server, navigate into your project root folder and run the following command.
+
     ```sh Terminal
     pnpm dev
     ```
+
     Open the localhost URLs with the relevant ports listed above to see the app, e.g. 🎉
 
-    - [http://localhost:3000/](http://localhost:3000/) — The main app.
-    - [http://localhost:3001/](http://localhost:3001/) — The website.
+    - [http://localhost:3000/](http://localhost:3000/) — The Main app.
+    - [http://localhost:3001/](http://localhost:3001/) — The LandingPage website.
     - [http://localhost:3002/](http://localhost:3002/) — The API.
     - [http://localhost:3004/](http://localhost:6006/) — The Storybook.
   </Step>
