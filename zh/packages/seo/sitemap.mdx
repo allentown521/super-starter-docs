@@ -12,10 +12,10 @@ SuperStarter 自动为网站生成站点地图，使用 Next.js 内置的[站点
 您可以在 `apps/web/config.ts` 中找到站点地图的配置：
 
 ```ts apps/web/config.ts
-export const getSitemapConfig: sitemapConfig = {
+export const getSitemapConfig: SitemapConfig = {
   staticPages: [
     {
-      path: '/zh/contact',
+      url: '/zh/contact', // 不要添加域名前缀
       changeFrequency: 'monthly',
       priority: 0.8,
     },

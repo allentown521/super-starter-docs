@@ -12,10 +12,10 @@ If you add new pages or change the routes of your marketing pages, you need to m
 You can find the configuration for the sitemap in the `apps/web/config.ts`:
 
 ```ts apps/web/config.ts
-export const getSitemapConfig: sitemapConfig = {
+export const getSitemapConfig: SitemapConfig = {
   staticPages: [
     {
-      path: '/contact',
+      url: '/contact', // Do not to add a domain prefix
       changeFrequency: 'monthly',
       priority: 0.8,
     },
