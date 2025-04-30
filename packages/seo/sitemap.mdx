@@ -15,7 +15,7 @@ You can find the configuration for the sitemap in the `apps/web/config.ts`:
 export const getSitemapConfig: SitemapConfig = {
   staticPages: [
     {
-      url: '/contact', // Do not to add a domain prefix
+      url: '/contact', // Don't add a domain prefix or a language prefix, we'll take care of that for you.
       changeFrequency: 'monthly',
       priority: 0.8,
     },

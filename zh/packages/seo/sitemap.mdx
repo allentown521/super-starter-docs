@@ -15,7 +15,7 @@ SuperStarter 自动为网站生成站点地图，使用 Next.js 内置的[站点
 export const getSitemapConfig: SitemapConfig = {
   staticPages: [
     {
-      url: '/zh/contact', // 不要添加域名前缀
+      url: '/contact', // 不要添加域名和语言前缀，我们会帮您处理。
       changeFrequency: 'monthly',
       priority: 0.8,
     },
