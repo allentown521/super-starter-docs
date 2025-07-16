@@ -1,10 +1,10 @@
 ---
 title: Docker
-description: 学习如何将SuperStarter部署为Docker容器。
+description: 学习如何将ShipThing部署为Docker容器。
 ---
 
 
-在本指南中，我们将向您展示如何将您的SuperStarter应用程序部署为Docker容器，以便您可以将其部署到任何支持docker镜像的平台或服务器上。
+在本指南中，我们将向您展示如何将您的ShipThing应用程序部署为Docker容器，以便您可以将其部署到任何支持docker镜像的平台或服务器上。
 
 ## 为什么要将您的SaaS部署为Docker容器？
 将您的SaaS部署为Docker容器可以让您完全控制服务器环境。它确保了更好的隐私性，如果管理得当，可以节省成本，并为您提供了根据特定需求自定义服务器设置的灵活性。与在Vercel等无服务器平台上托管相比，它还可以为您的应用程序带来性能提升，因为它消除了冷启动。
@@ -74,7 +74,7 @@ ENV HOSTNAME "0.0.0.0"
 CMD ["node", "apps/web/server.js"]
 ```
 
-在SuperStarter项目的根目录中，还添加一个.dockerignore文件，内容如下：
+在ShipThing项目的根目录中，还添加一个.dockerignore文件，内容如下：
 
 ```dockerignore .dockerignore
 Dockerfile

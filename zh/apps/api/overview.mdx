@@ -1,11 +1,11 @@
 ---
 title: API概述
-description: SuperStarter中"API"应用的工作原理
+description: ShipThing中"API"应用的工作原理
 ---
 
 <Tip>`api`应用运行在3002端口。我们建议将其部署到`api.{yourdomain}.com`。</Tip>
 
-SuperStarter从`apps/api`目录导出API。它设计为与主应用分开运行，用于运行不属于面向用户主应用的独立功能，如webhooks、定时任务等。
+ShipThing从`apps/api`目录导出API。它设计为与主应用分开运行，用于运行不属于面向用户主应用的独立功能，如webhooks、定时任务等。
 
 ## 概述
 
@@ -15,7 +15,7 @@ SuperStarter从`apps/api`目录导出API。它设计为与主应用分开运行�
 
 ## Hono
 
-SuperStarter设计为一个可扩展且生产就绪的全栈启动套件。核心功能之一是专用且可扩展的API层。为了实现类型安全，我们选择[Hono](https://hono.dev/)作为API服务器及其RPC客户端。
+ShipThing设计为一个可扩展且生产就绪的全栈启动套件。核心功能之一是专用且可扩展的API层。为了实现类型安全，我们选择[Hono](https://hono.dev/)作为API服务器及其RPC客户端。
 
 ### 为什么选择Hono
 

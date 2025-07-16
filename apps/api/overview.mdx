@@ -1,11 +1,11 @@
 ---
 title: Overview
-description: How the "API" application works in SuperStarter.
+description: How the "API" application works in ShipThing.
 ---
 
 <Tip>The `api` application runs on port 3002. We recommend deploying it to `api.{yourdomain}.com`.</Tip>
 
-SuperStarter exports the API from the `apps/api` directory. It is designed to be run separately from the main app, and is used to run isolate functions that are not part of the main user-facing application e.g. webhooks, cron jobs, etc.
+ShipThing exports the API from the `apps/api` directory. It is designed to be run separately from the main app, and is used to run isolate functions that are not part of the main user-facing application e.g. webhooks, cron jobs, etc.
 
 ## Overview
 
@@ -15,7 +15,7 @@ Functionally speaking, splitting the API from the main app doesn't matter if you
 
 ## Hono
 
-SuperStarter is designed to be a scalable and production-ready fullstack starter kit. One of the core features is a dedicated and extendable API layer. To enable this in a type-safe manner, we chose [Hono](https://hono.dev/) as the API server and their RPC client
+ShipThing is designed to be a scalable and production-ready fullstack starter kit. One of the core features is a dedicated and extendable API layer. To enable this in a type-safe manner, we chose [Hono](https://hono.dev/) as the API server and their RPC client
 
 ### Why Hono
 

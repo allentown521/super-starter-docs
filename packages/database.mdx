@@ -1,9 +1,9 @@
 ---
 title: Database
-description: How the database and ORM are configured in SuperStarter.
+description: How the database and ORM are configured in ShipThing.
 ---
 
-SuperStarter aims to provide a robust, type-safe database client that makes it easy to work with your database while maintaining strong typing throughout your application. We aim to support tooling that:
+ShipThing aims to provide a robust, type-safe database client that makes it easy to work with your database while maintaining strong typing throughout your application. We aim to support tooling that:
 
 - Provide a declarative way to define your database schema
 - Generate type-safe database client
@@ -12,7 +12,7 @@ SuperStarter aims to provide a robust, type-safe database client that makes it e
 
 ## Default Configuration
 
-By default, SuperStarter uses [Neon](https://neon.tech) as its database provider and [Prisma](https://prisma.io) as its ORM. However, you can easily switch to other providers if you'd prefer, for example:
+By default, ShipThing uses [Neon](https://neon.tech) as its database provider and [Prisma](https://prisma.io) as its ORM. However, you can easily switch to other providers if you'd prefer, for example:
 
 - You can use other ORMs like [Drizzle](/migrations/database/drizzle), Kysely or any other type-safe ORM.
 - You can use other database providers like [PlanetScale](/migrations/database/planetscale), [Prisma Postgres](/migrations/database/prisma-postgres), [Supabase](/migrations/database/supabase), [EdgeDB](/migrations/database/edgedb), or any other PostgreSQL/MySQL provider.
@@ -67,7 +67,7 @@ This runs the following commands:
 
 <Tip>The `studio` application runs on port 3005.</Tip>
 
-SuperStarter includes Prisma Studio, which is a visual editor for your database. To start it, run the following command:
+ShipThing includes Prisma Studio, which is a visual editor for your database. To start it, run the following command:
 
 ```sh Terminal
 pnpm --filter database dev

@@ -1,16 +1,16 @@
 ---
 title: 项目结构
-description: 了解SuperStarter应用程序和包的结构。
+description: 了解ShipThing应用程序和包的结构。
 ---
 
 
-SuperStarter是一个monorepo，这意味着它在一个仓库中包含多个包。这是现代Web应用程序的常见模式，因为它允许您在应用程序的不同部分之间共享代码，并将它们一起管理。
+ShipThing是一个monorepo，这意味着它在一个仓库中包含多个包。这是现代Web应用程序的常见模式，因为它允许您在应用程序的不同部分之间共享代码，并将它们一起管理。
 
 该monorepo由[Turborepo](https://turborepo.com)管理，这是一个用于管理monorepo的工具。它提供了一种简单的方式来管理单个仓库中的多个包，并且专为现代Web应用程序设计。
 
 ## 应用程序
 
-SuperStarter包含多个构成您项目的[应用程序](/zh/apps)。每个应用程序都是一个独立的应用程序，可以单独部署。
+ShipThing包含多个构成您项目的[应用程序](/zh/apps)。每个应用程序都是一个独立的应用程序，可以单独部署。
 
 虽然您可以选择在您选择的子域上运行这些应用程序，但每个页面上都列出了推荐的子域。请记得将它们添加到您的[环境变量](/zh/setup/env)中的`NEXT_PUBLIC_APP_URL`、`NEXT_PUBLIC_WEB_URL`和`NEXT_PUBLIC_API_URL`下。
 
@@ -18,7 +18,7 @@ SuperStarter包含多个构成您项目的[应用程序](/zh/apps)。每个应�
 
 ## 包
 
-SuperStarter包含多个在monorepo中共享的[包](/zh/packages)。这些包的目的是将共享代码与主应用程序隔离，使其更易于管理和更新。
+ShipThing包含多个在monorepo中共享的[包](/zh/packages)。这些包的目的是将共享代码与主应用程序隔离，使其更易于管理和更新。
 
 此外，它使得更容易为应用程序的不同部分交换实现。例如，`database`包包含与数据库相关的所有内容，包括模式和数据迁移。这使我们能够轻松地更换数据库提供程序或ORM，而不会影响应用程序的其他部分。
 

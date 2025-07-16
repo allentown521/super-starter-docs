@@ -1,15 +1,15 @@
 ---
 title: 协作
-description: SuperStarter 默认支持多人协作。
+description: ShipThing 默认支持多人协作。
 ---
 
-SuperStarter 维护了一个 `collaboration` 包，旨在为您的应用程序提供实时协作功能。默认情况下，我们使用 [Liveblocks](https://liveblocks.io) 作为我们的协作引擎。为了展示这个包的功能，我们在 `app` 应用程序中构建了一个简单的协作体验，包括头像堆叠和实时光标。
+ShipThing 维护了一个 `collaboration` 包，旨在为您的应用程序提供实时协作功能。默认情况下，我们使用 [Liveblocks](https://liveblocks.io) 作为我们的协作引擎。为了展示这个包的功能，我们在 `app` 应用程序中构建了一个简单的协作体验，包括头像堆叠和实时光标。
 
 <Tip>通过设置 `LIVEBLOCKS_SECRET` 环境变量来启用协作功能。</Tip>
 
 ## 工作原理
 
-Liveblocks 基于房间（rooms）的概念，这是人们进行协作的数字空间。要设置这个功能，您需要[验证您的用户](https://liveblocks.io/docs/authentication/access-token/nextjs)，并[添加正确的提供者](https://liveblocks.io/docs/get-started/nextjs)，不过 SuperStarter 已经集成了这些功能，这意味着您可以立即开始构建您的协作应用程序。
+Liveblocks 基于房间（rooms）的概念，这是人们进行协作的数字空间。要设置这个功能，您需要[验证您的用户](https://liveblocks.io/docs/authentication/access-token/nextjs)，并[添加正确的提供者](https://liveblocks.io/docs/get-started/nextjs)，不过 ShipThing 已经集成了这些功能，这意味着您可以立即开始构建您的协作应用程序。
 
 我们还为 Liveblocks 提供者配置了两个关键属性：`resolveUsers` 和 `resolveMentionSuggestions`，它们分别用于解析用户和提及建议。
 

@@ -1,10 +1,10 @@
 ---
 title: Docker
-description: Learn how to deploy SuperStarter as a Docker container.
+description: Learn how to deploy ShipThing as a Docker container.
 ---
 
 
-In this guide we are going to show you how to deploy your SuperStarter application as a Docker container, so you can deploy it to any platform or server that supports docker images.
+In this guide we are going to show you how to deploy your ShipThing application as a Docker container, so you can deploy it to any platform or server that supports docker images.
 
 ## Why deploy your SaaS as a Docker container?
 Deploying your SaaS as a Docker container allows you to have complete control over your server environment. It ensures better privacy, contributes to cost savings if managed correctly, and offers you the flexibility to customize your server setup to suit your specific needs. It can also give your application a performance boost compared to hosting on a serverless platform like Vercel, as it removes cold starts.
@@ -74,7 +74,7 @@ ENV HOSTNAME "0.0.0.0"
 CMD ["node", "apps/web/server.js"]
 ```
 
-In the root of the SuperStarter project, also add a .dockerignore file with the following content:
+In the root of the ShipThing project, also add a .dockerignore file with the following content:
 
 ```dockerignore .dockerignore
 Dockerfile

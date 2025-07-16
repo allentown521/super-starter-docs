@@ -5,13 +5,13 @@ description: 如何将数据库提供商更改为 Supabase。
 
 [Supabase](https://supabase.com) 是一个开源的 Firebase 替代方案，提供 Postgres 数据库、身份验证、即时 API、边缘函数、实时订阅和存储。
 
-`SuperStarter` 使用 Neon 作为数据库提供商，Prisma 作为 ORM，以及 Clerk 进行身份验证。本指南将提供将数据库提供商从 Neon 切换到 Supabase 所需的步骤。本指南基于一些现有资源，包括 [Supabase 的指南](https://supabase.com/partners/integrations/prisma) 和 [Prisma 的指南](https://www.prisma.io/docs/orm/overview/databases/supabase)。
+`ShipThing` 使用 Neon 作为数据库提供商，Prisma 作为 ORM，以及 Clerk 进行身份验证。本指南将提供将数据库提供商从 Neon 切换到 Supabase 所需的步骤。本指南基于一些现有资源，包括 [Supabase 的指南](https://supabase.com/partners/integrations/prisma) 和 [Prisma 的指南](https://www.prisma.io/docs/orm/overview/databases/supabase)。
 
 <Note>
  对于身份验证，将提供另一个指南来切换到 Supabase Auth，具有与 Clerk 相同的功能，如组织管理、用户角色等（即将推出）。
 </Note>
 
-以下是如何为您的 `SuperStarter` 项目从 Neon 切换到 [Supabase](https://supabase.com)。
+以下是如何为您的 `ShipThing` 项目从 Neon 切换到 [Supabase](https://supabase.com)。
 
 ## 1. 注册 Supabase
 
@@ -83,7 +83,7 @@ datasource db {
 }
 ```
 
-现在，你可以从你的 `SuperStarter` 项目根目录运行迁移了:
+现在，你可以从你的 `ShipThing` 项目根目录运行迁移了:
 
 ```sh Terminal
 pnpm run migrate

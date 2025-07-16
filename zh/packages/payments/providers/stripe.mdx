@@ -1,9 +1,9 @@
 ---
 title: Stripe
-description: 学习如何在SuperStarter中设置Stripe支付。
+description: 学习如何在ShipThing中设置Stripe支付。
 ---
 
-SuperStarter默认使用[Stripe](https://stripe.com/)进行支付和账单处理。在您的项目中集成Stripe非常简单。
+ShipThing默认使用[Stripe](https://stripe.com/)进行支付和账单处理。在您的项目中集成Stripe非常简单。
 
 ## 获取API密钥
 
@@ -98,7 +98,7 @@ Stripe webhooks在`apps/api`应用中的`POST /zh/webhooks/stripe`路由处理�
 
 随着应用程序的增长，您将不可避免地遇到信用卡欺诈。如果您按照上述方式使用他们的SDK集成支付，[Stripe Radar](https://stripe.com/radar)默认启用。这提供了一套工具来帮助您检测和预防欺诈。
 
-如果您在每个页面加载中嵌入 Stripe JS 脚本，Stripe Radar 支持更多 [高级反欺诈功能](https://docs.stripe.com/disputes/prevention/advanced-fraud-detection)。默认情况下，这在 SuperStarter 中不启用，但您可以按如下方式添加它:
+如果您在每个页面加载中嵌入 Stripe JS 脚本，Stripe Radar 支持更多 [高级反欺诈功能](https://docs.stripe.com/disputes/prevention/advanced-fraud-detection)。默认情况下，这在 ShipThing 中不启用，但您可以按如下方式添加它:
 
 <Steps>
   <Step title="Edit the layout">

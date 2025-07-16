@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "maple",
-  "name": "SuperStarter docs",
+  "name": "ShipThing docs",
   "colors": {
     "primary": "#4CAF50",
     "light": "#4CAF50",
@@ -523,7 +523,7 @@
   "navbar": {
     "primary": {
       "type": "github",
-      "href": "https://github.com/focusapps/SuperStarter"
+      "href": "https://github.com/focusapps/ShipThing"
     }
   },
   "search": {
@@ -532,7 +532,7 @@
   "footer": {
     "socials": {
       "x": "https://x.com/allentown521",
-      "github": "https://github.com/focusapps/SuperStarter",
+      "github": "https://github.com/focusapps/ShipThing",
       "linkedin": "https://www.linkedin.com/company/focus-apps-llc-us/"
     }
   },

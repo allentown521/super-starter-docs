@@ -3,7 +3,7 @@ title: 概述
 description: 如何在您的应用中存储文件。
 ---
 
-使用SuperStarter，您可以轻松上传和管理应用中的文件（图片、视频、文档等）。
+使用ShipThing，您可以轻松上传和管理应用中的文件（图片、视频、文档等）。
 
 ## 文件上传
 
@@ -11,7 +11,7 @@ description: 如何在您的应用中存储文件。
 
 此外，大多数托管平台如[Vercel](https://vercel.com/docs/functions/runtimes#size-limits)或[Netlify](https://answers.netlify.com/t/what-is-the-maximum-file-size-upload-limit-in-a-netlify-form-submission/108419)都有文件大小和最大无服务器函数执行时间的限制。
 
-这就是为什么SuperStarter利用存储提供商的`presigned URLs`功能来上传文件。客户端不是将文件发送到无服务器函数，而是从无服务器函数请求一个有时限的presigned URL，然后直接将文件上传到存储提供商。
+这就是为什么ShipThing利用存储提供商的`presigned URLs`功能来上传文件。客户端不是将文件发送到无服务器函数，而是从无服务器函数请求一个有时限的presigned URL，然后直接将文件上传到存储提供商。
 
 1. 客户端从无服务器函数请求presigned URL
 2. 服务器解析请求，验证有效载荷，可选地保存元数据，并将presigned URL返回给客户端

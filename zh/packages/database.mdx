@@ -1,9 +1,9 @@
 ---
 title: 数据库
-description: SuperStarter 中数据库和 ORM 的配置方式。
+description: ShipThing 中数据库和 ORM 的配置方式。
 ---
 
-SuperStarter 旨在提供一个健壮、类型安全的数据库客户端，使您能够轻松地使用数据库，同时在整个应用程序中保持强类型。我们支持以下工具：
+ShipThing 旨在提供一个健壮、类型安全的数据库客户端，使您能够轻松地使用数据库，同时在整个应用程序中保持强类型。我们支持以下工具：
 
 - 提供声明式的方式来定义数据库模式
 - 生成类型安全的数据库客户端
@@ -12,7 +12,7 @@ SuperStarter 旨在提供一个健壮、类型安全的数据库客户端，使�
 
 ## 默认配置
 
-默认情况下，SuperStarter 使用 [Neon](https://neon.tech) 作为数据库提供商，使用 [Prisma](https://prisma.io) 作为 ORM。但是，如果您愿意，可以轻松切换到其他提供商，例如：
+默认情况下，ShipThing 使用 [Neon](https://neon.tech) 作为数据库提供商，使用 [Prisma](https://prisma.io) 作为 ORM。但是，如果您愿意，可以轻松切换到其他提供商，例如：
 
 - 您可以使用其他 ORM，如 [Drizzle](/zh/migrations/database/drizzle)、Kysely 或其他任何类型安全的 ORM。
 - 您可以使用其他数据库提供商，如 [PlanetScale](/zh/migrations/database/planetscale)、[Prisma Postgres](/zh/migrations/database/prisma-postgres)、[Supabase](/zh/migrations/database/supabase)、[EdgeDB](/zh/migrations/database/edgedb) 或其他任何 PostgreSQL/MySQL 提供商。
@@ -67,7 +67,7 @@ pnpm migrate
 
 <Tip>`studio` 应用程序运行在 3005 端口。</Tip>
 
-SuperStarter 包含 Prisma Studio，这是一个可视化的数据库编辑器。要启动它，请运行以下命令：
+ShipThing 包含 Prisma Studio，这是一个可视化的数据库编辑器。要启动它，请运行以下命令：
 
 ```sh Terminal
 pnpm --filter database dev

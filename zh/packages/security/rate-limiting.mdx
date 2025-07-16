@@ -5,7 +5,7 @@ description: 保护您的API路由免受滥用
 
 现代应用需要速率限制来防止滥用、高效管理资源并实现分层的API访问。没有速率限制，您的应用容易受到暴力攻击、爬取和因过度使用导致的服务中断。
 
-SuperStarter有一个`rate-limit`包，由[`@upstash/ratelimit`](https://github.com/upstash/ratelimit-js)提供支持，这是一个专为无服务器和边缘环境设计的无连接(基于HTTP)的速率限制库。
+ShipThing有一个`rate-limit`包，由[`@upstash/ratelimit`](https://github.com/upstash/ratelimit-js)提供支持，这是一个专为无服务器和边缘环境设计的无连接(基于HTTP)的速率限制库。
 
 ## 设置
 
@@ -57,7 +57,7 @@ export const GET = async (request: NextRequest) => {
 export const ratelimit = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(10, "10 s"),
-  prefix: "SuperStarter",
+  prefix: "ShipThing",
 })
 ```
 
@@ -99,7 +99,7 @@ Upstash Ratelimit 通过 [Upstash 控制台](https://console.upstash.com)上的�
 export const ratelimit = new Ratelimit({
   redis,
   limiter: Ratelimit.slidingWindow(10, "10 s"),
-  prefix: "SuperStarter",
+  prefix: "ShipThing",
   analytics: true, // Enable Upstash analytics
 })
 ```

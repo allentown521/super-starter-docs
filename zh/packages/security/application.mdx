@@ -3,7 +3,7 @@ title: 应用安全
 description: 为保护您的应用程序而采取的安全措施。
 ---
 
-SuperStarter使用[Arcjet](https://arcjet.com/)，这是一个安全即代码产品，包含多个可以单独使用或组合使用的功能，为您的站点提供深度防御。您可以[注册免费账户](https://arcjet.com/)并将API密钥添加到环境变量中以使用我们包含的功能。
+ShipThing使用[Arcjet](https://arcjet.com/)，这是一个安全即代码产品，包含多个可以单独使用或组合使用的功能，为您的站点提供深度防御。您可以[注册免费账户](https://arcjet.com/)并将API密钥添加到环境变量中以使用我们包含的功能。
 
 <Note>当存在`ARCJET_KEY`环境变量时，安全功能会自动启用。</Note>
 
@@ -15,7 +15,7 @@ Arcjet安全即代码意味着您可以对安全规则进行版本控制，通�
 
 ## 配置
 
-Arcjet在SuperStarter中配置了两个主要功能：机器人检测和Arcjet Shield WAF：
+Arcjet在ShipThing中配置了两个主要功能：机器人检测和Arcjet Shield WAF：
 
 - [机器人检测](https://docs.arcjet.com/bot-protection/concepts)配置为允许搜索引擎、预览链接生成器（如Slack和Twitter预览）以及常见的正常运行时间监控服务。所有其他机器人，如爬虫和AI爬虫，将被阻止。您可以[配置其他机器人类型](https://docs.arcjet.com/bot-protection/identifying-bots)以允许或阻止。
 - [Arcjet Shield WAF](https://docs.arcjet.com/shield/concepts)将检测并阻止常见攻击，如SQL注入、跨站脚本和其他[OWASP Top 10漏洞](https://owasp.org/www-project-top-ten/)。
@@ -34,7 +34,7 @@ Arcjet在SuperStarter中配置了两个主要功能：机器人检测和Arcjet S
 
 ## 扩展您的安全
 
-SuperStarter包含一个针对SaaS应用常见威胁的Arcjet样板设置，但由于规则是在代码中定义的，您可以轻松地在运行时动态调整它们。
+ShipThing包含一个针对SaaS应用常见威胁的Arcjet样板设置，但由于规则是在代码中定义的，您可以轻松地在运行时动态调整它们。
 
 例如，如果您为应用程序构建API，您可以使用[Arcjet速率限制](https://docs.arcjet.com/rate-limiting/quick-start)，根据用户的定价计划设置不同的配额。
 

@@ -3,7 +3,7 @@ title: Overview
 description: How to store files in your application.
 ---
 
-With SuperStarter, you can easily upload and manage files (images, videos, documents, and more) in your application.
+With ShipThing, you can easily upload and manage files (images, videos, documents, and more) in your application.
 
 ## Uploading files
 
@@ -11,7 +11,7 @@ The most common approach to uploading files is to use client-side uploads. With 
 
 Additionally, most hosting platforms like [Vercel](https://vercel.com/docs/functions/runtimes#size-limits) or [Netlify](https://answers.netlify.com/t/what-is-the-maximum-file-size-upload-limit-in-a-netlify-form-submission/108419) have limitations on file size and maximum serverless function execution time.
 
-That's why SuperStarter utilizes the `presigned URLs` feature of storage providers to upload files. Instead of sending files to the serverless function, the client requests a time-limited presigned URL from the serverless function and then uploads the file directly to the storage provider.
+That's why ShipThing utilizes the `presigned URLs` feature of storage providers to upload files. Instead of sending files to the serverless function, the client requests a time-limited presigned URL from the serverless function and then uploads the file directly to the storage provider.
 
 1. Client requests a presigned URL from the serverless function.
 2. Server parses the request, validates the payload, optionally saves the metadata, and returns the presigned URL to the client.

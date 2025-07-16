@@ -53,7 +53,7 @@ export * from './providers/s3';
 
 ## 3. Prepare upload endpoint
 
-As explained on the [overview](/packages/storage/overview) page, SuperStarter uses the presigned URLs to upload files to your storage provider. So what we need to do first is to implement the `api/signed-upload-url` API route to be able to upload files to the `documents` bucket.
+As explained on the [overview](/packages/storage/overview) page, ShipThing uses the presigned URLs to upload files to your storage provider. So what we need to do first is to implement the `api/signed-upload-url` API route to be able to upload files to the `documents` bucket.
 
 ```ts apps/api/server/api/routes/upload/index.ts
 export const uploadsRouter = new Hono().basePath("/uploads").post(

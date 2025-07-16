@@ -53,7 +53,7 @@ export * from './providers/s3';
 
 ## 3. 准备上传端点
 
-如[概述](/zh/packages/storage/overview)页面所述，SuperStarter 使用预签名 URL 将文件上传到您的存储提供商。因此，我们首先需要实现 `api/signed-upload-url` API 路由，以便能够将文件上传到 `documents` 存储桶。
+如[概述](/zh/packages/storage/overview)页面所述，ShipThing 使用预签名 URL 将文件上传到您的存储提供商。因此，我们首先需要实现 `api/signed-upload-url` API 路由，以便能够将文件上传到 `documents` 存储桶。
 
 ```ts apps/api/server/api/routes/upload/index.ts
 export const uploadsRouter = new Hono().basePath("/uploads").post(

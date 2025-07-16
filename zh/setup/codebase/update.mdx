@@ -1,6 +1,6 @@
 ---
 title: 更新代码库
-description: 了解如何从SuperStarter仓库更新代码库到最新版本和功能。
+description: 了解如何从ShipThing仓库更新代码库到最新版本和功能。
 ---
 
 <Warning>
@@ -12,13 +12,13 @@ description: 了解如何从SuperStarter仓库更新代码库到最新版本和�
 手动操作可能比较困难，因此我们创建了一个脚本来帮助你，这是推荐的更新项目的方式。
 
 ```sh Terminal
-npx super-starter@latest update
+npx shipthing@latest update
 ```
 
 这将运行我们的更新脚本，这将指导您完成更新项目的过程。
 
 ```
-┌  Let's update your SuperStarter project!
+┌  Let's update your ShipThing project!
 │
 │
 ◆  Select a version to update to:
@@ -30,19 +30,19 @@ npx super-starter@latest update
 └
 ```
 
-这会将最新版本的 SuperStarter 克隆到一个临时目录中，应用更新，然后将文件复制到您的项目中。在这里，您可以提交更改并将其推送到您的存储库。
+这会将最新版本的 ShipThing 克隆到一个临时目录中，应用更新，然后将文件复制到您的项目中。在这里，您可以提交更改并将其推送到您的存储库。
 
 ## 使用Git
 
 添加上游远程仓库指向原始仓库以拉取更新：
 
 ```sh Terminal
-git remote add origin https://github.com/focusapps/SuperStarter/
+git remote add origin https://github.com/focusapps/ShipThing/
 ```
 
 > 如果您以前已经在设置中执行此操作，则可以跳过此步骤。
 
-从 SuperStarter 存储库更新存储库:
+从 ShipThing 存储库更新存储库:
 
 ```sh Terminal
 - Pull changes
@@ -60,4 +60,4 @@ pnpm i
 ```
 您的锁定文件现在将反映您的更改和来自上游仓库的更新.
 </Note>
-<Tip>由于SuperStarter是一个样板而不是库，你可能需要手动合并你所做的更改与更新中的更改。</Tip>
+<Tip>由于ShipThing是一个样板而不是库，你可能需要手动合并你所做的更改与更新中的更改。</Tip>

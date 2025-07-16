@@ -3,7 +3,7 @@ title: 功能标志
 description: 控制应用程序中功能的访问权限。
 ---
 
-功能标志（也称为功能开关）允许您控制应用程序中特定功能的访问权限。SuperStarter 提供了一个简单但强大的功能标志系统，可用于：
+功能标志（也称为功能开关）允许您控制应用程序中特定功能的访问权限。ShipThing 提供了一个简单但强大的功能标志系统，可用于：
 
 - 逐步向用户推出功能
 - 对新功能进行A/B测试
@@ -12,7 +12,7 @@ description: 控制应用程序中功能的访问权限。
 
 ## 工作原理
 
-SuperStarter 使用 Vercel 的 [Flags SDK](https://vercel.com/docs/workflow-collaboration/feature-flags/flags-pattern-nextjs) 实现功能标志，这主要是一种用于处理功能标志的架构模式。此设置存在于 `@repo/feature-flags` 包中，因此您可以根据需要在任意项目中导入和使用它。
+ShipThing 使用 Vercel 的 [Flags SDK](https://vercel.com/docs/workflow-collaboration/feature-flags/flags-pattern-nextjs) 实现功能标志，这主要是一种用于处理功能标志的架构模式。此设置存在于 `@repo/feature-flags` 包中，因此您可以根据需要在任意项目中导入和使用它。
 
 我们创建了一个名为 `createFlag` 的智能函数，您可以使用它来创建新标志，包括身份验证、PostHog 集成和 [Vercel Toolbar](/zh/packages/toolbar) 覆盖，而无需麻烦。
 
